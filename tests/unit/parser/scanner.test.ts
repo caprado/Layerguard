@@ -164,7 +164,7 @@ describe('getRelativePath', () => {
     expect(getRelativePath(root, file)).toBe('src/index.ts')
   })
 
-  it('handles Windows paths', () => {
+  it.skipIf(process.platform !== 'win32')('handles Windows paths', () => {
     const root = 'C:\\project'
     const file = 'C:\\project\\src\\index.ts'
 

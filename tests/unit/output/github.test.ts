@@ -192,6 +192,7 @@ describe('detectPrNumber', () => {
   })
 
   it('detects PR number from GITHUB_REF', () => {
+    delete process.env.GITHUB_EVENT_PATH
     process.env.GITHUB_REF = 'refs/pull/123/merge'
 
     const prNumber = detectPrNumber()
@@ -200,6 +201,7 @@ describe('detectPrNumber', () => {
   })
 
   it('handles non-PR GITHUB_REF', () => {
+    delete process.env.GITHUB_EVENT_PATH
     process.env.GITHUB_REF = 'refs/heads/main'
 
     const prNumber = detectPrNumber()

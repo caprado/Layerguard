@@ -114,7 +114,7 @@ describe('runCheck', () => {
   it('handles config load errors', async () => {
     vi.mocked(loader.loadConfig).mockRejectedValue(new Error('Config not found'))
 
-    const result = await runCheck()
+    const result = await runCheck({ format: 'terminal' })
 
     expect(result.passed).toBe(false)
     expect(result.exitCode).toBe(1)

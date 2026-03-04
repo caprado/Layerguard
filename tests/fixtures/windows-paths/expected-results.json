@@ -1,0 +1,22 @@
+{
+  "description": "Windows path handling - backslash vs forward slash",
+  "expectedViolations": [
+    {
+      "type": "flow",
+      "message": "Layer violation",
+      "files": [
+        {
+          "source": "src/utils/badImport.ts",
+          "target": "src/lib/index.ts"
+        }
+      ],
+      "note": "utils cannot import from lib (only lib -> utils allowed)"
+    }
+  ],
+  "notes": [
+    "Config uses mixed path separators: 'src\\utils' (backslash) and 'src/lib' (forward slash)",
+    "Tool should normalize paths regardless of separator",
+    "Windows and Unix paths should be treated equally",
+    "This tests path normalization on config load"
+  ]
+}

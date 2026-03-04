@@ -1,0 +1,103 @@
+{
+  "name": "archgate",
+  "version": "0.1.0",
+  "description": "Framework-agnostic CLI tool that enforces architectural layer boundaries in TypeScript/JavaScript projects",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "bin": {
+    "archgate": "./bin/archgate.js"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./eslint": {
+      "types": "./dist/eslint/index.d.ts",
+      "import": "./dist/eslint/index.js"
+    },
+    "./config": {
+      "types": "./dist/config/index.d.ts",
+      "import": "./dist/config/index.js"
+    },
+    "./enforcer": {
+      "types": "./dist/enforcer/index.d.ts",
+      "import": "./dist/enforcer/index.js"
+    },
+    "./parser": {
+      "types": "./dist/parser/index.d.ts",
+      "import": "./dist/parser/index.js"
+    },
+    "./plugins": {
+      "types": "./dist/plugins/index.d.ts",
+      "import": "./dist/plugins/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "bin"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/caprado/archgate.git"
+  },
+  "homepage": "https://github.com/caprado/archgate#readme",
+  "bugs": {
+    "url": "https://github.com/caprado/archgate/issues"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "dev": "tsc -p tsconfig.build.json --watch",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "test:integration": "vitest run --config vitest.integration.config.ts",
+    "test:self": "node bin/archgate.js check",
+    "lint": "eslint src/",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "architecture",
+    "dependencies",
+    "typescript",
+    "javascript",
+    "linter",
+    "cli",
+    "layers",
+    "boundaries",
+    "enforcement"
+  ],
+  "author": "",
+  "license": "MIT",
+  "peerDependencies": {
+    "eslint": ">=10.0.2",
+    "typescript": ">=4.7.0"
+  },
+  "peerDependenciesMeta": {
+    "eslint": {
+      "optional": true
+    }
+  },
+  "dependencies": {
+    "@clack/prompts": "^1.0.1",
+    "jiti": "^2.4.2"
+  },
+  "devDependencies": {
+    "@types/eslint": "^9.6.0",
+    "@types/node": "^25.3.3",
+    "@vitest/coverage-v8": "^4.0.18",
+    "eslint": "^10.0.1",
+    "typescript": "^5.3.0",
+    "vitest": "^4.0.18",
+    "typescript-eslint": "^8.56.1"
+  },
+  "overrides": {
+    "minimatch": "^10.2.1"
+  },
+  "packageManager": "pnpm@10.30.1+sha512.3590e550d5384caa39bd5c7c739f72270234b2f6059e13018f975c313b1eb9fefcc09714048765d4d9efe961382c312e624572c0420762bdc5d5940cdf9be73a"
+}

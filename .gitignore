@@ -1,0 +1,37 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+
+# IDE
+.idea/
+.vscode/
+.claude/
+*.swp
+*.swo
+
+# Archgate cache
+.archgate-cache/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Test coverage
+coverage/
+
+# npm
+*.log
+npm-debug.log*
+
+# Temporary files
+*.tmp
+.cache/
+
+coverage/
+archgate-report.html
+
+# VS Code extension build artifacts
+*.vsix
+vscode-extension/dist/

@@ -1,0 +1,50 @@
+{
+  "description": "Isolated Features - Next.js-style feature folder isolation",
+  "expectedViolations": [
+    {
+      "type": "isolation",
+      "message": "Feature isolation violation",
+      "fromFeature": "billing",
+      "toFeature": "auth",
+      "files": [
+        {
+          "source": "src/components/features/billing/PaymentForm.ts",
+          "target": "src/components/features/auth/LoginForm.ts",
+          "line": 2
+        }
+      ],
+      "suggestion": "Features are isolated and cannot import from each other. Move shared code to components/shared/."
+    },
+    {
+      "type": "isolation",
+      "message": "Feature isolation violation",
+      "fromFeature": "dashboard",
+      "toFeature": "billing",
+      "files": [
+        {
+          "source": "src/components/features/dashboard/DashboardWidget.ts",
+          "target": "src/components/features/billing/PaymentForm.ts",
+          "line": 2
+        }
+      ],
+      "suggestion": "Features are isolated and cannot import from each other. Move shared code to components/shared/."
+    }
+  ],
+  "expectedValidFlows": [
+    {
+      "from": "features/auth",
+      "to": "shared",
+      "files": [
+        "src/components/features/auth/LoginForm.ts -> src/components/shared/ui/Button.ts",
+        "src/components/features/auth/LoginForm.ts -> src/components/shared/utils/format.ts"
+      ],
+      "note": "Features can import from shared"
+    }
+  ],
+  "notes": [
+    "Features are isolated: auth, billing, dashboard cannot import each other",
+    "Shared folder is NOT isolated: shared can import from shared",
+    "Flow rule features -> shared allows features to use shared components",
+    "This pattern is common in Next.js and modern React apps"
+  ]
+}

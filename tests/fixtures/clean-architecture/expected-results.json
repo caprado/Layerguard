@@ -1,0 +1,31 @@
+{
+  "description": "Clean Architecture - 3-layer pattern with proper and improper dependencies",
+  "expectedViolations": [
+    {
+      "type": "flow",
+      "fromLayer": "handlers",
+      "toLayer": "repository",
+      "message": "Layer violation: handlers -> repository",
+      "files": [
+        {
+          "source": "src/handlers/userHandlers.ts",
+          "target": "src/repository/userRepository.ts",
+          "line": 3
+        }
+      ],
+      "suggestion": "Import from services layer instead. Handlers should not access repository directly."
+    }
+  ],
+  "expectedValidFlows": [
+    {
+      "from": "handlers",
+      "to": "services",
+      "files": ["src/handlers/userHandlers.ts -> src/services/userService.ts"]
+    },
+    {
+      "from": "services", 
+      "to": "repository",
+      "files": ["src/services/userService.ts -> src/repository/userRepository.ts"]
+    }
+  ]
+}

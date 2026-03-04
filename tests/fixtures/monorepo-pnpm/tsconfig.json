@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "baseUrl": ".",
+    "paths": {
+      "@monorepo/web-api": ["./packages/web-api/src/index.ts"],
+      "@monorepo/web-api/*": ["./packages/web-api/src/*"],
+      "@monorepo/shared-utils": ["./packages/shared-utils/src/index.ts"],
+      "@monorepo/ui-components": ["./packages/ui-components/src/index.ts"],
+      "@monorepo/internal-api": ["./packages/internal-api/src/index.ts"]
+    }
+  }
+}

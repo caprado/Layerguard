@@ -1,0 +1,115 @@
+{
+  "name": "archgate-vscode",
+  "displayName": "Archgate",
+  "description": "Enforce architectural layer boundaries in TypeScript/JavaScript projects",
+  "version": "0.1.0",
+  "publisher": "archgate",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/caprado/archgate"
+  },
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Linters",
+    "Other"
+  ],
+  "keywords": [
+    "architecture",
+    "layers",
+    "dependencies",
+    "typescript",
+    "javascript",
+    "linting"
+  ],
+  "activationEvents": [
+    "onStartupFinished",
+    "onView:archgateArchitecture"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "archgate.showArchitecture",
+        "title": "Show Architecture",
+        "category": "Archgate"
+      },
+      {
+        "command": "archgate.checkProject",
+        "title": "Check Project",
+        "category": "Archgate"
+      },
+      {
+        "command": "archgate.refreshDiagnostics",
+        "title": "Refresh Diagnostics",
+        "category": "Archgate"
+      }
+    ],
+    "views": {
+      "explorer": [
+        {
+          "id": "archgateArchitecture",
+          "name": "Architecture",
+          "type": "webview"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Archgate",
+      "properties": {
+        "archgate.enable": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable Archgate diagnostics"
+        },
+        "archgate.showDecorations": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show layer decorations in file explorer"
+        },
+        "archgate.validateOnSave": {
+          "type": "boolean",
+          "default": true,
+          "description": "Validate architecture on file save"
+        },
+        "archgate.validateOnType": {
+          "type": "boolean",
+          "default": false,
+          "description": "Validate architecture while typing (may impact performance)"
+        }
+      }
+    },
+    "menus": {
+      "commandPalette": [
+        {
+          "command": "archgate.showArchitecture"
+        },
+        {
+          "command": "archgate.checkProject"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run bundle",
+    "compile": "tsc -p ./",
+    "bundle": "esbuild src/extension.ts --bundle --outfile=dist/extension.js --external:vscode --external:jiti --format=cjs --platform=node --minify --banner:js=\"const import_meta_url = require('url').pathToFileURL(__filename).href;\" --define:import.meta.url=import_meta_url",
+    "watch": "tsc -watch -p ./",
+    "watch:bundle": "esbuild src/extension.ts --bundle --outfile=dist/extension.js --external:vscode --format=esm --platform=node --watch",
+    "package": "npm run bundle && vsce package --allow-missing-repository",
+    "lint": "eslint src --ext ts"
+  },
+  "devDependencies": {
+    "@types/node": "^25.3.3",
+    "@types/vscode": "^1.85.0",
+    "@vscode/vsce": "^3.7.1",
+    "archgate": "file:..",
+    "esbuild": "^0.27.3",
+    "typescript": "^5.3.0"
+  },
+  "dependencies": {
+    "jiti": "^2.4.2"
+  }
+}

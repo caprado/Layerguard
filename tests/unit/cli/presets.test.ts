@@ -82,8 +82,8 @@ describe('createCustomConfig', () => {
       ['components -> hooks']
     )
 
-    expect(config.layers.components.path).toBe('src/components')
-    expect(config.layers.hooks.path).toBe('src/hooks')
+    expect(config.layers.components!.path).toBe('src/components')
+    expect(config.layers.hooks!.path).toBe('src/hooks')
     expect(config.flow).toContain('components -> hooks')
   })
 
@@ -102,10 +102,10 @@ describe('createCustomConfig', () => {
       []
     )
 
-    expect(config.layers.components.sublayers?.features.path).toBe('features')
-    expect(config.layers.components.sublayers?.features.isolated).toBe(true)
-    expect(config.layers.components.sublayers?.shared.path).toBe('shared')
-    expect(config.layers.components.sublayers?.shared.isolated).toBeUndefined()
+    expect(config.layers.components!.sublayers!.features!.path).toBe('features')
+    expect(config.layers.components!.sublayers!.features!.isolated).toBe(true)
+    expect(config.layers.components!.sublayers!.shared!.path).toBe('shared')
+    expect(config.layers.components!.sublayers!.shared!.isolated).toBeUndefined()
   })
 
   it('includes framework when provided', () => {
@@ -135,13 +135,13 @@ describe('nextjsAppPreset', () => {
 
   it('includes app layer', () => {
     expect(nextjsAppPreset.layers.app).toBeDefined()
-    expect(nextjsAppPreset.layers.app.path).toBe('app')
+    expect(nextjsAppPreset.layers.app!.path).toBe('app')
   })
 
   it('includes components layer with sublayers', () => {
     expect(nextjsAppPreset.layers.components).toBeDefined()
-    expect(nextjsAppPreset.layers.components.sublayers).toBeDefined()
-    expect(nextjsAppPreset.layers.components.sublayers?.features.isolated).toBe(true)
+    expect(nextjsAppPreset.layers.components!.sublayers).toBeDefined()
+    expect(nextjsAppPreset.layers.components!.sublayers!.features!.isolated).toBe(true)
   })
 
   it('has valid flow rules', () => {
@@ -176,7 +176,7 @@ describe('genericLayeredPreset', () => {
   })
 
   it('uses src/ prefix for paths', () => {
-    expect(genericLayeredPreset.layers.components.path).toBe('src/components')
-    expect(genericLayeredPreset.layers.hooks.path).toBe('src/hooks')
+    expect(genericLayeredPreset.layers.components!.path).toBe('src/components')
+    expect(genericLayeredPreset.layers.hooks!.path).toBe('src/hooks')
   })
 })

@@ -1,6 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import * as fs from 'node:fs'
-import * as path from 'node:path'
 import {
   loadCache,
   saveCache,
@@ -30,7 +29,6 @@ vi.mock('node:path', async () => {
 
 describe('cache manager', () => {
   const mockProjectRoot = '/project'
-  const mockCachePath = '/project/.archgate-cache/graph.json'
 
   const mockConfig: ArchgateConfig = {
     layers: {

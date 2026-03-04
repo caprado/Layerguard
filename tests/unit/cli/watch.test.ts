@@ -136,12 +136,12 @@ describe('startWatch', () => {
 
   it('should debounce file changes', async () => {
     let changeCallback: ((eventType: string, filename: string | null) => void) | undefined
-    vi.mocked(watch).mockImplementation((_path, _options, callback) => {
+    vi.mocked(watch).mockImplementation(((_path: unknown, _options: unknown, callback: unknown) => {
       changeCallback = callback as (eventType: string, filename: string | null) => void
       return {
         close: vi.fn(),
-      } as ReturnType<typeof watch>
-    })
+      } as unknown as ReturnType<typeof watch>
+    }) as typeof watch)
 
     const handle = await startWatch({ debounce: 300 })
     vi.mocked(check.runCheck).mockClear()
@@ -161,10 +161,10 @@ describe('startWatch', () => {
 
   it('should ignore non-TypeScript files', async () => {
     let changeCallback: ((eventType: string, filename: string | null) => void) | undefined
-    vi.mocked(watch).mockImplementation((_path, _options, callback) => {
+    vi.mocked(watch).mockImplementation(((_path: unknown, _options: unknown, callback: unknown) => {
       changeCallback = callback as (eventType: string, filename: string | null) => void
-      return { close: vi.fn() } as ReturnType<typeof watch>
-    })
+      return { close: vi.fn() } as unknown as ReturnType<typeof watch>
+    }) as typeof watch)
 
     const handle = await startWatch({ debounce: 100 })
     vi.mocked(check.runCheck).mockClear()
@@ -182,10 +182,10 @@ describe('startWatch', () => {
 
   it('should ignore node_modules changes', async () => {
     let changeCallback: ((eventType: string, filename: string | null) => void) | undefined
-    vi.mocked(watch).mockImplementation((_path, _options, callback) => {
+    vi.mocked(watch).mockImplementation(((_path: unknown, _options: unknown, callback: unknown) => {
       changeCallback = callback as (eventType: string, filename: string | null) => void
-      return { close: vi.fn() } as ReturnType<typeof watch>
-    })
+      return { close: vi.fn() } as unknown as ReturnType<typeof watch>
+    }) as typeof watch)
 
     const handle = await startWatch({ debounce: 100 })
     vi.mocked(check.runCheck).mockClear()
@@ -203,10 +203,10 @@ describe('startWatch', () => {
 
   it('should handle null filename gracefully', async () => {
     let changeCallback: ((eventType: string, filename: string | null) => void) | undefined
-    vi.mocked(watch).mockImplementation((_path, _options, callback) => {
+    vi.mocked(watch).mockImplementation(((_path: unknown, _options: unknown, callback: unknown) => {
       changeCallback = callback as (eventType: string, filename: string | null) => void
-      return { close: vi.fn() } as ReturnType<typeof watch>
-    })
+      return { close: vi.fn() } as unknown as ReturnType<typeof watch>
+    }) as typeof watch)
 
     const handle = await startWatch({ debounce: 100 })
     vi.mocked(check.runCheck).mockClear()

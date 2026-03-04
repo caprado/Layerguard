@@ -17,7 +17,6 @@ describe('runShow', () => {
   }
 
   let exitSpy: ReturnType<typeof vi.spyOn>
-  let mockExit: (code: number) => never
 
   beforeEach(() => {
     vi.resetAllMocks()
@@ -25,10 +24,9 @@ describe('runShow', () => {
     vi.spyOn(console, 'error').mockImplementation(() => {})
 
     // Mock process.exit to throw so we can test exit behavior
-    mockExit = vi.fn((code: number) => {
+    exitSpy = vi.spyOn(process, 'exit').mockImplementation((code) => {
       throw new Error(`Process exited with code ${code}`)
-    }) as unknown as (code: number) => never
-    exitSpy = vi.spyOn(process, 'exit').mockImplementation(mockExit)
+    })
   })
 
   afterEach(() => {

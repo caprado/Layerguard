@@ -211,7 +211,7 @@ describe('runReport', () => {
   })
 
   it('handles missing historical data file gracefully', async () => {
-    vi.mocked(existsSync).mockImplementation((p: string) => {
+    vi.mocked(existsSync).mockImplementation((p) => {
       if (String(p).includes('history')) return false
       return true
     })

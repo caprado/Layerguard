@@ -36,7 +36,7 @@ describe('resolveImport', () => {
   let testDir: string
 
   beforeEach(() => {
-    testDir = join(tmpdir(), `archgate-resolver-test-${Date.now()}`)
+    testDir = join(tmpdir(), `layerguard-resolver-test-${Date.now()}`)
     mkdirSync(testDir, { recursive: true })
     mkdirSync(join(testDir, 'src'), { recursive: true })
   })
@@ -150,7 +150,7 @@ describe('createResolverContext', () => {
   let testDir: string
 
   beforeEach(() => {
-    testDir = join(tmpdir(), `archgate-context-test-${Date.now()}`)
+    testDir = join(tmpdir(), `layerguard-context-test-${Date.now()}`)
     mkdirSync(testDir, { recursive: true })
   })
 
@@ -229,7 +229,7 @@ describe('multi-tsconfig support', () => {
   let testDir: string
 
   beforeEach(() => {
-    testDir = join(tmpdir(), `archgate-multi-tsconfig-${Date.now()}`)
+    testDir = join(tmpdir(), `layerguard-multi-tsconfig-${Date.now()}`)
     mkdirSync(testDir, { recursive: true })
   })
 
@@ -311,7 +311,7 @@ describe('project references', () => {
   let testDir: string
 
   beforeEach(() => {
-    testDir = join(tmpdir(), `archgate-proj-refs-${Date.now()}`)
+    testDir = join(tmpdir(), `layerguard-proj-refs-${Date.now()}`)
     mkdirSync(testDir, { recursive: true })
   })
 

@@ -1,9 +1,9 @@
 import { describe, it, expect } from 'vitest'
 import { generateDiagram, generateFlowSummary } from '../../../src/output/diagram.js'
-import type { ArchgateConfig } from '../../../src/config/types.js'
+import type { LayerguardConfig } from '../../../src/config/types.js'
 
 describe('generateDiagram', () => {
-  const basicConfig: ArchgateConfig = {
+  const basicConfig: LayerguardConfig = {
     layers: {
       components: { path: 'src/components' },
       hooks: { path: 'src/hooks' },
@@ -15,7 +15,7 @@ describe('generateDiagram', () => {
   it('generates a diagram with title', () => {
     const output = generateDiagram(basicConfig)
 
-    expect(output).toContain('Archgate Architecture')
+    expect(output).toContain('Layerguard Architecture')
   })
 
   it('generates boxes for each layer', () => {
@@ -76,7 +76,7 @@ describe('generateDiagram', () => {
   })
 
   it('shows sublayers when present', () => {
-    const config: ArchgateConfig = {
+    const config: LayerguardConfig = {
       layers: {
         components: {
           path: 'src/components',
@@ -97,7 +97,7 @@ describe('generateDiagram', () => {
   })
 
   it('hides sublayers when showSublayers is false', () => {
-    const config: ArchgateConfig = {
+    const config: LayerguardConfig = {
       layers: {
         components: {
           path: 'src/components',
@@ -118,7 +118,7 @@ describe('generateDiagram', () => {
   })
 
   it('shows sublayer flow rules when present', () => {
-    const config: ArchgateConfig = {
+    const config: LayerguardConfig = {
       layers: {
         components: {
           path: 'src/components',
@@ -138,7 +138,7 @@ describe('generateDiagram', () => {
   })
 
   it('orders layers by dependency count', () => {
-    const config: ArchgateConfig = {
+    const config: LayerguardConfig = {
       layers: {
         utils: { path: 'src/utils' },
         hooks: { path: 'src/hooks' },
@@ -160,7 +160,7 @@ describe('generateDiagram', () => {
 
 describe('generateFlowSummary', () => {
   it('generates a flow summary', () => {
-    const config: ArchgateConfig = {
+    const config: LayerguardConfig = {
       layers: {
         components: { path: 'src/components' },
         hooks: { path: 'src/hooks' },
@@ -177,7 +177,7 @@ describe('generateFlowSummary', () => {
   })
 
   it('includes sublayer flows', () => {
-    const config: ArchgateConfig = {
+    const config: LayerguardConfig = {
       layers: {
         components: {
           path: 'src/components',
@@ -198,7 +198,7 @@ describe('generateFlowSummary', () => {
   })
 
   it('handles empty flow rules', () => {
-    const config: ArchgateConfig = {
+    const config: LayerguardConfig = {
       layers: {
         components: { path: 'src/components' },
       },

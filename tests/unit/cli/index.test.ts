@@ -271,7 +271,7 @@ describe('printHelp', () => {
     printHelp()
     expect(console.log).toHaveBeenCalled()
     const output = vi.mocked(console.log).mock.calls[0]?.[0] as string
-    expect(output).toContain('archgate')
+    expect(output).toContain('layerguard')
     expect(output).toContain('Usage:')
     expect(output).toContain('Commands:')
   })
@@ -303,7 +303,7 @@ describe('printVersion', () => {
 
   it('prints version', () => {
     printVersion()
-    expect(console.log).toHaveBeenCalledWith(`archgate v${VERSION}`)
+    expect(console.log).toHaveBeenCalledWith(`layerguard v${VERSION}`)
   })
 })
 
@@ -332,7 +332,7 @@ describe('main', () => {
 
   it('prints version with --version flag', async () => {
     await main(['--version'])
-    expect(console.log).toHaveBeenCalledWith(`archgate v${VERSION}`)
+    expect(console.log).toHaveBeenCalledWith(`layerguard v${VERSION}`)
   })
 
   it('prints help with --help flag', async () => {

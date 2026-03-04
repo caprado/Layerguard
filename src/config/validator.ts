@@ -1,12 +1,12 @@
 /**
  * Config validator
  *
- * Validates the archgate config structure and ensures all references are valid.
+ * Validates the layerguard config structure and ensures all references are valid.
  */
 
 import { existsSync } from 'node:fs'
 import { resolve } from 'node:path'
-import type { ArchgateConfig, LayerConfig, SublayerConfig } from './types.js'
+import type { LayerguardConfig, LayerConfig, SublayerConfig } from './types.js'
 import { parseFlowRules, buildFlowGraph, findIsolatedLayers, type FlowParseError } from './parser.js'
 import type { FlowGraph, ParsedFlowRule } from './types.js'
 
@@ -26,13 +26,13 @@ export interface ValidationResult {
 }
 
 /**
- * Validate the archgate config
+ * Validate the layerguard config
  *
  * @param config - The config to validate
  * @param cwd - The project root directory for path validation
  * @returns Validation result with errors, warnings, and parsed flow graph
  */
-export function validateConfig(config: ArchgateConfig, cwd: string): ValidationResult {
+export function validateConfig(config: LayerguardConfig, cwd: string): ValidationResult {
   const errors: ValidationError[] = []
   const warnings: ValidationError[] = []
   let flowGraph: FlowGraph | null = null
@@ -352,7 +352,7 @@ function validateSublayerFlow(
 /**
  * Validate rules configuration
  */
-function validateRulesConfig(rules: NonNullable<ArchgateConfig['rules']>): ValidationError[] {
+function validateRulesConfig(rules: NonNullable<LayerguardConfig['rules']>): ValidationError[] {
   const errors: ValidationError[] = []
 
   if (rules.circular !== undefined) {

@@ -8,7 +8,7 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync, statSync, rmSync } 
 import { join, dirname } from 'node:path'
 import { createHash } from 'node:crypto'
 import type { DependencyGraph } from '../parser/graph.js'
-import type { ArchgateConfig } from '../config/types.js'
+import type { LayerguardConfig } from '../config/types.js'
 import {
   CACHE_VERSION,
   CACHE_DIR,
@@ -40,7 +40,7 @@ export function getFileMtime(filePath: string): number | null {
 /**
  * Create a hash of the config for cache invalidation
  */
-export function hashConfig(config: ArchgateConfig): string {
+export function hashConfig(config: LayerguardConfig): string {
   const configStr = JSON.stringify(config)
   return createHash('md5').update(configStr).digest('hex')
 }
@@ -112,7 +112,7 @@ export function validateCache(
   cache: CacheData,
   projectRoot: string,
   currentFiles: string[],
-  config: ArchgateConfig,
+  config: LayerguardConfig,
   tsconfigPath?: string
 ): CacheValidation {
   // Check version
@@ -188,7 +188,7 @@ export function validateCache(
  */
 export function graphToCache(
   graph: DependencyGraph,
-  config: ArchgateConfig,
+  config: LayerguardConfig,
   tsconfigPath?: string
 ): CacheData {
   const files: Record<string, CachedFile> = {}

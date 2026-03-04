@@ -1,13 +1,13 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { runShow } from '../../../src/cli/show.js'
 import * as loader from '../../../src/config/loader.js'
-import type { ArchgateConfig } from '../../../src/config/types.js'
+import type { LayerguardConfig } from '../../../src/config/types.js'
 
 // Mock the config loader
 vi.mock('../../../src/config/loader.js')
 
 describe('runShow', () => {
-  const mockConfig: ArchgateConfig = {
+  const mockConfig: LayerguardConfig = {
     layers: {
       components: { path: 'src/components' },
       hooks: { path: 'src/hooks' },
@@ -38,14 +38,14 @@ describe('runShow', () => {
   it('outputs an architecture diagram', async () => {
     vi.mocked(loader.loadConfig).mockResolvedValue({
       config: mockConfig,
-      configPath: 'archgate.config.ts',
+      configPath: 'layerguard.config.ts',
     })
 
     await runShow()
 
     expect(console.log).toHaveBeenCalled()
     const output = vi.mocked(console.log).mock.calls[0]?.[0] as string
-    expect(output).toContain('Archgate Architecture')
+    expect(output).toContain('Layerguard Architecture')
     expect(output).toContain('components')
     expect(output).toContain('hooks')
     expect(output).toContain('utils')
@@ -54,7 +54,7 @@ describe('runShow', () => {
   it('uses ASCII characters when ascii option is true', async () => {
     vi.mocked(loader.loadConfig).mockResolvedValue({
       config: mockConfig,
-      configPath: 'archgate.config.ts',
+      configPath: 'layerguard.config.ts',
     })
 
     await runShow({ ascii: true })
@@ -68,7 +68,7 @@ describe('runShow', () => {
   it('outputs flow summary when flowOnly is true', async () => {
     vi.mocked(loader.loadConfig).mockResolvedValue({
       config: mockConfig,
-      configPath: 'archgate.config.ts',
+      configPath: 'layerguard.config.ts',
     })
 
     await runShow({ flowOnly: true })
@@ -77,7 +77,7 @@ describe('runShow', () => {
     const output = vi.mocked(console.log).mock.calls[0]?.[0] as string
     expect(output).toContain('Layer dependencies:')
     expect(output).toContain('components -> hooks')
-    expect(output).not.toContain('Archgate Architecture')
+    expect(output).not.toContain('Layerguard Architecture')
   })
 
   it('exits with code 1 on config load error', async () => {
@@ -89,7 +89,7 @@ describe('runShow', () => {
   })
 
   it('exits with code 1 on invalid config', async () => {
-    const invalidConfig: ArchgateConfig = {
+    const invalidConfig: LayerguardConfig = {
       layers: {
         invalid: { path: '' },
       },
@@ -98,7 +98,7 @@ describe('runShow', () => {
 
     vi.mocked(loader.loadConfig).mockResolvedValue({
       config: invalidConfig,
-      configPath: 'archgate.config.ts',
+      configPath: 'layerguard.config.ts',
     })
 
     await expect(runShow()).rejects.toThrow('Process exited with code 1')
@@ -107,7 +107,7 @@ describe('runShow', () => {
   })
 
   it('shows sublayers in the diagram', async () => {
-    const configWithSublayers: ArchgateConfig = {
+    const configWithSublayers: LayerguardConfig = {
       layers: {
         components: {
           path: 'src/components',
@@ -122,7 +122,7 @@ describe('runShow', () => {
 
     vi.mocked(loader.loadConfig).mockResolvedValue({
       config: configWithSublayers,
-      configPath: 'archgate.config.ts',
+      configPath: 'layerguard.config.ts',
     })
 
     await runShow()
@@ -135,7 +135,7 @@ describe('runShow', () => {
   })
 
   it('shows sublayer flow rules in flow summary', async () => {
-    const configWithSublayerFlow: ArchgateConfig = {
+    const configWithSublayerFlow: LayerguardConfig = {
       layers: {
         components: {
           path: 'src/components',
@@ -151,7 +151,7 @@ describe('runShow', () => {
 
     vi.mocked(loader.loadConfig).mockResolvedValue({
       config: configWithSublayerFlow,
-      configPath: 'archgate.config.ts',
+      configPath: 'layerguard.config.ts',
     })
 
     await runShow({ flowOnly: true })

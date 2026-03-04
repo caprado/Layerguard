@@ -1,10 +1,10 @@
-# Archgate Development Guide for Agentic Coding Agents
+# Layerguard Development Guide for Agentic Coding Agents
 
-This guide provides essential information for agentic coding agents working with the Archgate codebase.
+This guide provides essential information for agentic coding agents working with the Layerguard codebase.
 
 ## Project Overview
 
-Archgate is a framework-agnostic CLI tool that enforces architectural layer boundaries in TypeScript/JavaScript projects. It helps maintain clean architecture by preventing inappropriate dependencies between layers.
+Layerguard is a framework-agnostic CLI tool that enforces architectural layer boundaries in TypeScript/JavaScript projects. It helps maintain clean architecture by preventing inappropriate dependencies between layers.
 
 ## Build Commands
 
@@ -41,7 +41,7 @@ pnpm test:watch
 # Run tests with coverage report
 pnpm test:coverage
 
-# Run self-check (archgate checking itself)
+# Run self-check (layerguard checking itself)
 pnpm test:self
 
 # Run a single test file

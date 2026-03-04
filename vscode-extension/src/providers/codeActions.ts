@@ -6,19 +6,19 @@
 
 import * as vscode from 'vscode'
 import * as path from 'path'
-import type { ArchgateService } from '../services/archgateService.js'
+import type { LayerguardService } from '../services/layerguardService.js'
 
 /**
- * Code actions provider for archgate violations
+ * Code actions provider for layerguard violations
  */
-export class ArchgateCodeActionsProvider implements vscode.CodeActionProvider {
-  private service: ArchgateService
+export class LayerguardCodeActionsProvider implements vscode.CodeActionProvider {
+  private service: LayerguardService
 
   static readonly providedCodeActionKinds = [
     vscode.CodeActionKind.QuickFix,
   ]
 
-  constructor(service: ArchgateService) {
+  constructor(service: LayerguardService) {
     this.service = service
   }
 
@@ -33,12 +33,12 @@ export class ArchgateCodeActionsProvider implements vscode.CodeActionProvider {
   ): vscode.CodeAction[] {
     const actions: vscode.CodeAction[] = []
 
-    // Filter to archgate diagnostics
-    const archgateDiagnostics = context.diagnostics.filter(
-      d => d.source === 'archgate'
+    // Filter to layerguard diagnostics
+    const layerguardDiagnostics = context.diagnostics.filter(
+      d => d.source === 'layerguard'
     )
 
-    for (const diagnostic of archgateDiagnostics) {
+    for (const diagnostic of layerguardDiagnostics) {
       const lineText = document.lineAt(diagnostic.range.start.line).text
 
       // Add suppress comment action
@@ -83,7 +83,7 @@ export class ArchgateCodeActionsProvider implements vscode.CodeActionProvider {
     edit.insert(
       document.uri,
       new vscode.Position(line, 0),
-      `${indent}// archgate-ignore-next-line ${diagnostic.code}\n`
+      `${indent}// layerguard-ignore-next-line ${diagnostic.code}\n`
     )
 
     action.edit = edit
@@ -178,7 +178,7 @@ export class ArchgateCodeActionsProvider implements vscode.CodeActionProvider {
 
     // This is just a suggestion - actual move would need more work
     action.command = {
-      command: 'archgate.suggestMove',
+      command: 'layerguard.suggestMove',
       title: 'Suggest Move',
       arguments: [document.uri, suggestedPath, targetLayer]
     }
@@ -195,9 +195,9 @@ export class ArchgateCodeActionsProvider implements vscode.CodeActionProvider {
  */
 export function registerCodeActionsProvider(
   context: vscode.ExtensionContext,
-  service: ArchgateService
-): ArchgateCodeActionsProvider {
-  const provider = new ArchgateCodeActionsProvider(service)
+  service: LayerguardService
+): LayerguardCodeActionsProvider {
+  const provider = new LayerguardCodeActionsProvider(service)
 
   const selector: vscode.DocumentSelector = [
     { language: 'typescript', scheme: 'file' },
@@ -211,7 +211,7 @@ export function registerCodeActionsProvider(
       selector,
       provider,
       {
-        providedCodeActionKinds: ArchgateCodeActionsProvider.providedCodeActionKinds
+        providedCodeActionKinds: LayerguardCodeActionsProvider.providedCodeActionKinds
       }
     )
   )

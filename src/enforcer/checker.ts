@@ -5,7 +5,7 @@
  */
 
 import { join } from 'node:path'
-import type { ArchgateConfig } from '../config/types.js'
+import type { LayerguardConfig } from '../config/types.js'
 import type { FlowGraph } from '../config/types.js'
 import { parseFlowRules, buildFlowGraph, canImport } from '../config/parser.js'
 import type { DependencyGraph, DependencyEdge } from '../parser/graph.js'
@@ -130,13 +130,13 @@ export interface EdgeCheckResult {
  * Flow checker instance
  */
 export class FlowChecker {
-  private config: ArchgateConfig
+  private config: LayerguardConfig
   private mapper: LayerMapper
   private topLevelFlowGraph: FlowGraph
   private sublayerFlowGraphs: Map<string, FlowGraph> = new Map()
   private plugin: FrameworkPlugin | undefined
 
-  constructor(config: ArchgateConfig) {
+  constructor(config: LayerguardConfig) {
     this.config = config
     this.mapper = new LayerMapper(config)
 
@@ -502,7 +502,7 @@ export class FlowChecker {
 /**
  * Create a flow checker from config
  */
-export function createFlowChecker(config: ArchgateConfig): FlowChecker {
+export function createFlowChecker(config: LayerguardConfig): FlowChecker {
   return new FlowChecker(config)
 }
 
@@ -511,7 +511,7 @@ export function createFlowChecker(config: ArchgateConfig): FlowChecker {
  */
 export function checkDependencyGraph(
   graph: DependencyGraph,
-  config: ArchgateConfig,
+  config: LayerguardConfig,
   options: CheckOptions = {}
 ): Violation[] {
   const checker = createFlowChecker(config)

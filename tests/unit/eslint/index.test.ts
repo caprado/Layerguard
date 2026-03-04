@@ -18,7 +18,7 @@ describe('ESLint plugin', () => {
 
     it('should have meta information', () => {
       expect(plugin.meta).toBeDefined()
-      expect(plugin.meta?.name).toBe('archgate')
+      expect(plugin.meta?.name).toBe('layerguard')
       expect(plugin.meta?.version).toBe('0.1.0')
     })
 
@@ -40,18 +40,18 @@ describe('ESLint plugin', () => {
       const config = plugin.configs?.recommended
       expect(config).toBeDefined()
       expect(config?.rules).toBeDefined()
-      expect(config?.rules?.['archgate/layer-boundaries']).toBe('error')
+      expect(config?.rules?.['layerguard/layer-boundaries']).toBe('error')
     })
 
     it('should include the plugin', () => {
       const config = plugin.configs?.recommended
       expect(config?.plugins).toBeDefined()
-      expect(config?.plugins?.archgate).toBeDefined()
+      expect(config?.plugins?.layerguard).toBeDefined()
     })
 
     it('should not include unlayered-imports', () => {
       const config = plugin.configs?.recommended
-      expect(config?.rules?.['archgate/unlayered-imports']).toBeUndefined()
+      expect(config?.rules?.['layerguard/unlayered-imports']).toBeUndefined()
     })
   })
 
@@ -59,18 +59,18 @@ describe('ESLint plugin', () => {
     it('should include layer-boundaries rule as error', () => {
       const config = plugin.configs?.strict
       expect(config).toBeDefined()
-      expect(config?.rules?.['archgate/layer-boundaries']).toBe('error')
+      expect(config?.rules?.['layerguard/layer-boundaries']).toBe('error')
     })
 
     it('should include unlayered-imports rule as error', () => {
       const config = plugin.configs?.strict
-      expect(config?.rules?.['archgate/unlayered-imports']).toBe('error')
+      expect(config?.rules?.['layerguard/unlayered-imports']).toBe('error')
     })
 
     it('should include the plugin', () => {
       const config = plugin.configs?.strict
       expect(config?.plugins).toBeDefined()
-      expect(config?.plugins?.archgate).toBeDefined()
+      expect(config?.plugins?.layerguard).toBeDefined()
     })
   })
 

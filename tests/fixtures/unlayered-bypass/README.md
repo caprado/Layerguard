@@ -7,7 +7,7 @@ Tests detection of imports to files outside declared layers.
 Without enforcement, files outside declared layers create a backdoor:
 1. Put shared logic in `src/misc/helpers.ts` (not in any layer)
 2. Every layer imports it
-3. Archgate says nothing - boundaries are silently bypassed
+3. Layerguard says nothing - boundaries are silently bypassed
 
 ## Configuration
 

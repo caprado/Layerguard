@@ -1,12 +1,12 @@
 {
-  "name": "archgate",
+  "name": "layerguard",
   "version": "0.1.0",
   "description": "Framework-agnostic CLI tool that enforces architectural layer boundaries in TypeScript/JavaScript projects",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "bin": {
-    "archgate": "./bin/archgate.js"
+    "layerguard": "./bin/layerguard.js"
   },
   "exports": {
     ".": {
@@ -43,11 +43,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/caprado/archgate.git"
+    "url": "git+https://github.com/caprado/layerguard.git"
   },
-  "homepage": "https://github.com/caprado/archgate#readme",
+  "homepage": "https://github.com/caprado/layerguard#readme",
   "bugs": {
-    "url": "https://github.com/caprado/archgate/issues"
+    "url": "https://github.com/caprado/layerguard/issues"
   },
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
@@ -57,7 +57,7 @@
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
     "test:integration": "vitest run --config vitest.integration.config.ts",
-    "test:self": "node bin/archgate.js check",
+    "test:self": "node bin/layerguard.js check",
     "lint": "eslint src/",
     "prepublishOnly": "npm run build"
   },

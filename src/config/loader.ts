@@ -6,7 +6,7 @@ import { createJiti } from 'jiti'
 import { existsSync } from 'node:fs'
 import { resolve, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import type { ArchgateConfig } from './types.js'
+import type { LayerguardConfig } from './types.js'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
@@ -14,21 +14,21 @@ const __dirname = dirname(fileURLToPath(import.meta.url))
  * Supported config file names in order of priority
  */
 const CONFIG_FILES = [
-  'archgate.config.ts',
-  'archgate.config.js',
-  'archgate.config.mjs',
-  'archgate.config.cjs',
+  'layerguard.config.ts',
+  'layerguard.config.js',
+  'layerguard.config.mjs',
+  'layerguard.config.cjs',
 ] as const
 
 export interface LoadConfigResult {
-  config: ArchgateConfig
+  config: LayerguardConfig
   configPath: string
 }
 
 export class ConfigNotFoundError extends Error {
   constructor(searchedPaths: string[]) {
     super(
-      `No archgate config file found. Searched for:\n${searchedPaths.map((p) => `  - ${p}`).join('\n')}\n\nRun 'archgate init' to create one.`
+      `No layerguard config file found. Searched for:\n${searchedPaths.map((p) => `  - ${p}`).join('\n')}\n\nRun 'layerguard init' to create one.`
     )
     this.name = 'ConfigNotFoundError'
   }
@@ -60,7 +60,7 @@ export function findConfigFile(cwd: string): string | null {
 }
 
 /**
- * Load and parse the archgate config file
+ * Load and parse the layerguard config file
  *
  * @param cwd - The directory to search for the config file (defaults to process.cwd())
  * @returns The loaded config and its path
@@ -82,7 +82,7 @@ export async function loadConfig(cwd: string = process.cwd()): Promise<LoadConfi
     })
 
     const loaded = await jiti.import(configPath)
-    const config = (loaded as { default?: ArchgateConfig }).default ?? (loaded as ArchgateConfig)
+    const config = (loaded as { default?: LayerguardConfig }).default ?? (loaded as LayerguardConfig)
 
     if (!config || typeof config !== 'object') {
       throw new Error('Config file must export a valid configuration object')
@@ -118,7 +118,7 @@ export function loadConfigSync(cwd: string): LoadConfigResult | null {
 
     // jiti supports sync imports
     const loaded = jiti(configPath)
-    const config = (loaded as { default?: ArchgateConfig }).default ?? (loaded as ArchgateConfig)
+    const config = (loaded as { default?: LayerguardConfig }).default ?? (loaded as LayerguardConfig)
 
     if (!config || typeof config !== 'object') {
       return null

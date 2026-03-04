@@ -8,7 +8,7 @@ describe('scanDirectory', () => {
   let testDir: string
 
   beforeEach(() => {
-    testDir = join(tmpdir(), `archgate-scanner-test-${Date.now()}`)
+    testDir = join(tmpdir(), `layerguard-scanner-test-${Date.now()}`)
     mkdirSync(testDir, { recursive: true })
   })
 

@@ -1,8 +1,8 @@
 /**
- * Archgate Service
+ * Layerguard Service
  *
- * Wraps archgate functionality for use in VS Code extension.
- * Uses hybrid loading: prefers workspace-installed archgate, falls back to bundled.
+ * Wraps layerguard functionality for use in VS Code extension.
+ * Uses hybrid loading: prefers workspace-installed layerguard, falls back to bundled.
  */
 
 import * as vscode from 'vscode'
@@ -10,50 +10,50 @@ import * as path from 'path'
 import { pathToFileURL } from 'url'
 
 // Type imports (these are safe - just type definitions)
-import type { ArchgateConfig, LayerConfig, ParsedFlowRule } from 'archgate/config'
-import type { DependencyGraph } from 'archgate/parser'
-import type { Violation, LayerMapper, ViolationSeverity } from 'archgate/enforcer'
+import type { LayerguardConfig, LayerConfig, ParsedFlowRule } from 'layerguard/config'
+import type { DependencyGraph } from 'layerguard/parser'
+import type { Violation, LayerMapper, ViolationSeverity } from 'layerguard/enforcer'
 
-// Archgate module interfaces
-interface ArchgateModules {
-  loadConfig: (cwd: string) => Promise<{ config: ArchgateConfig; configPath: string }>
-  validateConfig: (config: ArchgateConfig, cwd: string) => { valid: boolean; errors: Array<{ message: string }> }
+// Layerguard module interfaces
+interface LayerguardModules {
+  loadConfig: (cwd: string) => Promise<{ config: LayerguardConfig; configPath: string }>
+  validateConfig: (config: LayerguardConfig, cwd: string) => { valid: boolean; errors: Array<{ message: string }> }
   parseFlowRules: (rules: string[]) => ParsedFlowRule[]
   buildDependencyGraphIncremental: (options: {
     projectRoot: string
-    config: ArchgateConfig
+    config: LayerguardConfig
     includeTypeOnlyImports?: boolean
     useCache?: boolean
     ignore?: string[]
   }) => { graph: DependencyGraph; cacheHit: boolean; filesParsed: number }
-  createFlowChecker: (config: ArchgateConfig) => {
+  createFlowChecker: (config: LayerguardConfig) => {
     checkGraph: (graph: DependencyGraph, options: Record<string, unknown>) => Violation[]
   }
   detectCircularDependencies: (graph: DependencyGraph, severity?: ViolationSeverity) => { violations: Violation[] }
-  createLayerMapper: (config: ArchgateConfig) => LayerMapper
+  createLayerMapper: (config: LayerguardConfig) => LayerMapper
   getPlugin: (framework: string) => { defaultIgnorePatterns?: string[] } | undefined
 }
 
-let cachedModules: ArchgateModules | undefined
+let cachedModules: LayerguardModules | undefined
 let cachedWorkspaceRoot: string | undefined
 
 /**
- * Load archgate modules - prefers workspace version, falls back to bundled
+ * Load layerguard modules - prefers workspace version, falls back to bundled
  */
-async function loadArchgateModules(workspaceRoot: string): Promise<ArchgateModules> {
+async function loadLayerguardModules(workspaceRoot: string): Promise<LayerguardModules> {
   // Return cached modules if same workspace
   if (cachedModules && cachedWorkspaceRoot === workspaceRoot) {
-    console.log('Archgate: Using cached modules')
+    console.log('Layerguard: Using cached modules')
     return cachedModules
   }
 
-  // Try workspace-installed archgate first
+  // Try workspace-installed layerguard first
   try {
-    const workspaceArchgatePath = path.join(workspaceRoot, 'node_modules', 'archgate')
-    console.log('Archgate: Trying workspace path:', workspaceArchgatePath)
+    const workspaceLayerguardPath = path.join(workspaceRoot, 'node_modules', 'layerguard')
+    console.log('Layerguard: Trying workspace path:', workspaceLayerguardPath)
 
     // Convert to file:// URL for Windows compatibility
-    const baseUrl = pathToFileURL(workspaceArchgatePath).href
+    const baseUrl = pathToFileURL(workspaceLayerguardPath).href
 
     // Dynamic imports for workspace version
     const configModule = await import(`${baseUrl}/dist/config/index.js`)
@@ -61,7 +61,7 @@ async function loadArchgateModules(workspaceRoot: string): Promise<ArchgateModul
     const enforcerModule = await import(`${baseUrl}/dist/enforcer/index.js`)
     const pluginsModule = await import(`${baseUrl}/dist/plugins/index.js`)
 
-    console.log('Archgate: Using workspace-installed version')
+    console.log('Layerguard: Using workspace-installed version')
 
     cachedModules = {
       loadConfig: configModule.loadConfig,
@@ -76,19 +76,19 @@ async function loadArchgateModules(workspaceRoot: string): Promise<ArchgateModul
     cachedWorkspaceRoot = workspaceRoot
     return cachedModules
   } catch (error) {
-    console.log('Archgate: Workspace archgate not found, falling back to bundled')
-    console.log('Archgate: Error was:', error instanceof Error ? error.message : error)
+    console.log('Layerguard: Workspace layerguard not found, falling back to bundled')
+    console.log('Layerguard: Error was:', error instanceof Error ? error.message : error)
   }
 
   // Import bundled version
-  console.log('Archgate: Loading bundled modules...')
-  const configModule = await import('archgate/config')
-  const parserModule = await import('archgate/parser')
-  const enforcerModule = await import('archgate/enforcer')
-  const pluginsModule = await import('archgate/plugins')
-  console.log('Archgate: Bundled modules loaded')
+  console.log('Layerguard: Loading bundled modules...')
+  const configModule = await import('layerguard/config')
+  const parserModule = await import('layerguard/parser')
+  const enforcerModule = await import('layerguard/enforcer')
+  const pluginsModule = await import('layerguard/plugins')
+  console.log('Layerguard: Bundled modules loaded')
 
-  const modules: ArchgateModules = {
+  const modules: LayerguardModules = {
     loadConfig: configModule.loadConfig,
     validateConfig: configModule.validateConfig,
     parseFlowRules: configModule.parseFlowRules,
@@ -104,7 +104,7 @@ async function loadArchgateModules(workspaceRoot: string): Promise<ArchgateModul
 }
 
 /**
- * Result of running archgate check
+ * Result of running layerguard check
  */
 export interface CheckResult {
   violations: Violation[]
@@ -113,28 +113,28 @@ export interface CheckResult {
 }
 
 /**
- * Service for interacting with archgate
+ * Service for interacting with layerguard
  */
-export class ArchgateService {
-  private config: ArchgateConfig | undefined
+export class LayerguardService {
+  private config: LayerguardConfig | undefined
   private configPath: string | undefined
   private mapper: LayerMapper | undefined
   private graph: DependencyGraph | undefined
   private parsedFlows: ParsedFlowRule[] = []
   private workspaceRoot: string
-  private modules: ArchgateModules | undefined
+  private modules: LayerguardModules | undefined
 
   constructor(workspaceRoot: string) {
     this.workspaceRoot = workspaceRoot
   }
 
   /**
-   * Load the archgate configuration
+   * Load the layerguard configuration
    */
   async loadConfiguration(): Promise<boolean> {
     try {
       // Load modules (workspace or bundled)
-      this.modules = await loadArchgateModules(this.workspaceRoot)
+      this.modules = await loadLayerguardModules(this.workspaceRoot)
 
       const result = await this.modules.loadConfig(this.workspaceRoot)
       this.config = result.config
@@ -143,18 +143,18 @@ export class ArchgateService {
       const validation = this.modules.validateConfig(this.config, this.workspaceRoot)
       if (!validation.valid) {
         vscode.window.showErrorMessage(
-          `Invalid archgate config: ${validation.errors.map((e: { message: string }) => e.message).join(', ')}`
+          `Invalid layerguard config: ${validation.errors.map((e: { message: string }) => e.message).join(', ')}`
         )
         return false
       }
 
       this.mapper = this.modules.createLayerMapper(this.config)
       this.parsedFlows = this.modules.parseFlowRules(this.config.flow)
-      console.log('Archgate: Config loaded successfully from', this.configPath)
+      console.log('Layerguard: Config loaded successfully from', this.configPath)
       return true
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error)
-      console.error('Archgate: Failed to load config:', message)
+      console.error('Layerguard: Failed to load config:', message)
       console.error(error)
       this.config = undefined
       this.configPath = undefined
@@ -182,7 +182,7 @@ export class ArchgateService {
   /**
    * Get the loaded configuration
    */
-  getConfig(): ArchgateConfig | undefined {
+  getConfig(): LayerguardConfig | undefined {
     return this.config
   }
 
@@ -224,7 +224,7 @@ export class ArchgateService {
    * Run a full check
    */
   async check(): Promise<CheckResult | undefined> {
-    console.log('Archgate: check() called, hasConfig:', !!this.config, 'hasModules:', !!this.modules)
+    console.log('Layerguard: check() called, hasConfig:', !!this.config, 'hasModules:', !!this.modules)
     if (!this.config || !this.modules) {
       return undefined
     }
@@ -238,7 +238,7 @@ export class ArchgateService {
       // Build dependency graph
       const buildOptions: {
         projectRoot: string
-        config: ArchgateConfig
+        config: LayerguardConfig
         includeTypeOnlyImports?: boolean
         useCache?: boolean
         ignore?: string[]
@@ -278,9 +278,9 @@ export class ArchgateService {
       const allViolations = [...flowViolations, ...circularViolations]
       const hasErrors = allViolations.some(v => v.severity === 'error')
 
-      console.log('Archgate: check() found', allViolations.length, 'violations')
+      console.log('Layerguard: check() found', allViolations.length, 'violations')
       if (allViolations.length > 0) {
-        console.log('Archgate: violation files:', allViolations.map(v => v.sourceFile))
+        console.log('Layerguard: violation files:', allViolations.map(v => v.sourceFile))
       }
 
       return {
@@ -290,8 +290,8 @@ export class ArchgateService {
       }
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error)
-      console.log('Archgate: check() error:', message)
-      vscode.window.showErrorMessage(`Archgate check failed: ${message}`)
+      console.log('Layerguard: check() error:', message)
+      vscode.window.showErrorMessage(`Layerguard check failed: ${message}`)
       return undefined
     }
   }
@@ -302,15 +302,15 @@ export class ArchgateService {
   async getViolationsForFile(filePath: string): Promise<Violation[]> {
     const result = await this.check()
     if (!result) {
-      console.log('Archgate: check() returned no result')
+      console.log('Layerguard: check() returned no result')
       return []
     }
 
     // Convert absolute path to relative for comparison
     const relativePath = path.relative(this.workspaceRoot, filePath).replace(/\\/g, '/')
-    console.log('Archgate: Looking for violations in:', relativePath)
-    console.log('Archgate: Total violations:', result.violations.length)
-    console.log('Archgate: Violation files:', result.violations.map(v => v.sourceFile))
+    console.log('Layerguard: Looking for violations in:', relativePath)
+    console.log('Layerguard: Total violations:', result.violations.length)
+    console.log('Layerguard: Violation files:', result.violations.map(v => v.sourceFile))
 
     return result.violations.filter(v => v.sourceFile === relativePath)
   }
@@ -420,14 +420,14 @@ export class ArchgateService {
 /**
  * Global service instance
  */
-let serviceInstance: ArchgateService | undefined
+let serviceInstance: LayerguardService | undefined
 
 /**
- * Get or create the archgate service
+ * Get or create the layerguard service
  */
-export function getArchgateService(workspaceRoot: string): ArchgateService {
+export function getLayerguardService(workspaceRoot: string): LayerguardService {
   if (!serviceInstance || serviceInstance['workspaceRoot'] !== workspaceRoot) {
-    serviceInstance = new ArchgateService(workspaceRoot)
+    serviceInstance = new LayerguardService(workspaceRoot)
   }
   return serviceInstance
 }
@@ -435,6 +435,6 @@ export function getArchgateService(workspaceRoot: string): ArchgateService {
 /**
  * Clear the service instance (for testing or workspace changes)
  */
-export function clearArchgateService(): void {
+export function clearLayerguardService(): void {
   serviceInstance = undefined
 }

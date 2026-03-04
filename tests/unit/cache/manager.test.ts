@@ -16,7 +16,7 @@ import {
 import { CACHE_VERSION } from '../../../src/cache/types.js'
 import type { CacheData, CachedFile } from '../../../src/cache/types.js'
 import type { DependencyGraph } from '../../../src/parser/graph.js'
-import type { ArchgateConfig } from '../../../src/config/types.js'
+import type { LayerguardConfig } from '../../../src/config/types.js'
 
 vi.mock('node:fs')
 vi.mock('node:path', async () => {
@@ -30,9 +30,9 @@ vi.mock('node:path', async () => {
 
 describe('cache manager', () => {
   const mockProjectRoot = '/project'
-  const mockCachePath = '/project/.archgate-cache/graph.json'
+  const mockCachePath = '/project/.layerguard-cache/graph.json'
 
-  const mockConfig: ArchgateConfig = {
+  const mockConfig: LayerguardConfig = {
     layers: {
       components: { path: 'src/components' },
       utils: { path: 'src/utils' },
@@ -79,7 +79,7 @@ describe('cache manager', () => {
   describe('getCachePath', () => {
     it('returns correct cache path', () => {
       const result = getCachePath('/my/project')
-      expect(result).toContain('.archgate-cache')
+      expect(result).toContain('.layerguard-cache')
       expect(result).toContain('graph.json')
     })
   })
@@ -159,7 +159,7 @@ describe('cache manager', () => {
       saveCache(mockProjectRoot, mockCacheData)
 
       expect(fs.mkdirSync).toHaveBeenCalledWith(
-        expect.stringContaining('.archgate-cache'),
+        expect.stringContaining('.layerguard-cache'),
         { recursive: true }
       )
     })

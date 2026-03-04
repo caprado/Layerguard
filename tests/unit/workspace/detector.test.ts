@@ -17,7 +17,7 @@ describe('workspace/detector', () => {
   let testDir: string
 
   beforeEach(() => {
-    testDir = join(tmpdir(), `archgate-test-${Date.now()}-${Math.random().toString(36).slice(2)}`)
+    testDir = join(tmpdir(), `layerguard-test-${Date.now()}-${Math.random().toString(36).slice(2)}`)
     mkdirSync(testDir, { recursive: true })
   })
 

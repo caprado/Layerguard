@@ -9,7 +9,7 @@ export * from './validator.js'
 
 // Re-export common types for convenience
 export type {
-  ArchgateConfig,
+  LayerguardConfig,
   LayerConfig,
   SublayerConfig,
   RulesConfig,

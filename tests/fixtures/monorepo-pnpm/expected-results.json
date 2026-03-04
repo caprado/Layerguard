@@ -22,24 +22,24 @@
     }
   ],
   "workspaceNotes": [
-    "Each package has its own archgate.config.ts",
+    "Each package has its own layerguard.config.ts",
     "Workspace packages are detected from pnpm-workspace.yaml",
     "Cross-package imports (e.g., @monorepo/web-api) are handled",
-    "archgate check --all checks all packages",
-    "archgate check --package @monorepo/web-api checks specific package"
+    "layerguard check --all checks all packages",
+    "layerguard check --package @monorepo/web-api checks specific package"
   ],
   "testScenarios": [
     {
-      "command": "archgate check --package packages/web-api",
+      "command": "layerguard check --package packages/web-api",
       "description": "Check specific package by path"
     },
     {
-      "command": "archgate check --package @monorepo/web-api",
+      "command": "layerguard check --package @monorepo/web-api",
       "description": "Check specific package by name"
     },
     {
-      "command": "archgate check --all",
-      "description": "Check all packages with archgate configs"
+      "command": "layerguard check --all",
+      "description": "Check all packages with layerguard configs"
     }
   ]
 }

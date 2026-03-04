@@ -3,16 +3,16 @@
  */
 
 import type { Rule } from 'eslint'
-import type { ArchgateConfig } from '../config/types.js'
+import type { LayerguardConfig } from '../config/types.js'
 
 /**
- * Cached archgate configuration for ESLint
+ * Cached layerguard configuration for ESLint
  */
 export interface CachedConfig {
   /**
-   * The loaded archgate configuration
+   * The loaded layerguard configuration
    */
-  config: ArchgateConfig
+  config: LayerguardConfig
 
   /**
    * Path to the config file
@@ -31,21 +31,21 @@ export interface CachedConfig {
 }
 
 /**
- * ESLint rule context with archgate extensions
+ * ESLint rule context with layerguard extensions
  */
-export interface ArchgateRuleContext extends Rule.RuleContext {
+export interface LayerguardRuleContext extends Rule.RuleContext {
   /**
-   * Get the archgate configuration
+   * Get the layerguard configuration
    */
-  getArchgateConfig?: () => CachedConfig | null
+  getLayerguardConfig?: () => CachedConfig | null
 }
 
 /**
- * Rule options for archgate ESLint rules
+ * Rule options for layerguard ESLint rules
  */
-export interface ArchgateRuleOptions {
+export interface LayerguardRuleOptions {
   /**
-   * Path to archgate config file (optional, auto-detected if not specified)
+   * Path to layerguard config file (optional, auto-detected if not specified)
    */
   configPath?: string
 }

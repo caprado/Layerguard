@@ -5,16 +5,16 @@
  */
 
 import * as vscode from 'vscode'
-import type { ArchgateService } from '../services/archgateService.js'
+import type { LayerguardService } from '../services/layerguardService.js'
 
 export class ArchitecturePanelProvider implements vscode.WebviewViewProvider {
-  public static readonly viewType = 'archgateArchitecture'
+  public static readonly viewType = 'layerguardArchitecture'
 
   private _view?: vscode.WebviewView
-  private service: ArchgateService
+  private service: LayerguardService
   private currentFile?: string
 
-  constructor(service: ArchgateService, _extensionUri: vscode.Uri) {
+  constructor(service: LayerguardService, _extensionUri: vscode.Uri) {
     this.service = service
   }
 
@@ -147,7 +147,7 @@ export class ArchitecturePanelProvider implements vscode.WebviewViewProvider {
   </style>
 </head>
 <body>
-  <p class="none">No archgate.config.ts found</p>
+  <p class="none">No layerguard.config.ts found</p>
 </body>
 </html>`
   }
@@ -155,7 +155,7 @@ export class ArchitecturePanelProvider implements vscode.WebviewViewProvider {
 
 export function registerArchitecturePanel(
   context: vscode.ExtensionContext,
-  service: ArchgateService
+  service: LayerguardService
 ): ArchitecturePanelProvider {
   const provider = new ArchitecturePanelProvider(service, context.extensionUri)
 

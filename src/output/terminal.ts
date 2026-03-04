@@ -116,7 +116,7 @@ export function formatReport(report: ViolationReport, options: TerminalOptions =
 
   // Header
   lines.push('')
-  lines.push(color('archgate check', colors.bold, useColors))
+  lines.push(color('layerguard check', colors.bold, useColors))
   lines.push('')
 
   if (report.violations.length === 0) {

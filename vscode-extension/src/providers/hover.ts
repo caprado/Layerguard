@@ -6,16 +6,16 @@
 
 import * as vscode from 'vscode'
 import * as path from 'path'
-import type { ArchgateService } from '../services/archgateService.js'
-import type { ParsedFlowRule } from 'archgate/config'
+import type { LayerguardService } from '../services/layerguardService.js'
+import type { ParsedFlowRule } from 'layerguard/config'
 
 /**
  * Hover provider for import statements
  */
 export class LayerHoverProvider implements vscode.HoverProvider {
-  private service: ArchgateService
+  private service: LayerguardService
 
-  constructor(service: ArchgateService) {
+  constructor(service: LayerguardService) {
     this.service = service
   }
 
@@ -59,7 +59,7 @@ export class LayerHoverProvider implements vscode.HoverProvider {
     const markdown = new vscode.MarkdownString()
     markdown.isTrusted = true
 
-    markdown.appendMarkdown('### Archgate Layer Info\n\n')
+    markdown.appendMarkdown('### Layerguard Layer Info\n\n')
 
     // Source layer
     if (sourceLayer) {
@@ -183,7 +183,7 @@ export class LayerHoverProvider implements vscode.HoverProvider {
  */
 export function registerHoverProvider(
   context: vscode.ExtensionContext,
-  service: ArchgateService
+  service: LayerguardService
 ): LayerHoverProvider {
   const provider = new LayerHoverProvider(service)
 

@@ -4,7 +4,7 @@
  * Creates text-based diagrams of the architecture
  */
 
-import type { ArchgateConfig } from '../config/types.js'
+import type { LayerguardConfig } from '../config/types.js'
 import { parseFlowRules } from '../config/parser.js'
 
 /**
@@ -63,13 +63,13 @@ const boxChars = {
 /**
  * Generate an architecture diagram from config
  */
-export function generateDiagram(config: ArchgateConfig, options: DiagramOptions = {}): string {
+export function generateDiagram(config: LayerguardConfig, options: DiagramOptions = {}): string {
   const { unicode = true, showSublayers = true, showFlow = true } = options
   const chars = unicode ? boxChars.unicode : boxChars.ascii
   const lines: string[] = []
 
   // Title
-  lines.push('Archgate Architecture')
+  lines.push('Layerguard Architecture')
   lines.push('')
 
   // Parse flow rules to understand relationships
@@ -109,7 +109,7 @@ export function generateDiagram(config: ArchgateConfig, options: DiagramOptions 
  * Build a simple layer order based on flow rules
  */
 function buildLayerOrder(
-  config: ArchgateConfig,
+  config: LayerguardConfig,
   parsedRules: Array<{ from: string; to: string; direction: string }>
 ): string[] {
   const layers = Object.keys(config.layers)
@@ -204,7 +204,7 @@ function padRight(str: string, width: number): string {
 /**
  * Generate a simple flow summary
  */
-export function generateFlowSummary(config: ArchgateConfig): string {
+export function generateFlowSummary(config: LayerguardConfig): string {
   const lines: string[] = []
 
   lines.push('Layer dependencies:')

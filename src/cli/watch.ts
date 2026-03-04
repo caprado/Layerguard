@@ -1,5 +1,5 @@
 /**
- * Watch mode for archgate
+ * Watch mode for layerguard
  *
  * Watches for file changes and re-runs checks incrementally
  */
@@ -124,7 +124,7 @@ export async function startWatch(options: WatchOptions = {}): Promise<WatchHandl
     if (!WATCH_EXTENSIONS.has(ext)) return
 
     // Skip if in node_modules or cache directory
-    if (filename.includes('node_modules') || filename.includes('.archgate-cache')) return
+    if (filename.includes('node_modules') || filename.includes('.layerguard-cache')) return
 
     console.log(`\n${formatSuccess(`Changed: ${filename}`, { colors: !noColors })}`)
     triggerCheck()

@@ -1,11 +1,11 @@
 /**
- * Archgate VS Code Extension
+ * Layerguard VS Code Extension
  *
  * Entry point for the extension
  */
 
 import * as vscode from 'vscode'
-import { getArchgateService, clearArchgateService } from './services/archgateService.js'
+import { getLayerguardService, clearLayerguardService } from './services/layerguardService.js'
 import { DiagnosticsProvider } from './providers/diagnostics.js'
 import { registerHoverProvider } from './providers/hover.js'
 import { registerCodeActionsProvider } from './providers/codeActions.js'
@@ -18,7 +18,7 @@ let architecturePanel: ArchitecturePanelProvider | undefined
  * Activate the extension
  */
 export async function activate(context: vscode.ExtensionContext): Promise<void> {
-  console.log('Archgate extension activating...')
+  console.log('Layerguard extension activating...')
 
   // Get workspace root
   const workspaceRoot = vscode.workspace.workspaceFolders?.[0]?.uri.fsPath
@@ -28,7 +28,7 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
   }
 
   // Initialize service (don't await config load yet)
-  const service = getArchgateService(workspaceRoot)
+  const service = getLayerguardService(workspaceRoot)
 
   // Register providers IMMEDIATELY (before async config load)
   diagnosticsProvider = new DiagnosticsProvider(service)
@@ -41,7 +41,7 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
   const hasConfig = await service.loadConfiguration()
 
   // Set context for when clauses
-  vscode.commands.executeCommand('setContext', 'archgate.hasConfig', hasConfig)
+  vscode.commands.executeCommand('setContext', 'layerguard.hasConfig', hasConfig)
 
   if (hasConfig) {
     architecturePanel.update()
@@ -49,17 +49,17 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
 
   // Register commands
   context.subscriptions.push(
-    vscode.commands.registerCommand('archgate.showArchitecture', async () => {
+    vscode.commands.registerCommand('layerguard.showArchitecture', async () => {
       // Focus the architecture panel
-      await vscode.commands.executeCommand('archgateArchitecture.focus')
+      await vscode.commands.executeCommand('layerguardArchitecture.focus')
     })
   )
 
   context.subscriptions.push(
-    vscode.commands.registerCommand('archgate.checkProject', async () => {
+    vscode.commands.registerCommand('layerguard.checkProject', async () => {
       const result = await vscode.window.withProgress({
         location: vscode.ProgressLocation.Notification,
-        title: 'Archgate: Checking project...',
+        title: 'Layerguard: Checking project...',
         cancellable: false,
       }, async () => {
         return await service.check()
@@ -72,12 +72,12 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
         // Show result
         if (result.passed) {
           vscode.window.showInformationMessage(
-            `Archgate: All checks passed! (${result.violations.length} warnings)`
+            `Layerguard: All checks passed! (${result.violations.length} warnings)`
           )
         } else {
           const errorCount = result.violations.filter(v => v.severity === 'error').length
           vscode.window.showErrorMessage(
-            `Archgate: ${errorCount} errors found. Check the Problems panel for details.`
+            `Layerguard: ${errorCount} errors found. Check the Problems panel for details.`
           )
         }
       }
@@ -85,14 +85,14 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
   )
 
   context.subscriptions.push(
-    vscode.commands.registerCommand('archgate.refreshDiagnostics', async () => {
+    vscode.commands.registerCommand('layerguard.refreshDiagnostics', async () => {
       await diagnosticsProvider?.refreshAll()
-      vscode.window.showInformationMessage('Archgate: Diagnostics refreshed')
+      vscode.window.showInformationMessage('Layerguard: Diagnostics refreshed')
     })
   )
 
   context.subscriptions.push(
-    vscode.commands.registerCommand('archgate.suggestMove', async (
+    vscode.commands.registerCommand('layerguard.suggestMove', async (
       _uri: vscode.Uri,
       suggestedPath: string,
       targetLayer: string
@@ -117,28 +117,28 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
 
   // Watch for config file changes
   const configWatcher = vscode.workspace.createFileSystemWatcher(
-    '**/archgate.config.{ts,js,mjs}'
+    '**/layerguard.config.{ts,js,mjs}'
   )
 
   configWatcher.onDidChange(async () => {
     await service.loadConfiguration()
     await diagnosticsProvider?.refreshAll()
     await architecturePanel?.refresh()
-    vscode.commands.executeCommand('setContext', 'archgate.hasConfig', service.hasConfig())
+    vscode.commands.executeCommand('setContext', 'layerguard.hasConfig', service.hasConfig())
   })
 
   configWatcher.onDidCreate(async () => {
     await service.loadConfiguration()
     await diagnosticsProvider?.refreshAll()
     await architecturePanel?.refresh()
-    vscode.commands.executeCommand('setContext', 'archgate.hasConfig', service.hasConfig())
+    vscode.commands.executeCommand('setContext', 'layerguard.hasConfig', service.hasConfig())
   })
 
   configWatcher.onDidDelete(async () => {
-    clearArchgateService()
+    clearLayerguardService()
     diagnosticsProvider?.refreshAll()
     await architecturePanel?.refresh()
-    vscode.commands.executeCommand('setContext', 'archgate.hasConfig', false)
+    vscode.commands.executeCommand('setContext', 'layerguard.hasConfig', false)
   })
 
   context.subscriptions.push(configWatcher)
@@ -148,7 +148,7 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
     await diagnosticsProvider.refreshAll()
   }
 
-  console.log('Archgate extension activated')
+  console.log('Layerguard extension activated')
 }
 
 /**
@@ -156,6 +156,6 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
  */
 export function deactivate(): void {
   diagnosticsProvider?.dispose()
-  clearArchgateService()
-  console.log('Archgate extension deactivated')
+  clearLayerguardService()
+  console.log('Layerguard extension deactivated')
 }

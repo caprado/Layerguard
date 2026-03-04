@@ -14,7 +14,7 @@ describe('buildDependencyGraph', () => {
   let testDir: string
 
   beforeEach(() => {
-    testDir = join(tmpdir(), `archgate-graph-test-${Date.now()}`)
+    testDir = join(tmpdir(), `layerguard-graph-test-${Date.now()}`)
     mkdirSync(testDir, { recursive: true })
     mkdirSync(join(testDir, 'src'), { recursive: true })
   })
@@ -163,7 +163,7 @@ describe('getDependencies', () => {
   let testDir: string
 
   beforeEach(() => {
-    testDir = join(tmpdir(), `archgate-deps-test-${Date.now()}`)
+    testDir = join(tmpdir(), `layerguard-deps-test-${Date.now()}`)
     mkdirSync(testDir, { recursive: true })
     mkdirSync(join(testDir, 'src'), { recursive: true })
   })
@@ -213,7 +213,7 @@ describe('getDependents', () => {
   let testDir: string
 
   beforeEach(() => {
-    testDir = join(tmpdir(), `archgate-dependents-test-${Date.now()}`)
+    testDir = join(tmpdir(), `layerguard-dependents-test-${Date.now()}`)
     mkdirSync(testDir, { recursive: true })
     mkdirSync(join(testDir, 'src'), { recursive: true })
   })
@@ -252,7 +252,7 @@ describe('getGraphStats', () => {
   let testDir: string
 
   beforeEach(() => {
-    testDir = join(tmpdir(), `archgate-stats-test-${Date.now()}`)
+    testDir = join(tmpdir(), `layerguard-stats-test-${Date.now()}`)
     mkdirSync(testDir, { recursive: true })
     mkdirSync(join(testDir, 'src'), { recursive: true })
   })

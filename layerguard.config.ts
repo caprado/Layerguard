@@ -1,5 +1,5 @@
 /**
- * Archgate configuration for the archgate project itself (dogfooding)
+ * Layerguard configuration for the layerguard project itself (dogfooding)
  */
 import { defineConfig } from './src/config/types.js'
 
@@ -70,7 +70,7 @@ export default defineConfig({
     // CLI entry point
     'bin/**',
     // Config file itself
-    'archgate.config.ts',
+    'layerguard.config.ts',
     // VS Code extension has its own architecture
     'vscode-extension/**',
   ],

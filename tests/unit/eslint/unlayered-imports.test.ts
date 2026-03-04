@@ -4,7 +4,7 @@
 
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import type { Rule } from 'eslint'
-import type { ArchgateConfig } from '../../../src/config/types.js'
+import type { LayerguardConfig } from '../../../src/config/types.js'
 
 // Mock dependencies before importing the rule
 vi.mock('../../../src/eslint/config-cache.js', () => ({
@@ -33,7 +33,7 @@ describe('ESLint unlayered-imports rule', () => {
     loc?: { start: { line: number; column: number }; end: { line: number; column: number } }
   }>
 
-  const mockConfig: ArchgateConfig = {
+  const mockConfig: LayerguardConfig = {
     layers: {
       ui: ['src/components/**/*'],
       services: ['src/services/**/*'],
@@ -90,14 +90,14 @@ describe('ESLint unlayered-imports rule', () => {
     })
 
     it('should return empty object when unlayeredImports is set to ignore', () => {
-      const configWithIgnore: ArchgateConfig = {
+      const configWithIgnore: LayerguardConfig = {
         ...mockConfig,
         rules: { unlayeredImports: 'ignore' },
       }
 
       vi.mocked(getConfig).mockReturnValue({
         config: configWithIgnore,
-        configPath: 'C:/project/archgate.config.ts',
+        configPath: 'C:/project/layerguard.config.ts',
         projectRoot: 'C:/project',
         loadedAt: Date.now(),
       })
@@ -115,7 +115,7 @@ describe('ESLint unlayered-imports rule', () => {
     it('should return empty object when source file is not in any layer', () => {
       vi.mocked(getConfig).mockReturnValue({
         config: mockConfig,
-        configPath: 'C:/project/archgate.config.ts',
+        configPath: 'C:/project/layerguard.config.ts',
         projectRoot: 'C:/project',
         loadedAt: Date.now(),
       })
@@ -133,7 +133,7 @@ describe('ESLint unlayered-imports rule', () => {
     it('should return listeners when source file is in a layer and rule is enabled', () => {
       vi.mocked(getConfig).mockReturnValue({
         config: mockConfig,
-        configPath: 'C:/project/archgate.config.ts',
+        configPath: 'C:/project/layerguard.config.ts',
         projectRoot: 'C:/project',
         loadedAt: Date.now(),
       })
@@ -155,7 +155,7 @@ describe('ESLint unlayered-imports rule', () => {
     beforeEach(() => {
       vi.mocked(getConfig).mockReturnValue({
         config: mockConfig,
-        configPath: 'C:/project/archgate.config.ts',
+        configPath: 'C:/project/layerguard.config.ts',
         projectRoot: 'C:/project',
         loadedAt: Date.now(),
       })
@@ -344,14 +344,14 @@ describe('ESLint unlayered-imports rule', () => {
     })
 
     it('should work when unlayeredImports is set to error', () => {
-      const configWithError: ArchgateConfig = {
+      const configWithError: LayerguardConfig = {
         ...mockConfig,
         rules: { unlayeredImports: 'error' },
       }
 
       vi.mocked(getConfig).mockReturnValue({
         config: configWithError,
-        configPath: 'C:/project/archgate.config.ts',
+        configPath: 'C:/project/layerguard.config.ts',
         projectRoot: 'C:/project',
         loadedAt: Date.now(),
       })
@@ -414,7 +414,7 @@ describe('ESLint unlayered-imports rule', () => {
 
   describe('rule not enabled by default', () => {
     it('should return empty object when no rules config is set', () => {
-      const configWithoutRules: ArchgateConfig = {
+      const configWithoutRules: LayerguardConfig = {
         layers: mockConfig.layers,
         flow: mockConfig.flow,
         // No rules property
@@ -422,7 +422,7 @@ describe('ESLint unlayered-imports rule', () => {
 
       vi.mocked(getConfig).mockReturnValue({
         config: configWithoutRules,
-        configPath: 'C:/project/archgate.config.ts',
+        configPath: 'C:/project/layerguard.config.ts',
         projectRoot: 'C:/project',
         loadedAt: Date.now(),
       })

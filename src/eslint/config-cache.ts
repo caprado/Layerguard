@@ -1,7 +1,7 @@
 /**
  * Configuration cache for ESLint plugin
  *
- * ESLint processes files individually, so we cache the archgate config
+ * ESLint processes files individually, so we cache the layerguard config
  * to avoid reloading it for every file.
  */
 
@@ -22,7 +22,7 @@ const configCache = new Map<string, CachedConfig>()
 const CACHE_TTL = 5 * 60 * 1000
 
 /**
- * Get or load the archgate configuration for a file
+ * Get or load the layerguard configuration for a file
  *
  * @param filePath - The file being linted
  * @returns The cached configuration or null if not found/invalid
@@ -85,7 +85,7 @@ export function getConfig(filePath: string): CachedConfig | null {
 /**
  * Find the project root for a file
  *
- * Looks for package.json or archgate config file
+ * Looks for package.json or layerguard config file
  */
 function findProjectRoot(filePath: string): string | null {
   let dir = dirname(filePath)
@@ -105,7 +105,7 @@ function findProjectRoot(filePath: string): string | null {
 
   while (!isRoot(dir)) {
     // console.log('Checking directory:', dir)
-    // Check for archgate config
+    // Check for layerguard config
     try {
       const result = loadConfigSync(dir)
       // console.log('loadConfigSync result for', dir, ':', result)

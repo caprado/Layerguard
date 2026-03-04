@@ -12,7 +12,7 @@ import {
 } from '../../../src/enforcer/advanced-rules.js'
 import { LayerMapper } from '../../../src/enforcer/mapper.js'
 import type { DependencyGraph } from '../../../src/parser/graph.js'
-import type { ArchgateConfig } from '../../../src/config/types.js'
+import type { LayerguardConfig } from '../../../src/config/types.js'
 
 describe('Advanced enforcement rules', () => {
   describe('checkImportDepth', () => {
@@ -107,7 +107,7 @@ describe('Advanced enforcement rules', () => {
   })
 
   describe('checkPublicApi', () => {
-    const createConfig = (publicApi?: string | string[]): ArchgateConfig => ({
+    const createConfig = (publicApi?: string | string[]): LayerguardConfig => ({
       layers: {
         ui: { path: 'src/ui' },
         services: {
@@ -223,7 +223,7 @@ describe('Advanced enforcement rules', () => {
   })
 
   describe('checkDependentBudget', () => {
-    const createConfig = (maxDependents?: number): ArchgateConfig => ({
+    const createConfig = (maxDependents?: number): LayerguardConfig => ({
       layers: {
         ui: { path: 'src/ui' },
         services: { path: 'src/services' },
@@ -391,7 +391,7 @@ describe('Advanced enforcement rules', () => {
   })
 
   describe('checkAdvancedRules', () => {
-    const config: ArchgateConfig = {
+    const config: LayerguardConfig = {
       layers: {
         ui: { path: 'src/ui' },
         services: {

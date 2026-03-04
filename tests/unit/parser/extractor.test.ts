@@ -12,7 +12,7 @@ describe('extractImports', () => {
   let testDir: string
 
   beforeEach(() => {
-    testDir = join(tmpdir(), `archgate-extractor-test-${Date.now()}`)
+    testDir = join(tmpdir(), `layerguard-extractor-test-${Date.now()}`)
     mkdirSync(testDir, { recursive: true })
   })
 

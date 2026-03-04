@@ -1,7 +1,7 @@
 /**
- * ESLint rule: archgate/layer-boundaries
+ * ESLint rule: layerguard/layer-boundaries
  *
- * Flags imports that violate flow rules defined in archgate config.
+ * Flags imports that violate flow rules defined in layerguard config.
  */
 
 import type { Rule } from 'eslint'
@@ -18,13 +18,13 @@ const rule: Rule.RuleModule = {
   meta: {
     type: 'problem',
     docs: {
-      description: 'Enforce architectural layer boundaries defined in archgate config',
+      description: 'Enforce architectural layer boundaries defined in layerguard config',
       recommended: true,
     },
     messages: {
       violation:
         'Import from "{{importPath}}" violates layer boundaries: {{fromLayer}} cannot import from {{toLayer}}',
-      noConfig: 'No archgate configuration found',
+      noConfig: 'No layerguard configuration found',
     },
     schema: [
       {
@@ -32,7 +32,7 @@ const rule: Rule.RuleModule = {
         properties: {
           configPath: {
             type: 'string',
-            description: 'Path to archgate config file',
+            description: 'Path to layerguard config file',
           },
         },
         additionalProperties: false,

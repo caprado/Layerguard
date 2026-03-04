@@ -4,7 +4,7 @@
 
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import type { Rule } from 'eslint'
-import type { ArchgateConfig } from '../../../src/config/types.js'
+import type { LayerguardConfig } from '../../../src/config/types.js'
 
 // Mock dependencies before importing the rule
 vi.mock('../../../src/eslint/config-cache.js', () => ({
@@ -38,7 +38,7 @@ describe('ESLint layer-boundaries rule', () => {
     loc?: { start: { line: number; column: number }; end: { line: number; column: number } }
   }>
 
-  const mockConfig: ArchgateConfig = {
+  const mockConfig: LayerguardConfig = {
     layers: {
       ui: ['src/components/**/*'],
       services: ['src/services/**/*'],
@@ -95,7 +95,7 @@ describe('ESLint layer-boundaries rule', () => {
     it('should return empty object when source file is not in any layer', () => {
       vi.mocked(getConfig).mockReturnValue({
         config: mockConfig,
-        configPath: 'C:/project/archgate.config.ts',
+        configPath: 'C:/project/layerguard.config.ts',
         projectRoot: 'C:/project',
         loadedAt: Date.now(),
       })
@@ -115,7 +115,7 @@ describe('ESLint layer-boundaries rule', () => {
     it('should return listeners when source file is in a layer', () => {
       vi.mocked(getConfig).mockReturnValue({
         config: mockConfig,
-        configPath: 'C:/project/archgate.config.ts',
+        configPath: 'C:/project/layerguard.config.ts',
         projectRoot: 'C:/project',
         loadedAt: Date.now(),
       })
@@ -141,7 +141,7 @@ describe('ESLint layer-boundaries rule', () => {
     beforeEach(() => {
       vi.mocked(getConfig).mockReturnValue({
         config: mockConfig,
-        configPath: 'C:/project/archgate.config.ts',
+        configPath: 'C:/project/layerguard.config.ts',
         projectRoot: 'C:/project',
         loadedAt: Date.now(),
       })

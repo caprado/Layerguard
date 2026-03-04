@@ -9,7 +9,7 @@ import { scanDirectory, type ScanOptions } from './scanner.js'
 import { extractImports, type ExtractOptions } from './extractor.js'
 import { createResolverContext, resolveImport, toRelativePath } from './resolver.js'
 import type { DependencyGraph, DependencyEdge, BuildGraphOptions } from './graph.js'
-import type { ArchgateConfig } from '../config/types.js'
+import type { LayerguardConfig } from '../config/types.js'
 import {
   loadCache,
   saveCache,
@@ -27,9 +27,9 @@ import {
  */
 export interface IncrementalBuildOptions extends BuildGraphOptions {
   /**
-   * Archgate config (needed for cache invalidation)
+   * Layerguard config (needed for cache invalidation)
    */
-  config: ArchgateConfig
+  config: LayerguardConfig
 
   /**
    * Whether to use caching

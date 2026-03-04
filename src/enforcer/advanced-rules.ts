@@ -8,7 +8,7 @@
  * - maxImportsPerFile: Import count limits
  */
 
-import type { ArchgateConfig, LayerConfig } from '../config/types.js'
+import type { LayerguardConfig, LayerConfig } from '../config/types.js'
 import type { DependencyGraph } from '../parser/graph.js'
 import type { LayerMapper } from './mapper.js'
 import {
@@ -126,7 +126,7 @@ function findLongestChain(
  */
 export function checkPublicApi(
   graph: DependencyGraph,
-  config: ArchgateConfig,
+  config: LayerguardConfig,
   mapper: LayerMapper
 ): PublicApiViolation[] {
   const violations: PublicApiViolation[] = []
@@ -221,7 +221,7 @@ function normalizePathForComparison(path: string): string {
  */
 export function checkDependentBudget(
   graph: DependencyGraph,
-  config: ArchgateConfig,
+  config: LayerguardConfig,
   mapper: LayerMapper
 ): DependentBudgetViolation[] {
   const violations: DependentBudgetViolation[] = []
@@ -306,7 +306,7 @@ export function checkImportCount(
  */
 export function checkAdvancedRules(
   graph: DependencyGraph,
-  config: ArchgateConfig,
+  config: LayerguardConfig,
   mapper: LayerMapper,
   options: AdvancedRulesOptions = {}
 ): Violation[] {

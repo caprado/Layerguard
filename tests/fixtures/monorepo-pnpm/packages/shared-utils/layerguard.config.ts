@@ -1,4 +1,4 @@
-import { defineConfig } from 'archgate/config'
+import { defineConfig } from 'layerguard/config'
 
 export default defineConfig({
   layers: {

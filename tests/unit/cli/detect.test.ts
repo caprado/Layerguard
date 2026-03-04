@@ -14,7 +14,7 @@ describe('detectFramework', () => {
   let tempDir: string
 
   beforeEach(() => {
-    tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'archgate-test-'))
+    tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'layerguard-test-'))
   })
 
   afterEach(() => {
@@ -113,7 +113,7 @@ describe('scanForLayers', () => {
   let tempDir: string
 
   beforeEach(() => {
-    tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'archgate-test-'))
+    tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'layerguard-test-'))
   })
 
   afterEach(() => {

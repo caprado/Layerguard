@@ -3,7 +3,7 @@
  */
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import type { ArchgateConfig } from '../../../src/config/types.js'
+import type { LayerguardConfig } from '../../../src/config/types.js'
 
 vi.mock('node:fs', () => ({
   watch: vi.fn(() => ({
@@ -24,7 +24,7 @@ import * as check from '../../../src/cli/check.js'
 import { watch } from 'node:fs'
 
 describe('startWatch', () => {
-  const mockConfig: ArchgateConfig = {
+  const mockConfig: LayerguardConfig = {
     layers: {
       components: { path: 'src/components' },
       hooks: { path: 'src/hooks' },
@@ -49,7 +49,7 @@ describe('startWatch', () => {
 
     vi.mocked(loader.loadConfig).mockResolvedValue({
       config: mockConfig,
-      configPath: 'archgate.config.ts',
+      configPath: 'layerguard.config.ts',
     })
 
     vi.mocked(check.runCheck).mockResolvedValue(mockCheckResult)

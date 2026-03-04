@@ -62,7 +62,7 @@ describe('runInit', () => {
     vi.mocked(presets.getPresetByFramework).mockReturnValue(mockPreset)
     vi.mocked(presets.getAllPresets).mockReturnValue([mockPreset])
     vi.mocked(generator.generateConfigContent).mockReturnValue('export default {}')
-    vi.mocked(generator.writeConfigFile).mockReturnValue('archgate.config.ts')
+    vi.mocked(generator.writeConfigFile).mockReturnValue('layerguard.config.ts')
     vi.mocked(detect.scanForLayers).mockReturnValue([])
     vi.mocked(p.isCancel).mockReturnValue(false)
 
@@ -75,7 +75,7 @@ describe('runInit', () => {
 
   describe('existing config handling', () => {
     it('warns when config already exists', async () => {
-      vi.mocked(generator.configFileExists).mockReturnValue('archgate.config.ts')
+      vi.mocked(generator.configFileExists).mockReturnValue('layerguard.config.ts')
       vi.mocked(p.confirm).mockResolvedValue(false)
 
       await runInit()
@@ -85,7 +85,7 @@ describe('runInit', () => {
     })
 
     it('allows overwriting existing config when confirmed', async () => {
-      vi.mocked(generator.configFileExists).mockReturnValue('archgate.config.ts')
+      vi.mocked(generator.configFileExists).mockReturnValue('layerguard.config.ts')
       vi.mocked(p.confirm).mockResolvedValueOnce(true)
         .mockResolvedValueOnce(true)
         .mockResolvedValueOnce(true)
@@ -97,7 +97,7 @@ describe('runInit', () => {
     })
 
     it('skips overwrite prompt with --yes flag', async () => {
-      vi.mocked(generator.configFileExists).mockReturnValue('archgate.config.ts')
+      vi.mocked(generator.configFileExists).mockReturnValue('layerguard.config.ts')
 
       await runInit({ yes: true })
 
@@ -207,7 +207,7 @@ describe('runInit', () => {
 
   describe('cancellation handling', () => {
     it('handles cancel on overwrite confirmation', async () => {
-      vi.mocked(generator.configFileExists).mockReturnValue('archgate.config.ts')
+      vi.mocked(generator.configFileExists).mockReturnValue('layerguard.config.ts')
       vi.mocked(p.confirm).mockResolvedValue(Symbol('cancel') as unknown as boolean)
       vi.mocked(p.isCancel).mockReturnValue(true)
 

@@ -1,14 +1,14 @@
 /**
- * Per-package Archgate config discovery
+ * Per-package Layerguard config discovery
  *
- * Finds and loads archgate configs from workspace packages
+ * Finds and loads layerguard configs from workspace packages
  */
 
 import { existsSync } from 'node:fs'
 import { join } from 'node:path'
 import type { WorkspaceConfig, WorkspacePackage } from './detector.js'
 import { loadConfig } from '../config/loader.js'
-import type { ArchgateConfig } from '../config/types.js'
+import type { LayerguardConfig } from '../config/types.js'
 
 /**
  * Package config information
@@ -20,14 +20,14 @@ export interface PackageConfig {
   package: WorkspacePackage
 
   /**
-   * Path to the archgate config file
+   * Path to the layerguard config file
    */
   configPath: string
 
   /**
    * Loaded config (null if not loaded yet)
    */
-  config: ArchgateConfig | null
+  config: LayerguardConfig | null
 }
 
 /**
@@ -46,23 +46,23 @@ export interface PackageConfigDiscovery {
 }
 
 /**
- * Known archgate config file names
+ * Known layerguard config file names
  */
 const CONFIG_FILE_NAMES = [
-  'archgate.config.ts',
-  'archgate.config.js',
-  'archgate.config.mjs',
-  '.archgaterc.ts',
-  '.archgaterc.js',
+  'layerguard.config.ts',
+  'layerguard.config.js',
+  'layerguard.config.mjs',
+  '.layerguardrc.ts',
+  '.layerguardrc.js',
 ]
 
 /**
- * Discover archgate configs in a workspace
+ * Discover layerguard configs in a workspace
  */
 export function discoverPackageConfigs(workspace: WorkspaceConfig): PackageConfigDiscovery {
   const packageConfigs: PackageConfig[] = []
 
-  // Check each package for an archgate config
+  // Check each package for a layerguard config
   for (const pkg of workspace.packages) {
     const configPath = findConfigInDirectory(pkg.path)
     if (configPath) {
@@ -96,7 +96,7 @@ export function discoverPackageConfigs(workspace: WorkspaceConfig): PackageConfi
 }
 
 /**
- * Find archgate config file in a directory
+ * Find layerguard config file in a directory
  */
 function findConfigInDirectory(dir: string): string | null {
   for (const name of CONFIG_FILE_NAMES) {
@@ -113,7 +113,7 @@ function findConfigInDirectory(dir: string): string | null {
  */
 export async function loadPackageConfig(
   packageConfig: PackageConfig
-): Promise<ArchgateConfig> {
+): Promise<LayerguardConfig> {
   const { config } = await loadConfig(packageConfig.package.path)
   return config
 }
@@ -147,7 +147,7 @@ export function findPackageConfig(
 }
 
 /**
- * Get all package names that have archgate configs
+ * Get all package names that have layerguard configs
  */
 export function getConfiguredPackageNames(discovery: PackageConfigDiscovery): string[] {
   return discovery.packageConfigs.map((pc) => pc.package.name)

@@ -13,7 +13,7 @@ A clear description of the bug.
 ## Steps to Reproduce
 
 1. Create config with...
-2. Run `archgate check`
+2. Run `layerguard check`
 3. See error
 
 ## Expected Behavior
@@ -26,7 +26,7 @@ What actually happened.
 
 ## Environment
 
-- Archgate version:
+- Layerguard version:
 - Node.js version:
 - TypeScript version:
 - OS:
@@ -34,7 +34,7 @@ What actually happened.
 ## Config File
 
 ```typescript
-// archgate.config.ts (redacted if needed)
+// layerguard.config.ts (redacted if needed)
 ```
 
 ## Additional Context

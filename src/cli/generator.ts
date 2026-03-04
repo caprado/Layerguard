@@ -1,12 +1,12 @@
 /**
  * Config file generator
  *
- * Generates archgate.config.ts/js files from config objects
+ * Generates layerguard.config.ts/js files from config objects
  */
 
 import * as fs from 'node:fs'
 import * as path from 'node:path'
-import type { ArchgateConfig, LayerConfig } from '../config/types.js'
+import type { LayerguardConfig, LayerConfig } from '../config/types.js'
 
 /**
  * Options for generating config
@@ -27,7 +27,7 @@ export interface GenerateOptions {
  * Generate config file content
  */
 export function generateConfigContent(
-  config: ArchgateConfig,
+  config: LayerguardConfig,
   options: GenerateOptions = {}
 ): string {
   const { typescript = true, includeComments = true } = options
@@ -35,11 +35,11 @@ export function generateConfigContent(
 
   // Import statement
   if (typescript) {
-    lines.push("import { defineConfig } from 'archgate'")
+    lines.push("import { defineConfig } from 'layerguard'")
   } else {
     lines.push(
       "// @ts-check",
-      "/** @type {import('archgate').ArchgateConfig} */"
+      "/** @type {import('layerguard').LayerguardConfig} */"
     )
   }
   lines.push('')
@@ -197,11 +197,11 @@ function formatLayer(
  */
 export function writeConfigFile(
   projectRoot: string,
-  config: ArchgateConfig,
+  config: LayerguardConfig,
   options: GenerateOptions = {}
 ): string {
   const { typescript = true } = options
-  const filename = typescript ? 'archgate.config.ts' : 'archgate.config.js'
+  const filename = typescript ? 'layerguard.config.ts' : 'layerguard.config.js'
   const filepath = path.join(projectRoot, filename)
 
   const content = generateConfigContent(config, options)
@@ -215,10 +215,10 @@ export function writeConfigFile(
  */
 export function configFileExists(projectRoot: string): string | null {
   const candidates = [
-    'archgate.config.ts',
-    'archgate.config.js',
-    'archgate.config.mjs',
-    'archgate.config.cjs',
+    'layerguard.config.ts',
+    'layerguard.config.js',
+    'layerguard.config.mjs',
+    'layerguard.config.cjs',
   ]
 
   for (const filename of candidates) {

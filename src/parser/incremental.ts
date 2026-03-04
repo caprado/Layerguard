@@ -168,9 +168,8 @@ export function buildDependencyGraphIncremental(
 
         try {
           saveCache(projectRoot, updatedCache)
-        } catch (error) {
+        } catch {
           // Cache save errors should not break the build
-          // Silently ignore cache errors
         }
 
         onProgress?.({
@@ -208,9 +207,8 @@ export function buildDependencyGraphIncremental(
     const cache = graphToCache(graph, config, tsconfigPath)
     try {
       saveCache(projectRoot, cache)
-    } catch (error) {
+    } catch {
       // Cache save errors should not break the build
-      // Silently ignore cache errors
     }
   }
 

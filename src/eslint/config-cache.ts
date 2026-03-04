@@ -113,8 +113,7 @@ function findProjectRoot(filePath: string): string | null {
         // console.log('Found config at:', dir)
         return dir
       }
-    } catch (error) {
-      // console.log('loadConfigSync error for', dir, ':', error)
+    } catch {
       // No config in this directory
     }
 

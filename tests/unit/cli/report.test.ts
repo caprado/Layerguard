@@ -3,7 +3,7 @@
  */
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import type { ArchgateConfig } from '../../../src/config/types.js'
+import type { LayerguardConfig } from '../../../src/config/types.js'
 import type { DependencyGraph } from '../../../src/parser/graph.js'
 import type { IncrementalBuildResult } from '../../../src/parser/incremental.js'
 import type { ViolationReport } from '../../../src/enforcer/violations.js'
@@ -24,7 +24,7 @@ import * as incrementalBuilder from '../../../src/parser/incremental.js'
 import { writeFileSync, readFileSync, existsSync, mkdirSync } from 'node:fs'
 
 describe('runReport', () => {
-  const mockConfig: ArchgateConfig = {
+  const mockConfig: LayerguardConfig = {
     layers: {
       components: { path: 'src/components' },
       hooks: { path: 'src/hooks' },
@@ -58,7 +58,7 @@ describe('runReport', () => {
 
     vi.mocked(loader.loadConfig).mockResolvedValue({
       config: mockConfig,
-      configPath: 'archgate.config.ts',
+      configPath: 'layerguard.config.ts',
     })
     vi.mocked(incrementalBuilder.buildDependencyGraphIncremental).mockReturnValue(mockBuildResult)
     vi.mocked(existsSync).mockReturnValue(true)
@@ -110,7 +110,7 @@ describe('runReport', () => {
   })
 
   it('handles invalid config', async () => {
-    const invalidConfig: ArchgateConfig = {
+    const invalidConfig: LayerguardConfig = {
       layers: {
         invalid: { path: '' },
       },
@@ -119,7 +119,7 @@ describe('runReport', () => {
 
     vi.mocked(loader.loadConfig).mockResolvedValue({
       config: invalidConfig,
-      configPath: 'archgate.config.ts',
+      configPath: 'layerguard.config.ts',
     })
 
     const result = await runReport()
@@ -138,7 +138,7 @@ describe('runReport', () => {
   it('creates output directory if needed', async () => {
     vi.mocked(existsSync).mockReturnValue(false)
 
-    await runReport({ output: 'reports/archgate-report.html' })
+    await runReport({ output: 'reports/layerguard-report.html' })
 
     expect(mkdirSync).toHaveBeenCalledWith(expect.any(String), { recursive: true })
   })
@@ -191,7 +191,7 @@ describe('runReport', () => {
 
     vi.mocked(readFileSync).mockReturnValue(historicalData)
 
-    const result = await runReport({ cwd: '/project', from: 'archgate-history.json' })
+    const result = await runReport({ cwd: '/project', from: 'layerguard-history.json' })
 
     expect(result.success).toBe(true)
   })
@@ -211,7 +211,7 @@ describe('runReport', () => {
   })
 
   it('handles missing historical data file gracefully', async () => {
-    vi.mocked(existsSync).mockImplementation((p: string) => {
+    vi.mocked(existsSync).mockImplementation((p) => {
       if (String(p).includes('history')) return false
       return true
     })

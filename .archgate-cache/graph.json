@@ -1,0 +1,1099 @@
+{
+  "version": "1.0.0",
+  "timestamp": 1772609409418,
+  "projectRoot": "e:\\projects\\archgate",
+  "configHash": "71270cbd9ea4171a19187bb13266edd0",
+  "files": {
+    "eslint.config.ts": {
+      "mtime": 1772596674698.38,
+      "edges": []
+    },
+    "src/cache/index.ts": {
+      "mtime": 1771705329715.8755,
+      "edges": [
+        {
+          "source": "src/cache/index.ts",
+          "target": "src/cache/types.ts",
+          "specifier": "./types.js",
+          "isTypeOnly": false,
+          "kind": "reexport",
+          "line": 5
+        },
+        {
+          "source": "src/cache/index.ts",
+          "target": "src/cache/manager.ts",
+          "specifier": "./manager.js",
+          "isTypeOnly": false,
+          "kind": "reexport",
+          "line": 6
+        }
+      ]
+    },
+    "src/cache/manager.ts": {
+      "mtime": 1772609408879.6284,
+      "edges": [
+        {
+          "source": "src/cache/manager.ts",
+          "target": "src/cache/types.ts",
+          "specifier": "./types.js",
+          "isTypeOnly": false,
+          "kind": "static",
+          "line": 12
+        }
+      ]
+    },
+    "src/cache/types.ts": {
+      "mtime": 1772609408879.6284,
+      "edges": []
+    },
+    "src/cli/check.ts": {
+      "mtime": 1772609408881.1365,
+      "edges": [
+        {
+          "source": "src/cli/check.ts",
+          "target": "src/config/loader.ts",
+          "specifier": "../config/loader.js",
+          "isTypeOnly": false,
+          "kind": "static",
+          "line": 7
+        },
+        {
+          "source": "src/cli/check.ts",
+          "target": "src/config/validator.ts",
+          "specifier": "../config/validator.js",
+          "isTypeOnly": false,
+          "kind": "static",
+          "line": 8
+        },
+        {
+          "source": "src/cli/check.ts",
+          "target": "src/parser/incremental.ts",
+          "specifier": "../parser/incremental.js",
+          "isTypeOnly": false,
+          "kind": "static",
+          "line": 9
+        },
+        {
+          "source": "src/cli/check.ts",
+          "target": "src/enforcer/checker.ts",
+          "specifier": "../enforcer/checker.js",
+          "isTypeOnly": false,
+          "kind": "static",
+          "line": 10
+        },
+        {
+          "source": "src/cli/check.ts",
+          "target": "src/enforcer/circular.ts",
+          "specifier": "../enforcer/circular.js",
+          "isTypeOnly": false,
+          "kind": "static",
+          "line": 11
+        },
+        {
+          "source": "src/cli/check.ts",
+          "target": "src/enforcer/violations.ts",
+          "specifier": "../enforcer/violations.js",
+          "isTypeOnly": false,
+          "kind": "static",
+          "line": 12
+        },
+        {
+          "source": "src/cli/check.ts",
+          "target": "src/output/terminal.ts",
+          "specifier": "../output/terminal.js",
+          "isTypeOnly": false,
+          "kind": "static",
+          "line": 13
+        },
+        {
+          "source": "src/cli/check.ts",
+          "target": "src/output/ci.ts",
+          "specifier": "../output/ci.js",
+          "isTypeOnly": false,
+          "kind": "static",
+          "line": 14
+        },
+        {
+          "source": "src/cli/check.ts",
+          "target": "src/output/json.ts",
+          "specifier": "../output/json.js",
+          "isTypeOnly": false,
+          "kind": "static",
+          "line": 15
+        },
+        {
+          "source": "src/cli/check.ts",
+          "target": "src/plugins/registry.ts",
+          "specifier": "../plugins/registry.js",
+          "isTypeOnly": false,
+          "kind": "static",
+          "line": 16
+        },
+        {
+          "source": "src/cli/check.ts",
+          "target": "src/workspace/index.ts",
+          "specifier": "../workspace/index.js",
+          "isTypeOnly": false,
+          "kind": "static",
+          "line": 17
+        }
+      ]
+    },
+    "src/cli/detect.ts": {
+      "mtime": 1771657368703.943,
+      "edges": []
+    },
+    "src/cli/generator.ts": {
+      "mtime": 1772609408882.143,
+      "edges": []
+    },
+    "src/cli/index.ts": {
+      "mtime": 1772609408882.143,
+      "edges": [
+        {
+          "source": "src/cli/index.ts",
+          "target": "src/cli/check.ts",
+          "specifier": "./check.js",
+          "isTypeOnly": false,
+          "kind": "static",
+          "line": 5
+        },
+        {
+          "source": "src/cli/index.ts",
+          "target": "src/cli/show.ts",
+          "specifier": "./show.js",
+          "isTypeOnly": false,
+          "kind": "static",
+          "line": 6
+        },
+        {
+          "source": "src/cli/index.ts",
+          "target": "src/cli/init.ts",
+          "specifier": "./init.js",
+          "isTypeOnly": false,
+          "kind": "static",
+          "line": 7
+        },
+        {
+          "source": "src/cli/index.ts",
+          "target": "src/cli/watch.ts",
+          "specifier": "./watch.js",
+          "isTypeOnly": false,
+          "kind": "static",
+          "line": 8
+        },
+        {
+          "source": "src/cli/index.ts",
+          "target": "src/cli/report.ts",
+          "specifier": "./report.js",
+          "isTypeOnly": false,
+          "kind": "static",
+          "line": 9
+        },
+        {
+          "source": "src/cli/index.ts",
+          "target": "src/output/github.ts",
+          "specifier": "../output/github.js",
+          "isTypeOnly": false,
+          "kind": "static",
+          "line": 10
+        },
+        {
+          "source": "src/cli/index.ts",
+          "target": "src/enforcer/violations.ts",
+          "specifier": "../enforcer/violations.js",
+          "isTypeOnly": false,
+          "kind": "static",
+          "line": 11
+        }
+      ]
+    },
+    "src/cli/init.ts": {
+      "mtime": 1772609408883.142,
+      "edges": [
+        {
+          "source": "src/cli/init.ts",
+          "target": "src/cli/detect.ts",
+          "specifier": "./detect.js",
+          "isTypeOnly": false,
+          "kind": "static",
+          "line": 11
+        },
+        {
+          "source": "src/cli/init.ts",
+          "target": "src/cli/presets.ts",
+          "specifier": "./presets.js",
+          "isTypeOnly": false,
+          "kind": "static",
+          "line": 19
+        },
+        {
+          "source": "src/cli/init.ts",
+          "target": "src/cli/generator.ts",
+          "specifier": "./generator.js",
+          "isTypeOnly": false,
+          "kind": "static",
+          "line": 20
+        }
+      ]
+    },
+    "src/cli/presets.ts": {
+      "mtime": 1772609408884.1426,
+      "edges": []
+    },
+    "src/cli/report.ts": {
+      "mtime": 1772609408884.1426,
+      "edges": [
+        {
+          "source": "src/cli/report.ts",
+          "target": "src/config/loader.ts",
+          "specifier": "../config/loader.js",
+          "isTypeOnly": false,
+          "kind": "static",
+          "line": 9
+        },
+        {
+          "source": "src/cli/report.ts",
+          "target": "src/config/validator.ts",
+          "specifier": "../config/validator.js",
+          "isTypeOnly": false,
+          "kind": "static",
+          "line": 10
+        },
+        {
+          "source": "src/cli/report.ts",
+          "target": "src/parser/incremental.ts",
+          "specifier": "../parser/incremental.js",
+          "isTypeOnly": false,
+          "kind": "static",
+          "line": 11
+        },
+        {
+          "source": "src/cli/report.ts",
+          "target": "src/enforcer/checker.ts",
+          "specifier": "../enforcer/checker.js",
+          "isTypeOnly": false,
+          "kind": "static",
+          "line": 12
+        },
+        {
+          "source": "src/cli/report.ts",
+          "target": "src/enforcer/circular.ts",
+          "specifier": "../enforcer/circular.js",
+          "isTypeOnly": false,
+          "kind": "static",
+          "line": 13
+        },
+        {
+          "source": "src/cli/report.ts",
+          "target": "src/enforcer/violations.ts",
+          "specifier": "../enforcer/violations.js",
+          "isTypeOnly": false,
+          "kind": "static",
+          "line": 14
+        },
+        {
+          "source": "src/cli/report.ts",
+          "target": "src/output/terminal.ts",
+          "specifier": "../output/terminal.js",
+          "isTypeOnly": false,
+          "kind": "static",
+          "line": 15
+        },
+        {
+          "source": "src/cli/report.ts",
+          "target": "src/output/html.ts",
+          "specifier": "../output/html.js",
+          "isTypeOnly": false,
+          "kind": "static",
+          "line": 16
+        },
+        {
+          "source": "src/cli/report.ts",
+          "target": "src/plugins/registry.ts",
+          "specifier": "../plugins/registry.js",
+          "isTypeOnly": false,
+          "kind": "static",
+          "line": 17
+        }
+      ]
+    },
+    "src/cli/show.ts": {
+      "mtime": 1772609408885.144,
+      "edges": [
+        {
+          "source": "src/cli/show.ts",
+          "target": "src/config/loader.ts",
+          "specifier": "../config/loader.js",
+          "isTypeOnly": false,
+          "kind": "static",
+          "line": 7
+        },
+        {
+          "source": "src/cli/show.ts",
+          "target": "src/config/validator.ts",
+          "specifier": "../config/validator.js",
+          "isTypeOnly": false,
+          "kind": "static",
+          "line": 8
+        },
+        {
+          "source": "src/cli/show.ts",
+          "target": "src/output/diagram.ts",
+          "specifier": "../output/diagram.js",
+          "isTypeOnly": false,
+          "kind": "static",
+          "line": 9
+        },
+        {
+          "source": "src/cli/show.ts",
+          "target": "src/output/terminal.ts",
+          "specifier": "../output/terminal.js",
+          "isTypeOnly": false,
+          "kind": "static",
+          "line": 10
+        }
+      ]
+    },
+    "src/cli/watch.ts": {
+      "mtime": 1772609408885.144,
+      "edges": [
+        {
+          "source": "src/cli/watch.ts",
+          "target": "src/cli/check.ts",
+          "specifier": "./check.js",
+          "isTypeOnly": false,
+          "kind": "static",
+          "line": 9
+        },
+        {
+          "source": "src/cli/watch.ts",
+          "target": "src/config/loader.ts",
+          "specifier": "../config/loader.js",
+          "isTypeOnly": false,
+          "kind": "static",
+          "line": 10
+        },
+        {
+          "source": "src/cli/watch.ts",
+          "target": "src/output/terminal.ts",
+          "specifier": "../output/terminal.js",
+          "isTypeOnly": false,
+          "kind": "static",
+          "line": 11
+        }
+      ]
+    },
+    "src/config/index.ts": {
+      "mtime": 1772609408886.1436,
+      "edges": [
+        {
+          "source": "src/config/index.ts",
+          "target": "src/config/types.ts",
+          "specifier": "./types.js",
+          "isTypeOnly": false,
+          "kind": "reexport",
+          "line": 5
+        },
+        {
+          "source": "src/config/index.ts",
+          "target": "src/config/loader.ts",
+          "specifier": "./loader.js",
+          "isTypeOnly": false,
+          "kind": "reexport",
+          "line": 6
+        },
+        {
+          "source": "src/config/index.ts",
+          "target": "src/config/parser.ts",
+          "specifier": "./parser.js",
+          "isTypeOnly": false,
+          "kind": "reexport",
+          "line": 7
+        },
+        {
+          "source": "src/config/index.ts",
+          "target": "src/config/validator.ts",
+          "specifier": "./validator.js",
+          "isTypeOnly": false,
+          "kind": "reexport",
+          "line": 8
+        }
+      ]
+    },
+    "src/config/loader.ts": {
+      "mtime": 1772609408886.1436,
+      "edges": []
+    },
+    "src/config/parser.ts": {
+      "mtime": 1771704740056.2659,
+      "edges": []
+    },
+    "src/config/types.ts": {
+      "mtime": 1772609408887.1428,
+      "edges": []
+    },
+    "src/config/validator.ts": {
+      "mtime": 1772609408888.1458,
+      "edges": [
+        {
+          "source": "src/config/validator.ts",
+          "target": "src/config/parser.ts",
+          "specifier": "./parser.js",
+          "isTypeOnly": false,
+          "kind": "static",
+          "line": 10
+        }
+      ]
+    },
+    "src/enforcer/advanced-rules.ts": {
+      "mtime": 1772609408888.1458,
+      "edges": [
+        {
+          "source": "src/enforcer/advanced-rules.ts",
+          "target": "src/enforcer/violations.ts",
+          "specifier": "./violations.js",
+          "isTypeOnly": false,
+          "kind": "static",
+          "line": 14
+        }
+      ]
+    },
+    "src/enforcer/checker.ts": {
+      "mtime": 1772609408889.2761,
+      "edges": [
+        {
+          "source": "src/enforcer/checker.ts",
+          "target": "src/config/parser.ts",
+          "specifier": "../config/parser.js",
+          "isTypeOnly": false,
+          "kind": "static",
+          "line": 10
+        },
+        {
+          "source": "src/enforcer/checker.ts",
+          "target": "src/parser/graph.ts",
+          "specifier": "../parser/graph.js",
+          "isTypeOnly": false,
+          "kind": "static",
+          "line": 12
+        },
+        {
+          "source": "src/enforcer/checker.ts",
+          "target": "src/enforcer/mapper.ts",
+          "specifier": "./mapper.js",
+          "isTypeOnly": false,
+          "kind": "static",
+          "line": 13
+        },
+        {
+          "source": "src/enforcer/checker.ts",
+          "target": "src/enforcer/violations.ts",
+          "specifier": "./violations.js",
+          "isTypeOnly": false,
+          "kind": "static",
+          "line": 14
+        },
+        {
+          "source": "src/enforcer/checker.ts",
+          "target": "src/enforcer/advanced-rules.ts",
+          "specifier": "./advanced-rules.js",
+          "isTypeOnly": false,
+          "kind": "static",
+          "line": 23
+        },
+        {
+          "source": "src/enforcer/checker.ts",
+          "target": "src/plugins/registry.ts",
+          "specifier": "../plugins/registry.js",
+          "isTypeOnly": false,
+          "kind": "static",
+          "line": 25
+        },
+        {
+          "source": "src/enforcer/checker.ts",
+          "target": "src/parser/barrel.ts",
+          "specifier": "../parser/barrel.js",
+          "isTypeOnly": false,
+          "kind": "static",
+          "line": 26
+        },
+        {
+          "source": "src/enforcer/checker.ts",
+          "target": "src/parser/resolver.ts",
+          "specifier": "../parser/resolver.js",
+          "isTypeOnly": false,
+          "kind": "static",
+          "line": 31
+        }
+      ]
+    },
+    "src/enforcer/circular.ts": {
+      "mtime": 1771654485259.4436,
+      "edges": [
+        {
+          "source": "src/enforcer/circular.ts",
+          "target": "src/enforcer/violations.ts",
+          "specifier": "./violations.js",
+          "isTypeOnly": false,
+          "kind": "static",
+          "line": 9
+        }
+      ]
+    },
+    "src/enforcer/index.ts": {
+      "mtime": 1771654491423.051,
+      "edges": [
+        {
+          "source": "src/enforcer/index.ts",
+          "target": "src/enforcer/violations.ts",
+          "specifier": "./violations.js",
+          "isTypeOnly": false,
+          "kind": "reexport",
+          "line": 5
+        },
+        {
+          "source": "src/enforcer/index.ts",
+          "target": "src/enforcer/mapper.ts",
+          "specifier": "./mapper.js",
+          "isTypeOnly": false,
+          "kind": "reexport",
+          "line": 6
+        },
+        {
+          "source": "src/enforcer/index.ts",
+          "target": "src/enforcer/checker.ts",
+          "specifier": "./checker.js",
+          "isTypeOnly": false,
+          "kind": "reexport",
+          "line": 7
+        },
+        {
+          "source": "src/enforcer/index.ts",
+          "target": "src/enforcer/circular.ts",
+          "specifier": "./circular.js",
+          "isTypeOnly": false,
+          "kind": "reexport",
+          "line": 8
+        }
+      ]
+    },
+    "src/enforcer/mapper.ts": {
+      "mtime": 1772609408890.2776,
+      "edges": []
+    },
+    "src/enforcer/violations.ts": {
+      "mtime": 1772497231609.6873,
+      "edges": []
+    },
+    "src/eslint/config-cache.ts": {
+      "mtime": 1772609408890.2776,
+      "edges": [
+        {
+          "source": "src/eslint/config-cache.ts",
+          "target": "src/config/loader.ts",
+          "specifier": "../config/loader.js",
+          "isTypeOnly": false,
+          "kind": "static",
+          "line": 10
+        },
+        {
+          "source": "src/eslint/config-cache.ts",
+          "target": "src/config/validator.ts",
+          "specifier": "../config/validator.js",
+          "isTypeOnly": false,
+          "kind": "static",
+          "line": 11
+        }
+      ]
+    },
+    "src/eslint/index.ts": {
+      "mtime": 1772609408891.2766,
+      "edges": [
+        {
+          "source": "src/eslint/index.ts",
+          "target": "src/eslint/rules/layer-boundaries.ts",
+          "specifier": "./rules/layer-boundaries.js",
+          "isTypeOnly": false,
+          "kind": "static",
+          "line": 27
+        },
+        {
+          "source": "src/eslint/index.ts",
+          "target": "src/eslint/rules/unlayered-imports.ts",
+          "specifier": "./rules/unlayered-imports.js",
+          "isTypeOnly": false,
+          "kind": "static",
+          "line": 28
+        },
+        {
+          "source": "src/eslint/index.ts",
+          "target": "src/eslint/config-cache.ts",
+          "specifier": "./config-cache.js",
+          "isTypeOnly": false,
+          "kind": "reexport",
+          "line": 92
+        }
+      ]
+    },
+    "src/eslint/rules/layer-boundaries.ts": {
+      "mtime": 1772609408891.2766,
+      "edges": [
+        {
+          "source": "src/eslint/rules/layer-boundaries.ts",
+          "target": "src/eslint/config-cache.ts",
+          "specifier": "../config-cache.js",
+          "isTypeOnly": false,
+          "kind": "static",
+          "line": 9
+        },
+        {
+          "source": "src/eslint/rules/layer-boundaries.ts",
+          "target": "src/enforcer/mapper.ts",
+          "specifier": "../../enforcer/mapper.js",
+          "isTypeOnly": false,
+          "kind": "static",
+          "line": 10
+        },
+        {
+          "source": "src/eslint/rules/layer-boundaries.ts",
+          "target": "src/config/parser.ts",
+          "specifier": "../../config/parser.js",
+          "isTypeOnly": false,
+          "kind": "static",
+          "line": 11
+        },
+        {
+          "source": "src/eslint/rules/layer-boundaries.ts",
+          "target": "src/parser/resolver.ts",
+          "specifier": "../../parser/resolver.js",
+          "isTypeOnly": false,
+          "kind": "static",
+          "line": 12
+        }
+      ]
+    },
+    "src/eslint/rules/unlayered-imports.ts": {
+      "mtime": 1772609408892.395,
+      "edges": [
+        {
+          "source": "src/eslint/rules/unlayered-imports.ts",
+          "target": "src/eslint/config-cache.ts",
+          "specifier": "../config-cache.js",
+          "isTypeOnly": false,
+          "kind": "static",
+          "line": 10
+        },
+        {
+          "source": "src/eslint/rules/unlayered-imports.ts",
+          "target": "src/enforcer/mapper.ts",
+          "specifier": "../../enforcer/mapper.js",
+          "isTypeOnly": false,
+          "kind": "static",
+          "line": 11
+        },
+        {
+          "source": "src/eslint/rules/unlayered-imports.ts",
+          "target": "src/parser/resolver.ts",
+          "specifier": "../../parser/resolver.js",
+          "isTypeOnly": false,
+          "kind": "static",
+          "line": 12
+        }
+      ]
+    },
+    "src/eslint/types.ts": {
+      "mtime": 1772609408893.3958,
+      "edges": []
+    },
+    "src/output/ci.ts": {
+      "mtime": 1771654859661.822,
+      "edges": []
+    },
+    "src/output/diagram.ts": {
+      "mtime": 1772609408894.3945,
+      "edges": [
+        {
+          "source": "src/output/diagram.ts",
+          "target": "src/config/parser.ts",
+          "specifier": "../config/parser.js",
+          "isTypeOnly": false,
+          "kind": "static",
+          "line": 8
+        }
+      ]
+    },
+    "src/output/github.ts": {
+      "mtime": 1772609408895.3977,
+      "edges": []
+    },
+    "src/output/html.ts": {
+      "mtime": 1772609408895.3977,
+      "edges": []
+    },
+    "src/output/index.ts": {
+      "mtime": 1771654894658.1655,
+      "edges": [
+        {
+          "source": "src/output/index.ts",
+          "target": "src/output/terminal.ts",
+          "specifier": "./terminal.js",
+          "isTypeOnly": false,
+          "kind": "reexport",
+          "line": 5
+        },
+        {
+          "source": "src/output/index.ts",
+          "target": "src/output/ci.ts",
+          "specifier": "./ci.js",
+          "isTypeOnly": false,
+          "kind": "reexport",
+          "line": 6
+        },
+        {
+          "source": "src/output/index.ts",
+          "target": "src/output/json.ts",
+          "specifier": "./json.js",
+          "isTypeOnly": false,
+          "kind": "reexport",
+          "line": 7
+        },
+        {
+          "source": "src/output/index.ts",
+          "target": "src/output/diagram.ts",
+          "specifier": "./diagram.js",
+          "isTypeOnly": false,
+          "kind": "reexport",
+          "line": 8
+        }
+      ]
+    },
+    "src/output/json.ts": {
+      "mtime": 1771654860448.8093,
+      "edges": []
+    },
+    "src/output/terminal.ts": {
+      "mtime": 1772609408896.3958,
+      "edges": []
+    },
+    "src/parser/barrel.ts": {
+      "mtime": 1771706561963.8418,
+      "edges": [
+        {
+          "source": "src/parser/barrel.ts",
+          "target": "src/parser/resolver.ts",
+          "specifier": "./resolver.js",
+          "isTypeOnly": false,
+          "kind": "static",
+          "line": 10
+        }
+      ]
+    },
+    "src/parser/extractor.ts": {
+      "mtime": 1771704487071.7134,
+      "edges": []
+    },
+    "src/parser/graph.ts": {
+      "mtime": 1771642644765.2842,
+      "edges": [
+        {
+          "source": "src/parser/graph.ts",
+          "target": "src/parser/scanner.ts",
+          "specifier": "./scanner.js",
+          "isTypeOnly": false,
+          "kind": "static",
+          "line": 5
+        },
+        {
+          "source": "src/parser/graph.ts",
+          "target": "src/parser/extractor.ts",
+          "specifier": "./extractor.js",
+          "isTypeOnly": false,
+          "kind": "static",
+          "line": 6
+        },
+        {
+          "source": "src/parser/graph.ts",
+          "target": "src/parser/resolver.ts",
+          "specifier": "./resolver.js",
+          "isTypeOnly": false,
+          "kind": "static",
+          "line": 7
+        }
+      ]
+    },
+    "src/parser/incremental.ts": {
+      "mtime": 1772609408896.3958,
+      "edges": [
+        {
+          "source": "src/parser/incremental.ts",
+          "target": "src/parser/scanner.ts",
+          "specifier": "./scanner.js",
+          "isTypeOnly": false,
+          "kind": "static",
+          "line": 8
+        },
+        {
+          "source": "src/parser/incremental.ts",
+          "target": "src/parser/extractor.ts",
+          "specifier": "./extractor.js",
+          "isTypeOnly": false,
+          "kind": "static",
+          "line": 9
+        },
+        {
+          "source": "src/parser/incremental.ts",
+          "target": "src/parser/resolver.ts",
+          "specifier": "./resolver.js",
+          "isTypeOnly": false,
+          "kind": "static",
+          "line": 10
+        },
+        {
+          "source": "src/parser/incremental.ts",
+          "target": "src/cache/index.ts",
+          "specifier": "../cache/index.js",
+          "isTypeOnly": false,
+          "kind": "static",
+          "line": 13
+        }
+      ]
+    },
+    "src/parser/index.ts": {
+      "mtime": 1771737602388.0732,
+      "edges": [
+        {
+          "source": "src/parser/index.ts",
+          "target": "src/parser/scanner.ts",
+          "specifier": "./scanner.js",
+          "isTypeOnly": false,
+          "kind": "reexport",
+          "line": 5
+        },
+        {
+          "source": "src/parser/index.ts",
+          "target": "src/parser/extractor.ts",
+          "specifier": "./extractor.js",
+          "isTypeOnly": false,
+          "kind": "reexport",
+          "line": 6
+        },
+        {
+          "source": "src/parser/index.ts",
+          "target": "src/parser/resolver.ts",
+          "specifier": "./resolver.js",
+          "isTypeOnly": false,
+          "kind": "reexport",
+          "line": 7
+        },
+        {
+          "source": "src/parser/index.ts",
+          "target": "src/parser/graph.ts",
+          "specifier": "./graph.js",
+          "isTypeOnly": false,
+          "kind": "reexport",
+          "line": 8
+        },
+        {
+          "source": "src/parser/index.ts",
+          "target": "src/parser/incremental.ts",
+          "specifier": "./incremental.js",
+          "isTypeOnly": false,
+          "kind": "reexport",
+          "line": 9
+        }
+      ]
+    },
+    "src/parser/resolver.ts": {
+      "mtime": 1771709885065.7507,
+      "edges": []
+    },
+    "src/parser/scanner.ts": {
+      "mtime": 1771642366563.8318,
+      "edges": []
+    },
+    "src/plugins/angular.ts": {
+      "mtime": 1771711101571.5432,
+      "edges": []
+    },
+    "src/plugins/index.ts": {
+      "mtime": 1771737612967.1287,
+      "edges": [
+        {
+          "source": "src/plugins/index.ts",
+          "target": "src/plugins/types.ts",
+          "specifier": "./types.js",
+          "isTypeOnly": false,
+          "kind": "reexport",
+          "line": 5
+        },
+        {
+          "source": "src/plugins/index.ts",
+          "target": "src/plugins/registry.ts",
+          "specifier": "./registry.js",
+          "isTypeOnly": false,
+          "kind": "reexport",
+          "line": 6
+        }
+      ]
+    },
+    "src/plugins/nextjs-app.ts": {
+      "mtime": 1771660503038.8438,
+      "edges": []
+    },
+    "src/plugins/nextjs-pages.ts": {
+      "mtime": 1771660515934.0134,
+      "edges": []
+    },
+    "src/plugins/node-backend.ts": {
+      "mtime": 1771711071716.233,
+      "edges": []
+    },
+    "src/plugins/registry.ts": {
+      "mtime": 1771711112480.7424,
+      "edges": [
+        {
+          "source": "src/plugins/registry.ts",
+          "target": "src/plugins/nextjs-app.ts",
+          "specifier": "./nextjs-app.js",
+          "isTypeOnly": false,
+          "kind": "static",
+          "line": 8
+        },
+        {
+          "source": "src/plugins/registry.ts",
+          "target": "src/plugins/nextjs-pages.ts",
+          "specifier": "./nextjs-pages.js",
+          "isTypeOnly": false,
+          "kind": "static",
+          "line": 9
+        },
+        {
+          "source": "src/plugins/registry.ts",
+          "target": "src/plugins/vite-react.ts",
+          "specifier": "./vite-react.js",
+          "isTypeOnly": false,
+          "kind": "static",
+          "line": 10
+        },
+        {
+          "source": "src/plugins/registry.ts",
+          "target": "src/plugins/vite-react-router.ts",
+          "specifier": "./vite-react-router.js",
+          "isTypeOnly": false,
+          "kind": "static",
+          "line": 11
+        },
+        {
+          "source": "src/plugins/registry.ts",
+          "target": "src/plugins/vite-tanstack-router.ts",
+          "specifier": "./vite-tanstack-router.js",
+          "isTypeOnly": false,
+          "kind": "static",
+          "line": 12
+        },
+        {
+          "source": "src/plugins/registry.ts",
+          "target": "src/plugins/node-backend.ts",
+          "specifier": "./node-backend.js",
+          "isTypeOnly": false,
+          "kind": "static",
+          "line": 13
+        },
+        {
+          "source": "src/plugins/registry.ts",
+          "target": "src/plugins/vue-nuxt.ts",
+          "specifier": "./vue-nuxt.js",
+          "isTypeOnly": false,
+          "kind": "static",
+          "line": 14
+        },
+        {
+          "source": "src/plugins/registry.ts",
+          "target": "src/plugins/angular.ts",
+          "specifier": "./angular.js",
+          "isTypeOnly": false,
+          "kind": "static",
+          "line": 15
+        }
+      ]
+    },
+    "src/plugins/types.ts": {
+      "mtime": 1771658248081.8428,
+      "edges": []
+    },
+    "src/plugins/vite-react-router.ts": {
+      "mtime": 1771711150859.6409,
+      "edges": []
+    },
+    "src/plugins/vite-react.ts": {
+      "mtime": 1771658305992.2405,
+      "edges": []
+    },
+    "src/plugins/vite-tanstack-router.ts": {
+      "mtime": 1771711058698.2305,
+      "edges": []
+    },
+    "src/plugins/vue-nuxt.ts": {
+      "mtime": 1771711086301.082,
+      "edges": []
+    },
+    "src/workspace/configs.ts": {
+      "mtime": 1772609408897.9014,
+      "edges": [
+        {
+          "source": "src/workspace/configs.ts",
+          "target": "src/config/loader.ts",
+          "specifier": "../config/loader.js",
+          "isTypeOnly": false,
+          "kind": "static",
+          "line": 10
+        }
+      ]
+    },
+    "src/workspace/detector.ts": {
+      "mtime": 1771710047081.1152,
+      "edges": []
+    },
+    "src/workspace/index.ts": {
+      "mtime": 1771709535311.9622,
+      "edges": [
+        {
+          "source": "src/workspace/index.ts",
+          "target": "src/workspace/detector.ts",
+          "specifier": "./detector.js",
+          "isTypeOnly": false,
+          "kind": "reexport",
+          "line": 5
+        },
+        {
+          "source": "src/workspace/index.ts",
+          "target": "src/workspace/configs.ts",
+          "specifier": "./configs.js",
+          "isTypeOnly": false,
+          "kind": "reexport",
+          "line": 6
+        }
+      ]
+    },
+    "vitest.config.ts": {
+      "mtime": 1772597272949.4482,
+      "edges": []
+    }
+  },
+  "externalImports": [
+    "path",
+    "url",
+    "typescript-eslint",
+    "node:fs",
+    "node:path",
+    "node:crypto",
+    "@clack/prompts",
+    "jiti",
+    "node:url",
+    "node:child_process",
+    "typescript",
+    "vitest/config"
+  ],
+  "unresolvedImports": []
+}

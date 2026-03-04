@@ -1,9 +1,9 @@
 import { describe, it, expect } from 'vitest'
-import { LayerMapper, createLayerMapper } from '../../../src/enforcer/mapper.js'
-import type { ArchgateConfig } from '../../../src/config/types.js'
+import { createLayerMapper } from '../../../src/enforcer/mapper.js'
+import type { LayerguardConfig } from '../../../src/config/types.js'
 
 describe('LayerMapper', () => {
-  const basicConfig: ArchgateConfig = {
+  const basicConfig: LayerguardConfig = {
     layers: {
       components: { path: 'src/components' },
       hooks: { path: 'src/hooks' },
@@ -12,7 +12,7 @@ describe('LayerMapper', () => {
     flow: ['components -> hooks', 'hooks -> utils'],
   }
 
-  const configWithSublayers: ArchgateConfig = {
+  const configWithSublayers: LayerguardConfig = {
     layers: {
       components: {
         path: 'src/components',
@@ -132,7 +132,7 @@ describe('LayerMapper', () => {
 
   describe('most specific matching (path overlap resolution)', () => {
     it('matches most specific layer path', () => {
-      const config: ArchgateConfig = {
+      const config: LayerguardConfig = {
         layers: {
           src: { path: 'src' },
           components: { path: 'src/components' },
@@ -148,7 +148,7 @@ describe('LayerMapper', () => {
     })
 
     it('matches most specific sublayer path', () => {
-      const config: ArchgateConfig = {
+      const config: LayerguardConfig = {
         layers: {
           components: {
             path: 'src/components',
@@ -170,7 +170,7 @@ describe('LayerMapper', () => {
 
     it('does not match layer with similar but different path prefix', () => {
       // Example from spec: src/components/shared/utils/ should NOT match utils layer
-      const config: ArchgateConfig = {
+      const config: LayerguardConfig = {
         layers: {
           utils: { path: 'src/utils' },
           components: {
@@ -192,7 +192,7 @@ describe('LayerMapper', () => {
     })
 
     it('matches parent layer when file is not in any sublayer', () => {
-      const config: ArchgateConfig = {
+      const config: LayerguardConfig = {
         layers: {
           components: {
             path: 'src/components',
@@ -213,7 +213,7 @@ describe('LayerMapper', () => {
     })
 
     it('handles trailing slash in config path', () => {
-      const config: ArchgateConfig = {
+      const config: LayerguardConfig = {
         layers: {
           components: { path: 'src/components/' }, // trailing slash
         },
@@ -227,7 +227,7 @@ describe('LayerMapper', () => {
     })
 
     it('handles leading slash in config path', () => {
-      const config: ArchgateConfig = {
+      const config: LayerguardConfig = {
         layers: {
           components: { path: '/src/components' }, // leading slash
         },
@@ -241,7 +241,7 @@ describe('LayerMapper', () => {
     })
 
     it('normalizes Windows backslashes in config path', () => {
-      const config: ArchgateConfig = {
+      const config: LayerguardConfig = {
         layers: {
           components: { path: 'src\\components' }, // Windows backslashes
         },
@@ -256,7 +256,7 @@ describe('LayerMapper', () => {
 
     it('does not match partial directory names', () => {
       // src/util should NOT match when layer path is src/utils
-      const config: ArchgateConfig = {
+      const config: LayerguardConfig = {
         layers: {
           utils: { path: 'src/utils' },
         },

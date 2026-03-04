@@ -3,7 +3,7 @@
  */
 
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
-import type { ArchgateConfig } from '../../../src/config/types.js'
+import type { LayerguardConfig } from '../../../src/config/types.js'
 
 // Import modules normally
 import { clearConfigCache, getCacheStats, getConfig } from '../../../src/eslint/config-cache.js'
@@ -80,7 +80,7 @@ describe('ESLint config cache', () => {
     })
 
     it('should return correct stats when cache has entries', () => {
-      const mockConfig: ArchgateConfig = {
+      const mockConfig: LayerguardConfig = {
         layers: { components: { path: 'src/components' } },
         flow: [],
       }
@@ -90,7 +90,7 @@ describe('ESLint config cache', () => {
         if (dir === '/project') {
           return {
             config: mockConfig,
-            configPath: '/project/archgate.config.ts',
+            configPath: '/project/layerguard.config.ts',
           }
         }
         return null
@@ -114,7 +114,7 @@ describe('ESLint config cache', () => {
     })
 
     it('returns null for invalid config', () => {
-      const invalidConfig: ArchgateConfig = {
+      const invalidConfig: LayerguardConfig = {
         layers: {
           invalid: { path: '' }, // Empty path is invalid
         },
@@ -123,7 +123,7 @@ describe('ESLint config cache', () => {
 
       vi.mocked(loader.loadConfigSync).mockReturnValue({
         config: invalidConfig,
-        configPath: '/project/archgate.config.ts',
+        configPath: '/project/layerguard.config.ts',
       })
 
       // Validator returns invalid
@@ -163,7 +163,7 @@ describe('ESLint config cache', () => {
         if (dir === '/project') {
           return {
             config: { layers: { components: { path: 'src/components' } }, flow: [] },
-            configPath: '/project/archgate.config.ts',
+            configPath: '/project/layerguard.config.ts',
           }
         }
         return null
@@ -177,7 +177,7 @@ describe('ESLint config cache', () => {
       if (result) {
         expect(result).toEqual(expect.objectContaining({
           config: { layers: { components: { path: 'src/components' } }, flow: [] },
-          configPath: '/project/archgate.config.ts',
+          configPath: '/project/layerguard.config.ts',
           projectRoot: '/project',
         }))
         // Note: loadConfigSync is called multiple times during directory traversal
@@ -197,7 +197,7 @@ describe('ESLint config cache', () => {
         if (dir === '/project') {
           return {
             config: { layers: { components: { path: 'src/components' } }, flow: [] },
-            configPath: '/project/archgate.config.ts',
+            configPath: '/project/layerguard.config.ts',
           }
         }
         return null
@@ -207,17 +207,17 @@ describe('ESLint config cache', () => {
       
       expect(result).not.toBeNull()
       expect(result?.projectRoot).toBe('/project')
-      expect(result?.configPath).toBe('/project/archgate.config.ts')
+      expect(result?.configPath).toBe('/project/layerguard.config.ts')
     })
 
     it('handles successful config loading and caching', () => {
-      const mockConfig: ArchgateConfig = {
+      const mockConfig: LayerguardConfig = {
         layers: { components: { path: 'src/components' } },
         flow: ['components -> utils'],
         rules: { circular: 'error' },
       }
       
-      const configPath = '/project/archgate.config.ts'
+      const configPath = '/project/layerguard.config.ts'
 
       // Mock the loader to return a config when called with '/project'
       vi.mocked(loader.loadConfigSync).mockImplementation((dir) => {

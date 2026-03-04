@@ -4,7 +4,7 @@
  * Maps file paths to their corresponding layers and sublayers
  */
 
-import type { ArchgateConfig, LayerConfig, SublayerConfig } from '../config/types.js'
+import type { LayerguardConfig, LayerConfig, SublayerConfig } from '../config/types.js'
 
 /**
  * Result of mapping a file to a layer
@@ -69,14 +69,14 @@ interface ProcessedSublayer {
 export class LayerMapper {
   private layers: ProcessedLayer[] = []
 
-  constructor(config: ArchgateConfig) {
+  constructor(config: LayerguardConfig) {
     this.processConfig(config)
   }
 
   /**
    * Process the config into an efficient structure for matching
    */
-  private processConfig(config: ArchgateConfig): void {
+  private processConfig(config: LayerguardConfig): void {
     for (const [layerName, layerConfig] of Object.entries(config.layers)) {
       const processedLayer: ProcessedLayer = {
         name: layerName,
@@ -249,6 +249,6 @@ export class LayerMapper {
 /**
  * Create a layer mapper from config
  */
-export function createLayerMapper(config: ArchgateConfig): LayerMapper {
+export function createLayerMapper(config: LayerguardConfig): LayerMapper {
   return new LayerMapper(config)
 }

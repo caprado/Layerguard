@@ -1,6 +1,6 @@
 # Plugin Contribution Guide
 
-This guide explains how to create framework plugins for Archgate.
+This guide explains how to create framework plugins for Layerguard.
 
 ## Overview
 
@@ -220,4 +220,4 @@ Reference these existing plugins for patterns:
 3. Ensure all tests pass: `npm test`
 4. Submit a pull request
 
-Your plugin will be reviewed and merged to make it available for all Archgate users.
+Your plugin will be reviewed and merged to make it available for all Layerguard users.

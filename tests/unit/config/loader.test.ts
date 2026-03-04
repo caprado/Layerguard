@@ -8,7 +8,7 @@ describe('findConfigFile', () => {
   let testDir: string
 
   beforeEach(() => {
-    testDir = join(tmpdir(), `archgate-loader-test-${Date.now()}`)
+    testDir = join(tmpdir(), `layerguard-loader-test-${Date.now()}`)
     mkdirSync(testDir, { recursive: true })
   })
 
@@ -22,30 +22,30 @@ describe('findConfigFile', () => {
     expect(findConfigFile(testDir)).toBeNull()
   })
 
-  it('finds archgate.config.ts', () => {
-    writeFileSync(join(testDir, 'archgate.config.ts'), 'export default {}')
-    expect(findConfigFile(testDir)).toBe(join(testDir, 'archgate.config.ts'))
+  it('finds layerguard.config.ts', () => {
+    writeFileSync(join(testDir, 'layerguard.config.ts'), 'export default {}')
+    expect(findConfigFile(testDir)).toBe(join(testDir, 'layerguard.config.ts'))
   })
 
-  it('finds archgate.config.js', () => {
-    writeFileSync(join(testDir, 'archgate.config.js'), 'module.exports = {}')
-    expect(findConfigFile(testDir)).toBe(join(testDir, 'archgate.config.js'))
+  it('finds layerguard.config.js', () => {
+    writeFileSync(join(testDir, 'layerguard.config.js'), 'module.exports = {}')
+    expect(findConfigFile(testDir)).toBe(join(testDir, 'layerguard.config.js'))
   })
 
   it('prioritizes .ts over .js', () => {
-    writeFileSync(join(testDir, 'archgate.config.ts'), 'export default {}')
-    writeFileSync(join(testDir, 'archgate.config.js'), 'module.exports = {}')
-    expect(findConfigFile(testDir)).toBe(join(testDir, 'archgate.config.ts'))
+    writeFileSync(join(testDir, 'layerguard.config.ts'), 'export default {}')
+    writeFileSync(join(testDir, 'layerguard.config.js'), 'module.exports = {}')
+    expect(findConfigFile(testDir)).toBe(join(testDir, 'layerguard.config.ts'))
   })
 
-  it('finds archgate.config.mjs', () => {
-    writeFileSync(join(testDir, 'archgate.config.mjs'), 'export default {}')
-    expect(findConfigFile(testDir)).toBe(join(testDir, 'archgate.config.mjs'))
+  it('finds layerguard.config.mjs', () => {
+    writeFileSync(join(testDir, 'layerguard.config.mjs'), 'export default {}')
+    expect(findConfigFile(testDir)).toBe(join(testDir, 'layerguard.config.mjs'))
   })
 
-  it('finds archgate.config.cjs', () => {
-    writeFileSync(join(testDir, 'archgate.config.cjs'), 'module.exports = {}')
-    expect(findConfigFile(testDir)).toBe(join(testDir, 'archgate.config.cjs'))
+  it('finds layerguard.config.cjs', () => {
+    writeFileSync(join(testDir, 'layerguard.config.cjs'), 'module.exports = {}')
+    expect(findConfigFile(testDir)).toBe(join(testDir, 'layerguard.config.cjs'))
   })
 })
 
@@ -53,7 +53,7 @@ describe('loadConfig', () => {
   let testDir: string
 
   beforeEach(() => {
-    testDir = join(tmpdir(), `archgate-loader-test-${Date.now()}`)
+    testDir = join(tmpdir(), `layerguard-loader-test-${Date.now()}`)
     mkdirSync(testDir, { recursive: true })
   })
 
@@ -77,14 +77,14 @@ describe('loadConfig', () => {
         flow: ['components -> hooks'],
       }
     `
-    writeFileSync(join(testDir, 'archgate.config.ts'), configContent)
+    writeFileSync(join(testDir, 'layerguard.config.ts'), configContent)
 
     const result = await loadConfig(testDir)
 
     expect(result.config.layers).toHaveProperty('components')
     expect(result.config.layers).toHaveProperty('hooks')
     expect(result.config.flow).toContain('components -> hooks')
-    expect(result.configPath).toBe(join(testDir, 'archgate.config.ts'))
+    expect(result.configPath).toBe(join(testDir, 'layerguard.config.ts'))
   })
 
   it('loads a JavaScript config file', async () => {
@@ -96,12 +96,12 @@ describe('loadConfig', () => {
         flow: [],
       }
     `
-    writeFileSync(join(testDir, 'archgate.config.js'), configContent)
+    writeFileSync(join(testDir, 'layerguard.config.js'), configContent)
 
     const result = await loadConfig(testDir)
 
     expect(result.config.layers).toHaveProperty('utils')
-    expect(result.configPath).toBe(join(testDir, 'archgate.config.js'))
+    expect(result.configPath).toBe(join(testDir, 'layerguard.config.js'))
   })
 
   it('loads ESM config file', async () => {
@@ -114,7 +114,7 @@ describe('loadConfig', () => {
       }
       export default config
     `
-    writeFileSync(join(testDir, 'archgate.config.mjs'), configContent)
+    writeFileSync(join(testDir, 'layerguard.config.mjs'), configContent)
 
     const result = await loadConfig(testDir)
 
@@ -133,7 +133,7 @@ describe('loadConfig', () => {
         flow: [],
       })
     `
-    writeFileSync(join(testDir, 'archgate.config.ts'), configContent)
+    writeFileSync(join(testDir, 'layerguard.config.ts'), configContent)
 
     const result = await loadConfig(testDir)
 
@@ -156,7 +156,7 @@ describe('loadConfig', () => {
         flow: [],
       }
     `
-    writeFileSync(join(testDir, 'archgate.config.ts'), configContent)
+    writeFileSync(join(testDir, 'layerguard.config.ts'), configContent)
 
     const result = await loadConfig(testDir)
 
@@ -180,7 +180,7 @@ describe('loadConfig', () => {
         ignore: ['**/*.test.ts', '**/*.spec.ts'],
       }
     `
-    writeFileSync(join(testDir, 'archgate.config.ts'), configContent)
+    writeFileSync(join(testDir, 'layerguard.config.ts'), configContent)
 
     const result = await loadConfig(testDir)
 
@@ -195,7 +195,7 @@ describe('loadConfig', () => {
         invalid syntax here
       }
     `
-    writeFileSync(join(testDir, 'archgate.config.ts'), configContent)
+    writeFileSync(join(testDir, 'layerguard.config.ts'), configContent)
 
     await expect(loadConfig(testDir)).rejects.toThrow(ConfigLoadError)
   })
@@ -206,7 +206,7 @@ describe('loadConfigSync', () => {
   let testDir: string
 
   beforeEach(() => {
-    testDir = join(tmpdir(), `archgate-loader-sync-test-${Date.now()}`)
+    testDir = join(tmpdir(), `layerguard-loader-sync-test-${Date.now()}`)
     mkdirSync(testDir, { recursive: true })
   })
 
@@ -230,13 +230,13 @@ describe('loadConfigSync', () => {
         flow: [],
       }
     `
-    writeFileSync(join(testDir, 'archgate.config.ts'), configContent)
+    writeFileSync(join(testDir, 'layerguard.config.ts'), configContent)
 
     const result = loadConfigSync(testDir)
 
     expect(result).not.toBeNull()
     expect(result?.config.layers).toHaveProperty('components')
-    expect(result?.configPath).toBe(join(testDir, 'archgate.config.ts'))
+    expect(result?.configPath).toBe(join(testDir, 'layerguard.config.ts'))
   })
 
   it('loads a JavaScript config file synchronously', () => {
@@ -248,7 +248,7 @@ describe('loadConfigSync', () => {
         flow: [],
       }
     `
-    writeFileSync(join(testDir, 'archgate.config.js'), configContent)
+    writeFileSync(join(testDir, 'layerguard.config.js'), configContent)
 
     const result = loadConfigSync(testDir)
 
@@ -262,7 +262,7 @@ describe('loadConfigSync', () => {
         invalid syntax
       }
     `
-    writeFileSync(join(testDir, 'archgate.config.ts'), configContent)
+    writeFileSync(join(testDir, 'layerguard.config.ts'), configContent)
 
     const result = loadConfigSync(testDir)
 

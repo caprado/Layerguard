@@ -2,7 +2,7 @@
  * Preset templates for common project structures
  */
 
-import type { ArchgateConfig, LayerConfig, SublayerConfig } from '../config/types.js'
+import type { LayerguardConfig, LayerConfig, SublayerConfig } from '../config/types.js'
 
 /**
  * Preset template
@@ -31,7 +31,7 @@ export interface Preset {
   /**
    * Optional framework setting
    */
-  framework?: ArchgateConfig['framework']
+  framework?: LayerguardConfig['framework']
 }
 
 /**
@@ -272,8 +272,8 @@ export function createCustomConfig(
     sublayers?: Array<{ name: string; path: string; isolated?: boolean }>
   }>,
   flowRules: string[],
-  framework?: ArchgateConfig['framework']
-): ArchgateConfig {
+  framework?: LayerguardConfig['framework']
+): LayerguardConfig {
   const layersConfig: Record<string, LayerConfig> = {}
 
   for (const layer of layers) {
@@ -295,7 +295,7 @@ export function createCustomConfig(
     layersConfig[layer.name] = config
   }
 
-  const config: ArchgateConfig = {
+  const config: LayerguardConfig = {
     layers: layersConfig,
     flow: flowRules,
   }

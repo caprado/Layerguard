@@ -6,7 +6,7 @@ import * as resolver from '../../../src/parser/resolver.js'
 import * as cacheManager from '../../../src/cache/manager.js'
 import { CACHE_VERSION } from '../../../src/cache/types.js'
 import type { CacheData } from '../../../src/cache/types.js'
-import type { ArchgateConfig } from '../../../src/config/types.js'
+import type { LayerguardConfig } from '../../../src/config/types.js'
 
 vi.mock('../../../src/parser/scanner.js')
 vi.mock('../../../src/parser/extractor.js')
@@ -14,7 +14,7 @@ vi.mock('../../../src/parser/resolver.js')
 vi.mock('../../../src/cache/manager.js')
 
 describe('buildDependencyGraphIncremental', () => {
-  const mockConfig: ArchgateConfig = {
+  const mockConfig: LayerguardConfig = {
     layers: {
       components: { path: 'src/components' },
       utils: { path: 'src/utils' },

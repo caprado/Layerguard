@@ -3,14 +3,14 @@ import { mkdirSync, rmSync, existsSync } from 'node:fs'
 import { join } from 'node:path'
 import { tmpdir } from 'node:os'
 import { validateConfig } from '../../../src/config/validator.js'
-import type { ArchgateConfig } from '../../../src/config/types.js'
+import type { LayerguardConfig } from '../../../src/config/types.js'
 
 describe('validateConfig', () => {
   let testDir: string
 
   beforeEach(() => {
     // Create a temp directory for testing path validation
-    testDir = join(tmpdir(), `archgate-test-${Date.now()}`)
+    testDir = join(tmpdir(), `layerguard-test-${Date.now()}`)
     mkdirSync(testDir, { recursive: true })
     mkdirSync(join(testDir, 'components'), { recursive: true })
     mkdirSync(join(testDir, 'components', 'features'), { recursive: true })
@@ -28,7 +28,7 @@ describe('validateConfig', () => {
 
   describe('required fields', () => {
     it('fails if layers is missing', () => {
-      const config = { flow: ['A -> B'] } as unknown as ArchgateConfig
+      const config = { flow: ['A -> B'] } as unknown as LayerguardConfig
       const result = validateConfig(config, testDir)
 
       expect(result.valid).toBe(false)
@@ -36,7 +36,7 @@ describe('validateConfig', () => {
     })
 
     it('fails if flow is missing', () => {
-      const config = { layers: { A: { path: 'a' } } } as unknown as ArchgateConfig
+      const config = { layers: { A: { path: 'a' } } } as unknown as LayerguardConfig
       const result = validateConfig(config, testDir)
 
       expect(result.valid).toBe(false)
@@ -44,7 +44,7 @@ describe('validateConfig', () => {
     })
 
     it('passes with valid minimal config', () => {
-      const config: ArchgateConfig = {
+      const config: LayerguardConfig = {
         layers: {
           components: { path: 'components' },
           hooks: { path: 'hooks' },
@@ -66,14 +66,14 @@ describe('validateConfig', () => {
         },
         flow: [],
       }
-      const result = validateConfig(config as ArchgateConfig, testDir)
+      const result = validateConfig(config as LayerguardConfig, testDir)
 
       expect(result.valid).toBe(false)
       expect(result.errors.some((e) => e.code === 'MISSING_LAYER_PATH')).toBe(true)
     })
 
     it('warns if layer path does not exist', () => {
-      const config: ArchgateConfig = {
+      const config: LayerguardConfig = {
         layers: {
           nonexistent: { path: 'does-not-exist' },
         },
@@ -87,7 +87,7 @@ describe('validateConfig', () => {
 
   describe('flow rule validation', () => {
     it('fails if flow rule references unknown layer', () => {
-      const config: ArchgateConfig = {
+      const config: LayerguardConfig = {
         layers: {
           components: { path: 'components' },
         },
@@ -100,7 +100,7 @@ describe('validateConfig', () => {
     })
 
     it('fails if flow rule has invalid syntax', () => {
-      const config: ArchgateConfig = {
+      const config: LayerguardConfig = {
         layers: {
           components: { path: 'components' },
           hooks: { path: 'hooks' },
@@ -114,7 +114,7 @@ describe('validateConfig', () => {
     })
 
     it('warns if a layer is not referenced in any flow rule', () => {
-      const config: ArchgateConfig = {
+      const config: LayerguardConfig = {
         layers: {
           components: { path: 'components' },
           hooks: { path: 'hooks' },
@@ -128,7 +128,7 @@ describe('validateConfig', () => {
     })
 
     it('builds flow graph for valid config', () => {
-      const config: ArchgateConfig = {
+      const config: LayerguardConfig = {
         layers: {
           components: { path: 'components' },
           hooks: { path: 'hooks' },
@@ -144,7 +144,7 @@ describe('validateConfig', () => {
 
   describe('sublayer validation', () => {
     it('validates sublayer paths', () => {
-      const config: ArchgateConfig = {
+      const config: LayerguardConfig = {
         layers: {
           components: {
             path: 'components',
@@ -164,7 +164,7 @@ describe('validateConfig', () => {
     })
 
     it('fails if sublayer flow references unknown sublayer', () => {
-      const config: ArchgateConfig = {
+      const config: LayerguardConfig = {
         layers: {
           components: {
             path: 'components',
@@ -185,7 +185,7 @@ describe('validateConfig', () => {
 
   describe('framework validation', () => {
     it('passes with valid framework', () => {
-      const config: ArchgateConfig = {
+      const config: LayerguardConfig = {
         framework: 'nextjs-app',
         layers: {
           components: { path: 'components' },
@@ -204,7 +204,7 @@ describe('validateConfig', () => {
           components: { path: 'components' },
         },
         flow: [],
-      } as unknown as ArchgateConfig
+      } as unknown as LayerguardConfig
       const result = validateConfig(config, testDir)
 
       expect(result.valid).toBe(false)
@@ -214,7 +214,7 @@ describe('validateConfig', () => {
 
   describe('rules validation', () => {
     it('passes with valid rules', () => {
-      const config: ArchgateConfig = {
+      const config: LayerguardConfig = {
         layers: {
           components: { path: 'components' },
         },
@@ -239,14 +239,14 @@ describe('validateConfig', () => {
         rules: {
           circular: 'invalid',
         },
-      } as unknown as ArchgateConfig
+      } as unknown as LayerguardConfig
       const result = validateConfig(config, testDir)
 
       expect(result.errors.some((e) => e.code === 'INVALID_RULES_CIRCULAR')).toBe(true)
     })
 
     it('accepts orphans value of off (default behavior)', () => {
-      const config: ArchgateConfig = {
+      const config: LayerguardConfig = {
         layers: {
           components: { path: 'components' },
         },
@@ -261,7 +261,7 @@ describe('validateConfig', () => {
     })
 
     it('accepts orphans value of error', () => {
-      const config: ArchgateConfig = {
+      const config: LayerguardConfig = {
         layers: {
           components: { path: 'components' },
         },
@@ -284,7 +284,7 @@ describe('validateConfig', () => {
         rules: {
           orphans: 'invalid',
         },
-      } as unknown as ArchgateConfig
+      } as unknown as LayerguardConfig
       const result = validateConfig(config, testDir)
 
       expect(result.errors.some((e) => e.code === 'INVALID_RULES_ORPHANS')).toBe(true)
@@ -299,7 +299,7 @@ describe('validateConfig', () => {
         },
         flow: [],
         exceptions: [{ to: 'some/path', reason: 'test' }],
-      } as unknown as ArchgateConfig
+      } as unknown as LayerguardConfig
       const result = validateConfig(config, testDir)
 
       expect(result.errors.some((e) => e.code === 'INVALID_EXCEPTION')).toBe(true)
@@ -312,7 +312,7 @@ describe('validateConfig', () => {
         },
         flow: [],
         exceptions: [{ from: 'some/path', to: 'other/path' }],
-      } as unknown as ArchgateConfig
+      } as unknown as LayerguardConfig
       const result = validateConfig(config, testDir)
 
       expect(result.errors.some((e) => e.code === 'INVALID_EXCEPTION')).toBe(true)
@@ -320,7 +320,7 @@ describe('validateConfig', () => {
     })
 
     it('passes with valid exception', () => {
-      const config: ArchgateConfig = {
+      const config: LayerguardConfig = {
         layers: {
           components: { path: 'components' },
         },

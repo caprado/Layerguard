@@ -1,17 +1,17 @@
 <p align="center">
-  <img src="https://img.shields.io/npm/v/archgate" alt="npm version">
-  <img src="https://img.shields.io/github/actions/workflow/status/caprado/archgate/ci.yml?branch=main" alt="build status">
-  <img src="https://img.shields.io/npm/l/archgate" alt="license">
-  <img src="https://img.shields.io/node/v/archgate" alt="node version">
+  <img src="https://img.shields.io/npm/v/layerguard" alt="npm version">
+  <img src="https://img.shields.io/github/actions/workflow/status/caprado/layerguard/ci.yml?branch=main" alt="build status">
+  <img src="https://img.shields.io/npm/l/layerguard" alt="license">
+  <img src="https://img.shields.io/node/v/layerguard" alt="node version">
 </p>
 
-# Archgate
+# Layerguard
 
 Architectural layer enforcement for TypeScript and JavaScript projects.
 
-Archgate prevents architectural violations before they happen. Define your layers, declare how dependencies can flow between them, and Archgate enforces those rules in CI, pre-commit hooks, or your editor.
+Layerguard prevents architectural violations before they happen. Define your layers, declare how dependencies can flow between them, and Layerguard enforces those rules in CI, pre-commit hooks, or your editor.
 
-## Why Archgate?
+## Why Layerguard?
 
 - **Catch violations early** - Get instant feedback when code violates your architecture
 - **Framework-agnostic** - Works with Next.js, Vite, Angular, Node backends, and more
@@ -48,14 +48,14 @@ Archgate prevents architectural violations before they happen. Define your layer
 ## Installation
 
 ```bash
-npm install --save-dev archgate
+npm install --save-dev layerguard
 ```
 
 Or with your preferred package manager:
 
 ```bash
-pnpm add -D archgate
-yarn add -D archgate
+pnpm add -D layerguard
+yarn add -D layerguard
 ```
 
 **Requirements:** Node.js 18.0.0 or higher, TypeScript 4.7.0 or higher
@@ -65,21 +65,21 @@ yarn add -D archgate
 Run the interactive setup wizard:
 
 ```bash
-npx archgate init
+npx layerguard init
 ```
 
-The wizard detects your project structure, suggests layers, and generates `archgate.config.ts`.
+The wizard detects your project structure, suggests layers, and generates `layerguard.config.ts`.
 
 Then validate your architecture:
 
 ```bash
-npx archgate check
+npx layerguard check
 ```
 
 If code violates the rules:
 
 ```
-archgate check
+layerguard check
 
   ✗ 1 violation
 
@@ -91,10 +91,10 @@ archgate check
 
 ## Configuration
 
-Create `archgate.config.ts` in your project root:
+Create `layerguard.config.ts` in your project root:
 
 ```typescript
-import { defineConfig } from 'archgate'
+import { defineConfig } from 'layerguard'
 
 export default defineConfig({
   layers: {
@@ -273,7 +273,7 @@ tsconfig: ['tsconfig.app.json', 'tsconfig.server.json'],
 Validate architecture rules:
 
 ```bash
-archgate check [options]
+layerguard check [options]
 ```
 
 | Option | Description |
@@ -292,12 +292,12 @@ archgate check [options]
 **Examples:**
 
 ```bash
-archgate check                     # Standard check
-archgate check --ci                # GitHub Actions annotations
-archgate check --json              # JSON output for tooling
-archgate check --watch             # Watch mode
-archgate check --package apps/web  # Check specific package
-archgate check --all               # Check all packages in monorepo
+layerguard check                     # Standard check
+layerguard check --ci                # GitHub Actions annotations
+layerguard check --json              # JSON output for tooling
+layerguard check --watch             # Watch mode
+layerguard check --package apps/web  # Check specific package
+layerguard check --all               # Check all packages in monorepo
 ```
 
 ### show
@@ -305,7 +305,7 @@ archgate check --all               # Check all packages in monorepo
 Display architecture diagram:
 
 ```bash
-archgate show [options]
+layerguard show [options]
 ```
 
 | Option | Description |
@@ -318,7 +318,7 @@ archgate show [options]
 Interactive setup wizard:
 
 ```bash
-archgate init [options]
+layerguard init [options]
 ```
 
 | Option | Description |
@@ -330,12 +330,12 @@ archgate init [options]
 Generate HTML or Markdown report:
 
 ```bash
-archgate report [options]
+layerguard report [options]
 ```
 
 | Option | Description |
 |--------|-------------|
-| `--output`, `-o` | Output file path (default: `archgate-report.html`) |
+| `--output`, `-o` | Output file path (default: `layerguard-report.html`) |
 | `--markdown`, `--md` | Output as Markdown instead of HTML |
 | `--stdout` | Print to stdout instead of file |
 | `--from` | Load historical data from JSON for trend charts |
@@ -344,48 +344,48 @@ archgate report [options]
 **Examples:**
 
 ```bash
-archgate report                          # Generate HTML report
-archgate report --markdown               # Markdown summary
-archgate report -o reports/arch.html     # Custom output path
-archgate report --from history.json      # Include trend data
+layerguard report                          # Generate HTML report
+layerguard report --markdown               # Markdown summary
+layerguard report -o reports/arch.html     # Custom output path
+layerguard report --from history.json      # Include trend data
 ```
 
 ## Monorepo Support
 
-Archgate detects pnpm, npm, and Yarn workspaces automatically.
+Layerguard detects pnpm, npm, and Yarn workspaces automatically.
 
 ### Per-package Configuration
 
-Each package can have its own `archgate.config.ts`:
+Each package can have its own `layerguard.config.ts`:
 
 ```
 my-monorepo/
 ├── package.json          # workspaces: ["packages/*", "apps/*"]
 ├── packages/
 │   └── shared/
-│       └── archgate.config.ts
+│       └── layerguard.config.ts
 └── apps/
     └── web/
-        └── archgate.config.ts
+        └── layerguard.config.ts
 ```
 
 ### Check Specific Package
 
 ```bash
 # By name
-archgate check --package @myorg/web
+layerguard check --package @myorg/web
 
 # By path
-archgate check --package apps/web
+layerguard check --package apps/web
 ```
 
 ### Check All Packages
 
 ```bash
-archgate check --all
+layerguard check --all
 ```
 
-This finds all packages with `archgate.config.ts` and checks them in sequence.
+This finds all packages with `layerguard.config.ts` and checks them in sequence.
 
 ### Cross-package Imports
 
@@ -423,7 +423,7 @@ export default defineConfig({
 Framework detection enables:
 - Entry point recognition (excluded from orphan detection)
 - Framework-specific file patterns
-- Better layer suggestions in `archgate init`
+- Better layer suggestions in `layerguard init`
 
 ## ESLint Integration
 
@@ -431,15 +431,15 @@ Get inline editor feedback with the ESLint plugin:
 
 ```javascript
 // eslint.config.js
-import archgate from 'archgate/eslint'
+import layerguard from 'layerguard/eslint'
 
 export default [
-  ...archgate.configs.recommended,
+  ...layerguard.configs.recommended,
   // your other config...
 ]
 ```
 
-The plugin reads your `archgate.config.ts` and reports violations as you type.
+The plugin reads your `layerguard.config.ts` and reports violations as you type.
 
 ## GitHub Actions
 
@@ -451,7 +451,7 @@ name: Architecture Check
 on: [push, pull_request]
 
 jobs:
-  archgate:
+  layerguard:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -459,7 +459,7 @@ jobs:
         with:
           node-version: '20'
       - run: npm ci
-      - run: npx archgate check --ci
+      - run: npx layerguard check --ci
 ```
 
 The `--ci` flag outputs GitHub Actions annotations, showing violations inline in the PR diff.
@@ -469,7 +469,7 @@ The `--ci` flag outputs GitHub Actions annotations, showing violations inline in
 Post a summary comment on pull requests:
 
 ```yaml
-- run: npx archgate check --github-pr-comment
+- run: npx layerguard check --github-pr-comment
   env:
     GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
@@ -478,7 +478,7 @@ This requires the `gh` CLI (pre-installed on GitHub-hosted runners).
 
 ## VS Code Extension
 
-Install the [Archgate extension](https://marketplace.visualstudio.com/items?itemName=archgate.archgate-vscode) for:
+Install the [Layerguard extension](https://marketplace.visualstudio.com/items?itemName=layerguard.layerguard-vscode) for:
 
 - Inline diagnostics showing violations as you type
 - Quick fixes for common issues
@@ -486,12 +486,12 @@ Install the [Archgate extension](https://marketplace.visualstudio.com/items?item
 
 ## Programmatic API
 
-Use Archgate programmatically in your tools:
+Use Layerguard programmatically in your tools:
 
 ```typescript
-import { loadConfig, validateConfig } from 'archgate/config'
-import { buildDependencyGraph } from 'archgate/parser'
-import { createFlowChecker } from 'archgate/enforcer'
+import { loadConfig, validateConfig } from 'layerguard/config'
+import { buildDependencyGraph } from 'layerguard/parser'
+import { createFlowChecker } from 'layerguard/enforcer'
 
 // Load and validate config
 const { config } = await loadConfig(process.cwd())
@@ -519,12 +519,12 @@ console.log(`Found ${result.violations.length} violations`)
 
 | Export | Description |
 |--------|-------------|
-| `archgate` | Main entry point |
-| `archgate/config` | Config loading and validation |
-| `archgate/parser` | Dependency graph building |
-| `archgate/enforcer` | Violation checking |
-| `archgate/plugins` | Framework plugin interfaces |
-| `archgate/eslint` | ESLint plugin |
+| `layerguard` | Main entry point |
+| `layerguard/config` | Config loading and validation |
+| `layerguard/parser` | Dependency graph building |
+| `layerguard/enforcer` | Violation checking |
+| `layerguard/plugins` | Framework plugin interfaces |
+| `layerguard/eslint` | ESLint plugin |
 
 ## License
 

@@ -1,5 +1,5 @@
 /**
- * Archgate CLI entry point
+ * Layerguard CLI entry point
  */
 
 import { runCheck } from './check.js'
@@ -155,17 +155,17 @@ export function parseArgs(args: string[]): ParsedArgs {
  */
 export function printHelp(): void {
   console.log(`
-archgate v${VERSION}
+layerguard v${VERSION}
 
 Enforce architectural layer boundaries in TypeScript/JavaScript projects.
 
 Usage:
-  archgate <command> [options]
+  layerguard <command> [options]
 
 Commands:
   check       Validate architecture rules, exit 1 on violations
   show        Print the architecture as a text diagram
-  init        Interactive setup to create archgate.config.ts
+  init        Interactive setup to create layerguard.config.ts
   report      Generate HTML report of violations
 
 Options:
@@ -180,7 +180,7 @@ Check options:
   --watch, -w       Watch mode: re-check on file changes
   --no-cache        Disable incremental caching, force full rescan
   --package, -p     Check a specific workspace package (name or path)
-  --all             Check all workspace packages with archgate configs
+  --all             Check all workspace packages with layerguard configs
   --github-pr-comment  Post results as a PR comment (requires gh CLI)
   --pr-number       PR number for comment (auto-detected in GitHub Actions)
 
@@ -192,26 +192,26 @@ Init options:
   -y, --yes       Skip prompts and use defaults
 
 Report options:
-  --output, -o    Output file path (default: archgate-report.html)
+  --output, -o    Output file path (default: layerguard-report.html)
   --markdown      Output as Markdown instead of HTML
   --stdout        Print to stdout instead of file
   --from          Load historical data from JSON file for trends
   --title         Report title
 
 Examples:
-  archgate check                    Run validation
-  archgate check --ci               Run with GitHub Actions annotations
-  archgate check --json             Output as JSON
-  archgate check --watch            Watch for changes and re-check
-  archgate check --package apps/web Check a specific package
-  archgate check --all              Check all packages in monorepo
-  archgate show                     Display architecture diagram
-  archgate show --ascii             Display with ASCII characters
-  archgate init                     Interactive setup wizard
-  archgate init -y                  Quick setup with defaults
-  archgate report                   Generate HTML report
-  archgate report --markdown        Generate Markdown summary
-  archgate report -o report.html    Save report to custom path
+  layerguard check                    Run validation
+  layerguard check --ci               Run with GitHub Actions annotations
+  layerguard check --json             Output as JSON
+  layerguard check --watch            Watch for changes and re-check
+  layerguard check --package apps/web Check a specific package
+  layerguard check --all              Check all packages in monorepo
+  layerguard show                     Display architecture diagram
+  layerguard show --ascii             Display with ASCII characters
+  layerguard init                     Interactive setup wizard
+  layerguard init -y                  Quick setup with defaults
+  layerguard report                   Generate HTML report
+  layerguard report --markdown        Generate Markdown summary
+  layerguard report -o report.html    Save report to custom path
 `)
 }
 
@@ -219,7 +219,7 @@ Examples:
  * Print version
  */
 export function printVersion(): void {
-  console.log(`archgate v${VERSION}`)
+  console.log(`layerguard v${VERSION}`)
 }
 
 /**
@@ -325,13 +325,13 @@ export async function main(argv: string[] = process.argv.slice(2)): Promise<void
 
     default:
       console.error(`Unknown command: ${args.command}`)
-      console.error('Run "archgate --help" for usage.')
+      console.error('Run "layerguard --help" for usage.')
       process.exit(1)
   }
 }
 
 const isDirectExecution = import.meta.url === `file://${process.argv[1]?.replace(/\\/g, '/')}`
-  || process.argv[1]?.endsWith('archgate.js')
+  || process.argv[1]?.endsWith('layerguard.js')
 
 if (isDirectExecution) {
   main().catch((error) => {

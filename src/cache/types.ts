@@ -12,7 +12,7 @@ export const CACHE_VERSION = '1.0.0'
 /**
  * Default cache directory name
  */
-export const CACHE_DIR = '.archgate-cache'
+export const CACHE_DIR = '.layerguard-cache'
 
 /**
  * Cache file name
@@ -64,7 +64,7 @@ export interface CacheData {
   tsconfigMtime?: number
 
   /**
-   * Hash of the archgate config (to invalidate on config changes)
+   * Hash of the layerguard config (to invalidate on config changes)
    */
   configHash?: string
 

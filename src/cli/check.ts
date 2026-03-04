@@ -1,5 +1,5 @@
 /**
- * archgate check command
+ * layerguard check command
  *
  * Validates the project against architectural rules
  */
@@ -61,7 +61,7 @@ export interface CheckCommandOptions {
   package?: string
 
   /**
-   * Check all workspace packages with archgate configs
+   * Check all workspace packages with layerguard configs
    */
   all?: boolean
 }
@@ -260,7 +260,7 @@ async function runWorkspaceCheck(options: CheckCommandOptions): Promise<CheckRes
     const discovery = discoverPackageConfigs(workspace)
 
     if (discovery.packageConfigs.length === 0 && !discovery.rootConfig) {
-      console.error(formatError('No archgate configs found in workspace packages.', { colors: !noColors }))
+      console.error(formatError('No layerguard configs found in workspace packages.', { colors: !noColors }))
       return { passed: false, exitCode: 1, errorCount: 1, warningCount: 0, violations: [] }
     }
 
@@ -271,7 +271,7 @@ async function runWorkspaceCheck(options: CheckCommandOptions): Promise<CheckRes
       const found = findPackageConfig(discovery, packageFilter)
       if (!found) {
         const available = discovery.packageConfigs.map(pc => pc.package.name).join(', ')
-        console.error(formatError(`Package "${packageFilter}" not found or has no archgate config.\nAvailable packages: ${available}`, { colors: !noColors }))
+        console.error(formatError(`Package "${packageFilter}" not found or has no layerguard config.\nAvailable packages: ${available}`, { colors: !noColors }))
         return { passed: false, exitCode: 1, errorCount: 1, warningCount: 0, violations: [] }
       }
       packagesToCheck = [found]

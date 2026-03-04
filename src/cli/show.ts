@@ -1,5 +1,5 @@
 /**
- * archgate show command
+ * layerguard show command
  *
  * Displays the architecture diagram
  */

@@ -11,8 +11,8 @@ dist/
 *.swp
 *.swo
 
-# Archgate cache
-.archgate-cache/
+# Layerguard cache
+.layerguard-cache/
 
 # OS files
 .DS_Store
@@ -30,7 +30,7 @@ npm-debug.log*
 .cache/
 
 coverage/
-archgate-report.html
+layerguard-report.html
 
 # VS Code extension build artifacts
 *.vsix

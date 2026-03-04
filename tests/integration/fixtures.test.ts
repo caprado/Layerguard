@@ -6,7 +6,7 @@ import { fileURLToPath } from 'url'
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url))
 const FIXTURES_DIR = resolve(__dirname, '../fixtures')
-const CLI_PATH = resolve(__dirname, '../../bin/archgate.js')
+const CLI_PATH = resolve(__dirname, '../../bin/layerguard.js')
 
 interface ExpectedResult {
   description: string

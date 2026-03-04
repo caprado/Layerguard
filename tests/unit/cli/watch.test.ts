@@ -3,7 +3,7 @@
  */
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import type { ArchgateConfig } from '../../../src/config/types.js'
+import type { LayerguardConfig } from '../../../src/config/types.js'
 
 vi.mock('node:fs', () => ({
   watch: vi.fn(() => ({
@@ -24,7 +24,7 @@ import * as check from '../../../src/cli/check.js'
 import { watch } from 'node:fs'
 
 describe('startWatch', () => {
-  const mockConfig: ArchgateConfig = {
+  const mockConfig: LayerguardConfig = {
     layers: {
       components: { path: 'src/components' },
       hooks: { path: 'src/hooks' },
@@ -49,7 +49,7 @@ describe('startWatch', () => {
 
     vi.mocked(loader.loadConfig).mockResolvedValue({
       config: mockConfig,
-      configPath: 'archgate.config.ts',
+      configPath: 'layerguard.config.ts',
     })
 
     vi.mocked(check.runCheck).mockResolvedValue(mockCheckResult)
@@ -136,12 +136,12 @@ describe('startWatch', () => {
 
   it('should debounce file changes', async () => {
     let changeCallback: ((eventType: string, filename: string | null) => void) | undefined
-    vi.mocked(watch).mockImplementation((_path, _options, callback) => {
+    vi.mocked(watch).mockImplementation(((_path: unknown, _options: unknown, callback: unknown) => {
       changeCallback = callback as (eventType: string, filename: string | null) => void
       return {
         close: vi.fn(),
-      } as ReturnType<typeof watch>
-    })
+      } as unknown as ReturnType<typeof watch>
+    }) as typeof watch)
 
     const handle = await startWatch({ debounce: 300 })
     vi.mocked(check.runCheck).mockClear()
@@ -161,10 +161,10 @@ describe('startWatch', () => {
 
   it('should ignore non-TypeScript files', async () => {
     let changeCallback: ((eventType: string, filename: string | null) => void) | undefined
-    vi.mocked(watch).mockImplementation((_path, _options, callback) => {
+    vi.mocked(watch).mockImplementation(((_path: unknown, _options: unknown, callback: unknown) => {
       changeCallback = callback as (eventType: string, filename: string | null) => void
-      return { close: vi.fn() } as ReturnType<typeof watch>
-    })
+      return { close: vi.fn() } as unknown as ReturnType<typeof watch>
+    }) as typeof watch)
 
     const handle = await startWatch({ debounce: 100 })
     vi.mocked(check.runCheck).mockClear()
@@ -182,10 +182,10 @@ describe('startWatch', () => {
 
   it('should ignore node_modules changes', async () => {
     let changeCallback: ((eventType: string, filename: string | null) => void) | undefined
-    vi.mocked(watch).mockImplementation((_path, _options, callback) => {
+    vi.mocked(watch).mockImplementation(((_path: unknown, _options: unknown, callback: unknown) => {
       changeCallback = callback as (eventType: string, filename: string | null) => void
-      return { close: vi.fn() } as ReturnType<typeof watch>
-    })
+      return { close: vi.fn() } as unknown as ReturnType<typeof watch>
+    }) as typeof watch)
 
     const handle = await startWatch({ debounce: 100 })
     vi.mocked(check.runCheck).mockClear()
@@ -203,10 +203,10 @@ describe('startWatch', () => {
 
   it('should handle null filename gracefully', async () => {
     let changeCallback: ((eventType: string, filename: string | null) => void) | undefined
-    vi.mocked(watch).mockImplementation((_path, _options, callback) => {
+    vi.mocked(watch).mockImplementation(((_path: unknown, _options: unknown, callback: unknown) => {
       changeCallback = callback as (eventType: string, filename: string | null) => void
-      return { close: vi.fn() } as ReturnType<typeof watch>
-    })
+      return { close: vi.fn() } as unknown as ReturnType<typeof watch>
+    }) as typeof watch)
 
     const handle = await startWatch({ debounce: 100 })
     vi.mocked(check.runCheck).mockClear()

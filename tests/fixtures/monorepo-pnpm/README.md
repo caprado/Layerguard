@@ -11,23 +11,23 @@ monorepo-pnpm/
 ├── tsconfig.json            # Root tsconfig with path mappings
 ├── packages/
 │   ├── web-api/            # Backend API package
-│   │   ├── archgate.config.ts
+│   │   ├── layerguard.config.ts
 │   │   └── src/
 │   │       ├── handlers/
 │   │       └── services/
 │   ├── shared-utils/       # Shared utilities
-│   │   ├── archgate.config.ts
+│   │   ├── layerguard.config.ts
 │   │   └── src/
 │   │       ├── helpers/
 │   │       └── validators/
 │   └── ui-components/      # UI component library
-│       ├── archgate.config.ts
+│       ├── layerguard.config.ts
 │       └── src/
 │           ├── components/
 │           └── hooks/
 └── apps/
     └── web/                # Web application
-        ├── archgate.config.ts
+        ├── layerguard.config.ts
         └── src/
             ├── pages/
             └── components/
@@ -75,17 +75,17 @@ flow: ['pages -> components']
 
 ### Check Single Package by Path
 ```bash
-archgate check --package packages/web-api
+layerguard check --package packages/web-api
 ```
 
 ### Check Single Package by Name
 ```bash
-archgate check --package @monorepo/web-api
+layerguard check --package @monorepo/web-api
 ```
 
 ### Check All Packages
 ```bash
-archgate check --all
+layerguard check --all
 ```
 
 ## Cross-Package Imports
@@ -100,7 +100,7 @@ These imports resolve through the tsconfig.json path mappings.
 ## Key Features Tested
 
 1. **Workspace Detection**: Detects packages from `pnpm-workspace.yaml`
-2. **Per-Package Configs**: Each package has its own `archgate.config.ts`
+2. **Per-Package Configs**: Each package has its own `layerguard.config.ts`
 3. **Package Selection**: `--package` flag works with paths and names
 4. **Bulk Checking**: `--all` flag checks all packages
 5. **Cross-Package Resolution**: Path aliases resolve correctly

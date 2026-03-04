@@ -7,10 +7,10 @@ import {
   writeConfigFile,
   configFileExists,
 } from '../../../src/cli/generator.js'
-import type { ArchgateConfig } from '../../../src/config/types.js'
+import type { LayerguardConfig } from '../../../src/config/types.js'
 
 describe('generateConfigContent', () => {
-  const basicConfig: ArchgateConfig = {
+  const basicConfig: LayerguardConfig = {
     layers: {
       components: { path: 'src/components' },
       hooks: { path: 'src/hooks' },
@@ -21,7 +21,7 @@ describe('generateConfigContent', () => {
   it('generates TypeScript config by default', () => {
     const content = generateConfigContent(basicConfig)
 
-    expect(content).toContain("import { defineConfig } from 'archgate'")
+    expect(content).toContain("import { defineConfig } from 'layerguard'")
     expect(content).toContain('export default defineConfig({')
   })
 
@@ -49,7 +49,7 @@ describe('generateConfigContent', () => {
   })
 
   it('includes framework when set', () => {
-    const configWithFramework: ArchgateConfig = {
+    const configWithFramework: LayerguardConfig = {
       ...basicConfig,
       framework: 'nextjs-app',
     }
@@ -60,7 +60,7 @@ describe('generateConfigContent', () => {
   })
 
   it('includes rules when set', () => {
-    const configWithRules: ArchgateConfig = {
+    const configWithRules: LayerguardConfig = {
       ...basicConfig,
       rules: {
         circular: 'error',
@@ -76,7 +76,7 @@ describe('generateConfigContent', () => {
   })
 
   it('includes ignore patterns when set', () => {
-    const configWithIgnore: ArchgateConfig = {
+    const configWithIgnore: LayerguardConfig = {
       ...basicConfig,
       ignore: ['**/*.test.ts', 'dist/**'],
     }
@@ -103,7 +103,7 @@ describe('generateConfigContent', () => {
   })
 
   it('handles complex layer with sublayers', () => {
-    const config: ArchgateConfig = {
+    const config: LayerguardConfig = {
       layers: {
         components: {
           path: 'src/components',
@@ -139,7 +139,7 @@ describe('writeConfigFile', () => {
   let tempDir: string
 
   beforeEach(() => {
-    tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'archgate-test-'))
+    tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'layerguard-test-'))
   })
 
   afterEach(() => {
@@ -147,14 +147,14 @@ describe('writeConfigFile', () => {
   })
 
   it('writes TypeScript config file', () => {
-    const config: ArchgateConfig = {
+    const config: LayerguardConfig = {
       layers: { components: { path: 'src/components' } },
       flow: [],
     }
 
     const filepath = writeConfigFile(tempDir, config, { typescript: true })
 
-    expect(filepath).toBe(path.join(tempDir, 'archgate.config.ts'))
+    expect(filepath).toBe(path.join(tempDir, 'layerguard.config.ts'))
     expect(fs.existsSync(filepath)).toBe(true)
 
     const content = fs.readFileSync(filepath, 'utf-8')
@@ -162,14 +162,14 @@ describe('writeConfigFile', () => {
   })
 
   it('writes JavaScript config file', () => {
-    const config: ArchgateConfig = {
+    const config: LayerguardConfig = {
       layers: { components: { path: 'src/components' } },
       flow: [],
     }
 
     const filepath = writeConfigFile(tempDir, config, { typescript: false })
 
-    expect(filepath).toBe(path.join(tempDir, 'archgate.config.js'))
+    expect(filepath).toBe(path.join(tempDir, 'layerguard.config.js'))
     expect(fs.existsSync(filepath)).toBe(true)
 
     const content = fs.readFileSync(filepath, 'utf-8')
@@ -181,7 +181,7 @@ describe('configFileExists', () => {
   let tempDir: string
 
   beforeEach(() => {
-    tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'archgate-test-'))
+    tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'layerguard-test-'))
   })
 
   afterEach(() => {
@@ -194,37 +194,37 @@ describe('configFileExists', () => {
     expect(result).toBeNull()
   })
 
-  it('returns filename when archgate.config.ts exists', () => {
-    fs.writeFileSync(path.join(tempDir, 'archgate.config.ts'), '')
+  it('returns filename when layerguard.config.ts exists', () => {
+    fs.writeFileSync(path.join(tempDir, 'layerguard.config.ts'), '')
 
     const result = configFileExists(tempDir)
 
-    expect(result).toBe('archgate.config.ts')
+    expect(result).toBe('layerguard.config.ts')
   })
 
-  it('returns filename when archgate.config.js exists', () => {
-    fs.writeFileSync(path.join(tempDir, 'archgate.config.js'), '')
+  it('returns filename when layerguard.config.js exists', () => {
+    fs.writeFileSync(path.join(tempDir, 'layerguard.config.js'), '')
 
     const result = configFileExists(tempDir)
 
-    expect(result).toBe('archgate.config.js')
+    expect(result).toBe('layerguard.config.js')
   })
 
   it('returns first match when multiple configs exist', () => {
     // .ts should be checked first
-    fs.writeFileSync(path.join(tempDir, 'archgate.config.ts'), '')
-    fs.writeFileSync(path.join(tempDir, 'archgate.config.js'), '')
+    fs.writeFileSync(path.join(tempDir, 'layerguard.config.ts'), '')
+    fs.writeFileSync(path.join(tempDir, 'layerguard.config.js'), '')
 
     const result = configFileExists(tempDir)
 
-    expect(result).toBe('archgate.config.ts')
+    expect(result).toBe('layerguard.config.ts')
   })
 
   it('returns .mjs config when it exists', () => {
-    fs.writeFileSync(path.join(tempDir, 'archgate.config.mjs'), '')
+    fs.writeFileSync(path.join(tempDir, 'layerguard.config.mjs'), '')
 
     const result = configFileExists(tempDir)
 
-    expect(result).toBe('archgate.config.mjs')
+    expect(result).toBe('layerguard.config.mjs')
   })
 })

@@ -17,7 +17,7 @@ describe('workspace/configs', () => {
   let testDir: string
 
   beforeEach(() => {
-    testDir = join(tmpdir(), `archgate-cfg-test-${Date.now()}-${Math.random().toString(36).slice(2)}`)
+    testDir = join(tmpdir(), `layerguard-cfg-test-${Date.now()}-${Math.random().toString(36).slice(2)}`)
     mkdirSync(testDir, { recursive: true })
   })
 
@@ -26,25 +26,25 @@ describe('workspace/configs', () => {
   })
 
   describe('discoverPackageConfigs', () => {
-    it('finds archgate configs in workspace packages', () => {
+    it('finds layerguard configs in workspace packages', () => {
       // Setup workspace
       writeFileSync(
         join(testDir, 'package.json'),
         JSON.stringify({ workspaces: ['packages/*'] })
       )
 
-      // Create package with archgate config
+      // Create package with layerguard config
       const pkgDir = join(testDir, 'packages', 'app')
       mkdirSync(pkgDir, { recursive: true })
       writeFileSync(join(pkgDir, 'package.json'), JSON.stringify({ name: '@my/app' }))
-      writeFileSync(join(pkgDir, 'archgate.config.ts'), 'export default {}')
+      writeFileSync(join(pkgDir, 'layerguard.config.ts'), 'export default {}')
 
       const workspace = detectWorkspace(testDir)
       const discovery = discoverPackageConfigs(workspace)
 
       expect(discovery.packageConfigs).toHaveLength(1)
       expect(discovery.packageConfigs[0]?.package.name).toBe('@my/app')
-      expect(discovery.packageConfigs[0]?.configPath).toContain('archgate.config.ts')
+      expect(discovery.packageConfigs[0]?.configPath).toContain('layerguard.config.ts')
     })
 
     it('finds root config', () => {
@@ -52,7 +52,7 @@ describe('workspace/configs', () => {
         join(testDir, 'package.json'),
         JSON.stringify({ workspaces: ['packages/*'] })
       )
-      writeFileSync(join(testDir, 'archgate.config.ts'), 'export default {}')
+      writeFileSync(join(testDir, 'layerguard.config.ts'), 'export default {}')
 
       const workspace = detectWorkspace(testDir)
       const discovery = discoverPackageConfigs(workspace)
@@ -61,7 +61,7 @@ describe('workspace/configs', () => {
       expect(discovery.rootConfig?.package.name).toBe('root')
     })
 
-    it('handles packages without archgate config', () => {
+    it('handles packages without layerguard config', () => {
       writeFileSync(
         join(testDir, 'package.json'),
         JSON.stringify({ workspaces: ['packages/*'] })
@@ -71,7 +71,7 @@ describe('workspace/configs', () => {
       const pkg1Dir = join(testDir, 'packages', 'with-config')
       mkdirSync(pkg1Dir, { recursive: true })
       writeFileSync(join(pkg1Dir, 'package.json'), JSON.stringify({ name: 'with-config' }))
-      writeFileSync(join(pkg1Dir, 'archgate.config.ts'), 'export default {}')
+      writeFileSync(join(pkg1Dir, 'layerguard.config.ts'), 'export default {}')
 
       const pkg2Dir = join(testDir, 'packages', 'no-config')
       mkdirSync(pkg2Dir, { recursive: true })
@@ -90,17 +90,17 @@ describe('workspace/configs', () => {
         JSON.stringify({ workspaces: ['packages/*'] })
       )
 
-      // Package with .archgaterc.ts
+      // Package with .layerguardrc.ts
       const pkg1Dir = join(testDir, 'packages', 'pkg1')
       mkdirSync(pkg1Dir, { recursive: true })
       writeFileSync(join(pkg1Dir, 'package.json'), JSON.stringify({ name: 'pkg1' }))
-      writeFileSync(join(pkg1Dir, '.archgaterc.ts'), 'export default {}')
+      writeFileSync(join(pkg1Dir, '.layerguardrc.ts'), 'export default {}')
 
-      // Package with archgate.config.js
+      // Package with layerguard.config.js
       const pkg2Dir = join(testDir, 'packages', 'pkg2')
       mkdirSync(pkg2Dir, { recursive: true })
       writeFileSync(join(pkg2Dir, 'package.json'), JSON.stringify({ name: 'pkg2' }))
-      writeFileSync(join(pkg2Dir, 'archgate.config.js'), 'export default {}')
+      writeFileSync(join(pkg2Dir, 'layerguard.config.js'), 'export default {}')
 
       const workspace = detectWorkspace(testDir)
       const discovery = discoverPackageConfigs(workspace)
@@ -119,7 +119,7 @@ describe('workspace/configs', () => {
       const pkgDir = join(testDir, 'packages', 'utils')
       mkdirSync(pkgDir, { recursive: true })
       writeFileSync(join(pkgDir, 'package.json'), JSON.stringify({ name: '@scope/utils' }))
-      writeFileSync(join(pkgDir, 'archgate.config.ts'), 'export default {}')
+      writeFileSync(join(pkgDir, 'layerguard.config.ts'), 'export default {}')
 
       const workspace = detectWorkspace(testDir)
       const discovery = discoverPackageConfigs(workspace)
@@ -138,7 +138,7 @@ describe('workspace/configs', () => {
       const pkgDir = join(testDir, 'packages', 'my-app')
       mkdirSync(pkgDir, { recursive: true })
       writeFileSync(join(pkgDir, 'package.json'), JSON.stringify({ name: 'my-app' }))
-      writeFileSync(join(pkgDir, 'archgate.config.ts'), 'export default {}')
+      writeFileSync(join(pkgDir, 'layerguard.config.ts'), 'export default {}')
 
       const workspace = detectWorkspace(testDir)
       const discovery = discoverPackageConfigs(workspace)
@@ -157,7 +157,7 @@ describe('workspace/configs', () => {
       const pkgDir = join(testDir, 'apps', 'web')
       mkdirSync(pkgDir, { recursive: true })
       writeFileSync(join(pkgDir, 'package.json'), JSON.stringify({ name: '@app/web' }))
-      writeFileSync(join(pkgDir, 'archgate.config.ts'), 'export default {}')
+      writeFileSync(join(pkgDir, 'layerguard.config.ts'), 'export default {}')
 
       const workspace = detectWorkspace(testDir)
       const discovery = discoverPackageConfigs(workspace)
@@ -193,7 +193,7 @@ describe('workspace/configs', () => {
         const pkgDir = join(testDir, 'packages', name)
         mkdirSync(pkgDir, { recursive: true })
         writeFileSync(join(pkgDir, 'package.json'), JSON.stringify({ name }))
-        writeFileSync(join(pkgDir, 'archgate.config.ts'), 'export default {}')
+        writeFileSync(join(pkgDir, 'layerguard.config.ts'), 'export default {}')
       }
 
       const workspace = detectWorkspace(testDir)

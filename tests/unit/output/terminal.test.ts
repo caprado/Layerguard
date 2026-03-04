@@ -124,7 +124,7 @@ describe('formatReport', () => {
 
     const output = formatReport(report)
 
-    expect(output).toContain('archgate check')
+    expect(output).toContain('layerguard check')
     expect(output).toContain('No violations found')
     expect(output).toContain('✓')
   })
@@ -146,7 +146,7 @@ describe('formatReport', () => {
 
     const output = formatReport(report)
 
-    expect(output).toContain('archgate check')
+    expect(output).toContain('layerguard check')
     expect(output).toContain('2 violations found')
     expect(output).toContain('1 error')
     expect(output).toContain('1 warning')

@@ -1,5 +1,5 @@
 /**
- * Archgate - Framework-agnostic architectural layer enforcement
+ * Layerguard - Framework-agnostic architectural layer enforcement
  *
  * Public API for programmatic use
  */
@@ -7,7 +7,7 @@
 // Config types and helpers
 export {
   defineConfig,
-  type ArchgateConfig,
+  type LayerguardConfig,
   type LayerConfig,
   type SublayerConfig,
   type RulesConfig,

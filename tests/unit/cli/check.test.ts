@@ -3,7 +3,7 @@ import { runCheck } from '../../../src/cli/check.js'
 import * as loader from '../../../src/config/loader.js'
 import * as incrementalBuilder from '../../../src/parser/incremental.js'
 import * as workspace from '../../../src/workspace/index.js'
-import type { ArchgateConfig } from '../../../src/config/types.js'
+import type { LayerguardConfig } from '../../../src/config/types.js'
 import type { DependencyGraph } from '../../../src/parser/graph.js'
 import type { IncrementalBuildResult } from '../../../src/parser/incremental.js'
 
@@ -13,7 +13,7 @@ vi.mock('../../../src/parser/incremental.js')
 vi.mock('../../../src/workspace/index.js')
 
 describe('runCheck', () => {
-  const mockConfig: ArchgateConfig = {
+  const mockConfig: LayerguardConfig = {
     layers: {
       components: { path: 'src/components' },
       hooks: { path: 'src/hooks' },
@@ -54,7 +54,7 @@ describe('runCheck', () => {
   it('returns passed: true when no violations found', async () => {
     vi.mocked(loader.loadConfig).mockResolvedValue({
       config: mockConfig,
-      configPath: 'archgate.config.ts',
+      configPath: 'layerguard.config.ts',
     })
     vi.mocked(incrementalBuilder.buildDependencyGraphIncremental).mockReturnValue(mockBuildResult)
 
@@ -69,7 +69,7 @@ describe('runCheck', () => {
   it('returns check result with all required fields', async () => {
     vi.mocked(loader.loadConfig).mockResolvedValue({
       config: mockConfig,
-      configPath: 'archgate.config.ts',
+      configPath: 'layerguard.config.ts',
     })
     vi.mocked(incrementalBuilder.buildDependencyGraphIncremental).mockReturnValue(mockBuildResult)
 
@@ -86,7 +86,7 @@ describe('runCheck', () => {
   it('outputs in JSON format when requested', async () => {
     vi.mocked(loader.loadConfig).mockResolvedValue({
       config: mockConfig,
-      configPath: 'archgate.config.ts',
+      configPath: 'layerguard.config.ts',
     })
     vi.mocked(incrementalBuilder.buildDependencyGraphIncremental).mockReturnValue(mockBuildResult)
 
@@ -100,7 +100,7 @@ describe('runCheck', () => {
   it('outputs in CI format when requested', async () => {
     vi.mocked(loader.loadConfig).mockResolvedValue({
       config: mockConfig,
-      configPath: 'archgate.config.ts',
+      configPath: 'layerguard.config.ts',
     })
     vi.mocked(incrementalBuilder.buildDependencyGraphIncremental).mockReturnValue(mockBuildResult)
 
@@ -114,7 +114,7 @@ describe('runCheck', () => {
   it('handles config load errors', async () => {
     vi.mocked(loader.loadConfig).mockRejectedValue(new Error('Config not found'))
 
-    const result = await runCheck()
+    const result = await runCheck({ format: 'terminal' })
 
     expect(result.passed).toBe(false)
     expect(result.exitCode).toBe(1)
@@ -122,7 +122,7 @@ describe('runCheck', () => {
   })
 
   it('handles invalid config', async () => {
-    const invalidConfig: ArchgateConfig = {
+    const invalidConfig: LayerguardConfig = {
       layers: {
         invalid: { path: '' }, // Invalid: empty path
       },
@@ -131,7 +131,7 @@ describe('runCheck', () => {
 
     vi.mocked(loader.loadConfig).mockResolvedValue({
       config: invalidConfig,
-      configPath: 'archgate.config.ts',
+      configPath: 'layerguard.config.ts',
     })
 
     const result = await runCheck()
@@ -144,7 +144,7 @@ describe('runCheck', () => {
   it('respects noColors option', async () => {
     vi.mocked(loader.loadConfig).mockResolvedValue({
       config: mockConfig,
-      configPath: 'archgate.config.ts',
+      configPath: 'layerguard.config.ts',
     })
     vi.mocked(incrementalBuilder.buildDependencyGraphIncremental).mockReturnValue(mockBuildResult)
 
@@ -158,7 +158,7 @@ describe('runCheck', () => {
   it('passes typeOnlyImports option to graph builder', async () => {
     vi.mocked(loader.loadConfig).mockResolvedValue({
       config: mockConfig,
-      configPath: 'archgate.config.ts',
+      configPath: 'layerguard.config.ts',
     })
     vi.mocked(incrementalBuilder.buildDependencyGraphIncremental).mockReturnValue(mockBuildResult)
 
@@ -172,14 +172,14 @@ describe('runCheck', () => {
   })
 
   it('uses config ignore patterns', async () => {
-    const configWithIgnore: ArchgateConfig = {
+    const configWithIgnore: LayerguardConfig = {
       ...mockConfig,
       ignore: ['**/*.test.ts'],
     }
 
     vi.mocked(loader.loadConfig).mockResolvedValue({
       config: configWithIgnore,
-      configPath: 'archgate.config.ts',
+      configPath: 'layerguard.config.ts',
     })
     vi.mocked(incrementalBuilder.buildDependencyGraphIncremental).mockReturnValue(mockBuildResult)
 
@@ -193,7 +193,7 @@ describe('runCheck', () => {
   })
 
   it('respects circular dependency rule setting', async () => {
-    const configWithCircularOff: ArchgateConfig = {
+    const configWithCircularOff: LayerguardConfig = {
       ...mockConfig,
       rules: {
         circular: 'off',
@@ -202,7 +202,7 @@ describe('runCheck', () => {
 
     vi.mocked(loader.loadConfig).mockResolvedValue({
       config: configWithCircularOff,
-      configPath: 'archgate.config.ts',
+      configPath: 'layerguard.config.ts',
     })
     vi.mocked(incrementalBuilder.buildDependencyGraphIncremental).mockReturnValue(mockBuildResult)
 
@@ -216,7 +216,7 @@ describe('runCheck', () => {
     // Config with potential warning (e.g., framework that doesn't match project)
     vi.mocked(loader.loadConfig).mockResolvedValue({
       config: mockConfig,
-      configPath: 'archgate.config.ts',
+      configPath: 'layerguard.config.ts',
     })
     vi.mocked(incrementalBuilder.buildDependencyGraphIncremental).mockReturnValue(mockBuildResult)
 
@@ -251,7 +251,7 @@ describe('runCheck', () => {
   it('respects noCache option', async () => {
     vi.mocked(loader.loadConfig).mockResolvedValue({
       config: mockConfig,
-      configPath: 'archgate.config.ts',
+      configPath: 'layerguard.config.ts',
     })
     vi.mocked(incrementalBuilder.buildDependencyGraphIncremental).mockReturnValue(mockBuildResult)
 
@@ -266,7 +266,7 @@ describe('runCheck', () => {
 })
 
 describe('runCheck with workspace options', () => {
-  const mockConfig: ArchgateConfig = {
+  const mockConfig: LayerguardConfig = {
     layers: {
       components: { path: 'src/components' },
     },
@@ -300,7 +300,7 @@ describe('runCheck with workspace options', () => {
 
   const createMockPkgConfig = (name: string, pkgPath: string) => ({
     package: createMockPackage(name, pkgPath),
-    configPath: `${pkgPath}/archgate.config.ts`,
+    configPath: `${pkgPath}/layerguard.config.ts`,
     config: null,
   })
 
@@ -421,7 +421,7 @@ describe('runCheck with workspace options', () => {
     })
     vi.mocked(loader.loadConfig).mockResolvedValue({
       config: mockConfig,
-      configPath: 'archgate.config.ts',
+      configPath: 'layerguard.config.ts',
     })
     vi.mocked(incrementalBuilder.buildDependencyGraphIncremental).mockReturnValue(mockBuildResult)
 

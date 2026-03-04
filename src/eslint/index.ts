@@ -1,22 +1,22 @@
 /**
- * Archgate ESLint Plugin
+ * Layerguard ESLint Plugin
  *
  * Provides ESLint rules for enforcing architectural boundaries defined
- * in archgate configuration.
+ * in layerguard configuration.
  *
  * Usage in eslint.config.js:
  *
  * ```js
- * import archgate from 'archgate/eslint'
+ * import layerguard from 'layerguard/eslint'
  *
  * export default [
  *   {
  *     plugins: {
- *       archgate,
+ *       layerguard,
  *     },
  *     rules: {
- *       'archgate/layer-boundaries': 'error',
- *       'archgate/unlayered-imports': 'warn',
+ *       'layerguard/layer-boundaries': 'error',
+ *       'layerguard/unlayered-imports': 'warn',
  *     },
  *   },
  * ]
@@ -28,11 +28,11 @@ import layerBoundaries from './rules/layer-boundaries.js'
 import unlayeredImports from './rules/unlayered-imports.js'
 
 /**
- * Archgate ESLint plugin
+ * Layerguard ESLint plugin
  */
 const plugin: ESLint.Plugin = {
   meta: {
-    name: 'archgate',
+    name: 'layerguard',
     version: '0.1.0',
   },
 
@@ -49,15 +49,15 @@ const plugin: ESLint.Plugin = {
      *
      * Usage:
      * ```js
-     * import archgate from 'archgate/eslint'
-     * export default [archgate.configs.recommended]
+     * import layerguard from 'layerguard/eslint'
+     * export default [layerguard.configs.recommended]
      * ```
      */
     get recommended(): Linter.Config {
       return {
-        plugins: { archgate: plugin },
+        plugins: { layerguard: plugin },
         rules: {
-          'archgate/layer-boundaries': 'error',
+          'layerguard/layer-boundaries': 'error',
         },
       }
     },
@@ -69,16 +69,16 @@ const plugin: ESLint.Plugin = {
      *
      * Usage:
      * ```js
-     * import archgate from 'archgate/eslint'
-     * export default [archgate.configs.strict]
+     * import layerguard from 'layerguard/eslint'
+     * export default [layerguard.configs.strict]
      * ```
      */
     get strict(): Linter.Config {
       return {
-        plugins: { archgate: plugin },
+        plugins: { layerguard: plugin },
         rules: {
-          'archgate/layer-boundaries': 'error',
-          'archgate/unlayered-imports': 'error',
+          'layerguard/layer-boundaries': 'error',
+          'layerguard/unlayered-imports': 'error',
         },
       }
     },
@@ -90,4 +90,4 @@ export default plugin
 // Named exports for convenience
 export { layerBoundaries, unlayeredImports }
 export { clearConfigCache, getCacheStats } from './config-cache.js'
-export type { CachedConfig, ArchgateRuleOptions } from './types.js'
+export type { CachedConfig, LayerguardRuleOptions } from './types.js'

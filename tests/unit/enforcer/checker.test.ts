@@ -1,10 +1,10 @@
 import { describe, it, expect } from 'vitest'
-import { FlowChecker, createFlowChecker, checkDependencyGraph } from '../../../src/enforcer/checker.js'
-import type { ArchgateConfig } from '../../../src/config/types.js'
+import { createFlowChecker, checkDependencyGraph } from '../../../src/enforcer/checker.js'
+import type { LayerguardConfig } from '../../../src/config/types.js'
 import type { DependencyGraph, DependencyEdge } from '../../../src/parser/graph.js'
 
 describe('FlowChecker', () => {
-  const basicConfig: ArchgateConfig = {
+  const basicConfig: LayerguardConfig = {
     layers: {
       components: { path: 'src/components' },
       hooks: { path: 'src/hooks' },
@@ -13,7 +13,7 @@ describe('FlowChecker', () => {
     flow: ['components -> hooks', 'hooks -> utils', 'components -> utils'],
   }
 
-  const configWithSublayers: ArchgateConfig = {
+  const configWithSublayers: LayerguardConfig = {
     layers: {
       components: {
         path: 'src/components',
@@ -28,7 +28,7 @@ describe('FlowChecker', () => {
     flow: ['components -> hooks'],
   }
 
-  const bidirectionalConfig: ArchgateConfig = {
+  const bidirectionalConfig: LayerguardConfig = {
     layers: {
       hooks: { path: 'src/hooks' },
       api: { path: 'src/api' },
@@ -306,7 +306,7 @@ describe('FlowChecker', () => {
 
 describe('checkDependencyGraph', () => {
   it('is a convenience function that creates checker and runs check', () => {
-    const config: ArchgateConfig = {
+    const config: LayerguardConfig = {
       layers: {
         components: { path: 'src/components' },
         hooks: { path: 'src/hooks' },
@@ -341,7 +341,7 @@ describe('checkDependencyGraph', () => {
 })
 
 describe('barrel resolution (import-site enforcement)', () => {
-  const barrelConfig: ArchgateConfig = {
+  const barrelConfig: LayerguardConfig = {
     layers: {
       handlers: { path: 'src/handlers' },
       services: { path: 'src/services' },
@@ -406,7 +406,7 @@ describe('barrel resolution (import-site enforcement)', () => {
 
 describe('barrelResolution config option', () => {
   it('accepts import-site as a valid option', () => {
-    const config: ArchgateConfig = {
+    const config: LayerguardConfig = {
       layers: {
         a: { path: 'src/a' },
         b: { path: 'src/b' },
@@ -422,7 +422,7 @@ describe('barrelResolution config option', () => {
   })
 
   it('accepts origin as a valid option', () => {
-    const config: ArchgateConfig = {
+    const config: LayerguardConfig = {
       layers: {
         a: { path: 'src/a' },
         b: { path: 'src/b' },
@@ -438,7 +438,7 @@ describe('barrelResolution config option', () => {
   })
 
   it('defaults to import-site when not specified', () => {
-    const config: ArchgateConfig = {
+    const config: LayerguardConfig = {
       layers: {
         handlers: { path: 'src/handlers' },
         services: { path: 'src/services' },
@@ -463,7 +463,7 @@ describe('barrelResolution config option', () => {
 })
 
 describe('orphan detection', () => {
-  const config: ArchgateConfig = {
+  const config: LayerguardConfig = {
     layers: {
       components: { path: 'src/components' },
       utils: { path: 'src/utils' },
@@ -604,7 +604,7 @@ describe('orphan detection', () => {
 })
 
 describe('advanced rules options', () => {
-  const config: ArchgateConfig = {
+  const config: LayerguardConfig = {
     layers: {
       components: { path: 'src/components' },
       utils: { path: 'src/utils' },
@@ -615,16 +615,14 @@ describe('advanced rules options', () => {
   const createGraph = (files: string[], edges: Array<{ source: string; target: string }>): DependencyGraph => ({
     projectRoot: '/test',
     files: new Set(files),
-    adjacencyList: new Map(files.map(file => [file, edges.filter(e => e.source === file).map(e => ({
-      target: e.target,
-      isTypeOnly: false,
-      specifier: `./${e.target.split('/').pop()}`,
-    }))])),
+    adjacencyList: new Map(files.map(file => [file, new Set(edges.filter(e => e.source === file).map(e => e.target))])),
     edges: edges.map(e => ({
       source: e.source,
       target: e.target,
       isTypeOnly: false,
       specifier: `./${e.target.split('/').pop()}`,
+      kind: 'static' as const,
+      line: 1,
     })),
     parseErrors: new Map(),
     unresolvedImports: [],

@@ -1,5 +1,5 @@
 /**
- * archgate report command
+ * layerguard report command
  *
  * Generates HTML reports from check results or historical data
  */
@@ -26,7 +26,7 @@ export interface ReportCommandOptions {
   cwd?: string
 
   /**
-   * Output file path (default: archgate-report.html)
+   * Output file path (default: layerguard-report.html)
    */
   output?: string
 
@@ -92,12 +92,12 @@ export interface ReportResult {
 export async function runReport(options: ReportCommandOptions = {}): Promise<ReportResult> {
   const {
     cwd = process.cwd(),
-    output = 'archgate-report.html',
+    output = 'layerguard-report.html',
     format = 'html',
     from,
     typeOnlyImports = false,
     noColors = false,
-    title = 'Archgate Report',
+    title = 'Layerguard Report',
     stdout = false,
   } = options
 
@@ -232,7 +232,7 @@ function loadHistoricalData(path: string): HistoricalDataPoint[] {
         }
       }
     } else if (data.history) {
-      // Support archgate-history.json format
+      // Support layerguard-history.json format
       for (const item of data.history) {
         const point = parseHistoricalItem(item)
         if (point) {

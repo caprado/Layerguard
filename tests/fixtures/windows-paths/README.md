@@ -5,7 +5,7 @@ Tests cross-platform path normalization for Windows-style backslash paths.
 ## The Problem
 
 On Windows, paths often use backslashes (`\`), while Unix uses forward slashes (`/`).
-If Archgate doesn't normalize these, layer matching can fail.
+If Layerguard doesn't normalize these, layer matching can fail.
 
 ## Test Configuration
 

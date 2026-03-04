@@ -1,13 +1,13 @@
 /**
- * archgate init command
+ * layerguard init command
  *
- * Interactive setup to create archgate.config.ts
+ * Interactive setup to create layerguard.config.ts
  */
 
 import * as p from '@clack/prompts'
 import * as fs from 'node:fs'
 import * as path from 'node:path'
-import type { ArchgateConfig, LayerConfig, SublayerConfig } from '../config/types.js'
+import type { LayerguardConfig, LayerConfig, SublayerConfig } from '../config/types.js'
 import {
   detectFramework,
   scanForLayers,
@@ -47,7 +47,7 @@ export async function runInit(options: InitCommandOptions = {}): Promise<void> {
   // Check if config already exists
   const existingConfig = configFileExists(cwd)
   if (existingConfig) {
-    p.intro('archgate init')
+    p.intro('layerguard init')
     p.log.warn(`Config file already exists: ${existingConfig}`)
 
     if (!yes) {
@@ -64,7 +64,7 @@ export async function runInit(options: InitCommandOptions = {}): Promise<void> {
   }
 
   // Start the interactive flow
-  p.intro('Welcome to archgate')
+  p.intro('Welcome to layerguard')
 
   // Detect framework
   const detection = detectFramework(cwd)
@@ -113,7 +113,7 @@ export async function runInit(options: InitCommandOptions = {}): Promise<void> {
     }
   }
 
-  let config: ArchgateConfig
+  let config: LayerguardConfig
 
   if (usePreset && selectedPreset) {
     // Use preset config
@@ -129,7 +129,7 @@ export async function runInit(options: InitCommandOptions = {}): Promise<void> {
     if (!yes) {
       // Ask if they want to choose a preset or go custom
       const presetChoice = await p.select({
-        message: 'How would you like to set up archgate?',
+        message: 'How would you like to set up layerguard?',
         options: [
           {
             value: 'scan',
@@ -230,8 +230,8 @@ export async function runInit(options: InitCommandOptions = {}): Promise<void> {
 
   p.outro(`Config written to ${path.basename(filepath)}`)
   console.log('')
-  console.log('Run `archgate check` to validate your architecture.')
-  console.log('Run `archgate show` to visualize the architecture.')
+  console.log('Run `layerguard check` to validate your architecture.')
+  console.log('Run `layerguard show` to visualize the architecture.')
 }
 
 /**
@@ -240,7 +240,7 @@ export async function runInit(options: InitCommandOptions = {}): Promise<void> {
 async function runCustomSetup(
   cwd: string,
   framework?: DetectedFramework
-): Promise<ArchgateConfig | null> {
+): Promise<LayerguardConfig | null> {
   // Scan for directories
   const directories = scanForLayers(cwd)
 
@@ -425,7 +425,7 @@ async function runCustomSetup(
       .filter((r) => r)
   }
 
-  const config: ArchgateConfig = {
+  const config: LayerguardConfig = {
     layers,
     flow,
   }

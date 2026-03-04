@@ -6,20 +6,20 @@
 
 import * as vscode from 'vscode'
 import * as path from 'path'
-import type { ArchgateService } from '../services/archgateService.js'
-import type { Violation } from 'archgate/enforcer'
+import type { LayerguardService } from '../services/layerguardService.js'
+import type { Violation } from 'layerguard/enforcer'
 
 /**
- * Diagnostics provider for archgate violations
+ * Diagnostics provider for layerguard violations
  */
 export class DiagnosticsProvider {
   private diagnosticCollection: vscode.DiagnosticCollection
-  private service: ArchgateService
+  private service: LayerguardService
   private disposables: vscode.Disposable[] = []
 
-  constructor(service: ArchgateService) {
+  constructor(service: LayerguardService) {
     this.service = service
-    this.diagnosticCollection = vscode.languages.createDiagnosticCollection('archgate')
+    this.diagnosticCollection = vscode.languages.createDiagnosticCollection('layerguard')
   }
 
   /**
@@ -29,7 +29,7 @@ export class DiagnosticsProvider {
     // Subscribe to document changes
     this.disposables.push(
       vscode.workspace.onDidSaveTextDocument(doc => {
-        const config = vscode.workspace.getConfiguration('archgate')
+        const config = vscode.workspace.getConfiguration('layerguard')
         if (config.get('validateOnSave', true)) {
           this.updateDiagnosticsForDocument(doc)
         }
@@ -38,7 +38,7 @@ export class DiagnosticsProvider {
 
     this.disposables.push(
       vscode.workspace.onDidChangeTextDocument(event => {
-        const config = vscode.workspace.getConfiguration('archgate')
+        const config = vscode.workspace.getConfiguration('layerguard')
         if (config.get('validateOnType', false)) {
           this.updateDiagnosticsForDocument(event.document)
         }
@@ -71,18 +71,18 @@ export class DiagnosticsProvider {
    * Update diagnostics for all open documents
    */
   async refreshAll(): Promise<void> {
-    console.log('Archgate: refreshAll() called')
+    console.log('Layerguard: refreshAll() called')
     // Clear all diagnostics
     this.diagnosticCollection.clear()
 
     // Run full check
     const result = await this.service.check()
     if (!result) {
-      console.log('Archgate: refreshAll() - no check result')
+      console.log('Layerguard: refreshAll() - no check result')
       return
     }
 
-    console.log('Archgate: refreshAll() - found', result.violations.length, 'violations')
+    console.log('Layerguard: refreshAll() - found', result.violations.length, 'violations')
     const workspaceRoot = this.service.getWorkspaceRoot()
 
     // Group violations by file
@@ -111,7 +111,7 @@ export class DiagnosticsProvider {
       return
     }
 
-    const config = vscode.workspace.getConfiguration('archgate')
+    const config = vscode.workspace.getConfiguration('layerguard')
     if (!config.get('enable', true)) {
       this.diagnosticCollection.delete(document.uri)
       return
@@ -119,9 +119,9 @@ export class DiagnosticsProvider {
 
     // Get violations for this file
     const filePath = document.uri.fsPath
-    console.log('Archgate: Checking file:', filePath)
+    console.log('Layerguard: Checking file:', filePath)
     const violations = await this.service.getViolationsForFile(filePath)
-    console.log('Archgate: Found violations:', violations.length)
+    console.log('Layerguard: Found violations:', violations.length)
 
     // Convert to diagnostics
     const diagnostics = violations.map(v => this.violationToDiagnostic(v, document))
@@ -153,7 +153,7 @@ export class DiagnosticsProvider {
       : vscode.DiagnosticSeverity.Warning
 
     const diagnostic = new vscode.Diagnostic(range, violation.message, severity)
-    diagnostic.source = 'archgate'
+    diagnostic.source = 'layerguard'
     diagnostic.code = violation.type
 
     // Add related information for target file
@@ -173,7 +173,7 @@ export class DiagnosticsProvider {
   }
 
   /**
-   * Check if a document is relevant for archgate
+   * Check if a document is relevant for layerguard
    */
   private isRelevantDocument(document: vscode.TextDocument): boolean {
     const languageIds = ['typescript', 'typescriptreact', 'javascript', 'javascriptreact']

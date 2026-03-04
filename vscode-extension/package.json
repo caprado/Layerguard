@@ -1,13 +1,13 @@
 {
-  "name": "archgate-vscode",
-  "displayName": "Archgate",
+  "name": "layerguard-vscode",
+  "displayName": "Layerguard",
   "description": "Enforce architectural layer boundaries in TypeScript/JavaScript projects",
   "version": "0.1.0",
-  "publisher": "archgate",
+  "publisher": "layerguard",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/caprado/archgate"
+    "url": "https://github.com/caprado/layerguard"
   },
   "engines": {
     "vscode": "^1.85.0"
@@ -26,55 +26,55 @@
   ],
   "activationEvents": [
     "onStartupFinished",
-    "onView:archgateArchitecture"
+    "onView:layerguardArchitecture"
   ],
   "main": "./dist/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "archgate.showArchitecture",
+        "command": "layerguard.showArchitecture",
         "title": "Show Architecture",
-        "category": "Archgate"
+        "category": "Layerguard"
       },
       {
-        "command": "archgate.checkProject",
+        "command": "layerguard.checkProject",
         "title": "Check Project",
-        "category": "Archgate"
+        "category": "Layerguard"
       },
       {
-        "command": "archgate.refreshDiagnostics",
+        "command": "layerguard.refreshDiagnostics",
         "title": "Refresh Diagnostics",
-        "category": "Archgate"
+        "category": "Layerguard"
       }
     ],
     "views": {
       "explorer": [
         {
-          "id": "archgateArchitecture",
+          "id": "layerguardArchitecture",
           "name": "Architecture",
           "type": "webview"
         }
       ]
     },
     "configuration": {
-      "title": "Archgate",
+      "title": "Layerguard",
       "properties": {
-        "archgate.enable": {
+        "layerguard.enable": {
           "type": "boolean",
           "default": true,
-          "description": "Enable Archgate diagnostics"
+          "description": "Enable Layerguard diagnostics"
         },
-        "archgate.showDecorations": {
+        "layerguard.showDecorations": {
           "type": "boolean",
           "default": true,
           "description": "Show layer decorations in file explorer"
         },
-        "archgate.validateOnSave": {
+        "layerguard.validateOnSave": {
           "type": "boolean",
           "default": true,
           "description": "Validate architecture on file save"
         },
-        "archgate.validateOnType": {
+        "layerguard.validateOnType": {
           "type": "boolean",
           "default": false,
           "description": "Validate architecture while typing (may impact performance)"
@@ -84,10 +84,10 @@
     "menus": {
       "commandPalette": [
         {
-          "command": "archgate.showArchitecture"
+          "command": "layerguard.showArchitecture"
         },
         {
-          "command": "archgate.checkProject"
+          "command": "layerguard.checkProject"
         }
       ]
     }
@@ -105,7 +105,7 @@
     "@types/node": "^25.3.3",
     "@types/vscode": "^1.85.0",
     "@vscode/vsce": "^3.7.1",
-    "archgate": "file:..",
+    "layerguard": "file:..",
     "esbuild": "^0.27.3",
     "typescript": "^5.3.0"
   },

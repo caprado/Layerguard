@@ -1,8 +1,8 @@
 /**
- * ESLint rule: archgate/unlayered-imports
+ * ESLint rule: layerguard/unlayered-imports
  *
  * Flags imports from layered files to unlayered files when the
- * unlayeredImports rule is set to 'error' or 'warn' in archgate config.
+ * unlayeredImports rule is set to 'error' or 'warn' in layerguard config.
  */
 
 import type { Rule } from 'eslint'
@@ -31,7 +31,7 @@ const rule: Rule.RuleModule = {
         properties: {
           configPath: {
             type: 'string',
-            description: 'Path to archgate config file',
+            description: 'Path to layerguard config file',
           },
         },
         additionalProperties: false,

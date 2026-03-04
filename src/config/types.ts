@@ -1,13 +1,13 @@
 /**
- * Archgate Configuration Types
+ * Layerguard Configuration Types
  *
- * These types define the structure of archgate.config.ts files.
+ * These types define the structure of layerguard.config.ts files.
  */
 
 /**
- * Main configuration interface for Archgate
+ * Main configuration interface for Layerguard
  */
-export interface ArchgateConfig {
+export interface LayerguardConfig {
   /**
    * Optional framework identifier for framework-specific intelligence.
    * Enables features like orphan detection and special file handling.
@@ -216,6 +216,6 @@ export type FlowGraph = Map<string, Set<string>>
 /**
  * Helper function for type-safe config definition
  */
-export function defineConfig(config: ArchgateConfig): ArchgateConfig {
+export function defineConfig(config: LayerguardConfig): LayerguardConfig {
   return config
 }

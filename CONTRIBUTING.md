@@ -1,13 +1,13 @@
-# Contributing to Archgate
+# Contributing to Layerguard
 
-Thank you for your interest in contributing to Archgate! This document provides guidelines and information for contributors.
+Thank you for your interest in contributing to Layerguard! This document provides guidelines and information for contributors.
 
 ## Development Setup
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/archgate.git
-   cd archgate
+   git clone https://github.com/yourusername/layerguard.git
+   cd layerguard
    ```
 
 2. **Install dependencies**
@@ -28,7 +28,7 @@ Thank you for your interest in contributing to Archgate! This document provides 
 ## Project Structure
 
 ```
-archgate/
+layerguard/
   src/
     cli/           # CLI commands (check, init, show)
     config/        # Config loading and validation
@@ -40,7 +40,7 @@ archgate/
     unit/          # Unit tests
     integration/   # Integration tests with fixtures
   bin/
-    archgate.js    # CLI entry point
+    layerguard.js    # CLI entry point
 ```
 
 ## Development Scripts
@@ -64,7 +64,7 @@ npm run test:coverage
 # Type check without emitting
 npm run typecheck
 
-# Run archgate on itself (self-hosting test)
+# Run layerguard on itself (self-hosting test)
 npm run test:self
 ```
 
@@ -94,7 +94,7 @@ describe('parseFlowRules', () => {
 
 ## Adding a Framework Plugin
 
-Framework plugins help Archgate understand framework-specific conventions. To add a new plugin:
+Framework plugins help Layerguard understand framework-specific conventions. To add a new plugin:
 
 1. **Create the plugin file** in `src/plugins/`:
 
@@ -195,7 +195,7 @@ test: add edge case tests for sublayer flow
 
 When reporting issues, please include:
 
-1. **Archgate version** (`npx archgate --version`)
+1. **Layerguard version** (`npx layerguard --version`)
 2. **Node.js version** (`node --version`)
 3. **TypeScript version** (`npx tsc --version`)
 4. **Your config file** (redacted if needed)

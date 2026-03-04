@@ -1,0 +1,440 @@
+/**
+ * Tests for ESLint unlayered-imports rule
+ */
+
+import { describe, it, expect, beforeEach, vi } from 'vitest'
+import type { Rule } from 'eslint'
+import type { ArchgateConfig } from '../../../src/config/types.js'
+
+// Mock dependencies before importing the rule
+vi.mock('../../../src/eslint/config-cache.js', () => ({
+  getConfig: vi.fn(),
+}))
+
+vi.mock('../../../src/parser/resolver.js', () => ({
+  createResolverContext: vi.fn(() => ({})),
+  resolveImport: vi.fn(),
+}))
+
+vi.mock('../../../src/enforcer/mapper.js', () => ({
+  createLayerMapper: vi.fn(),
+}))
+
+import { getConfig } from '../../../src/eslint/config-cache.js'
+import { resolveImport, createResolverContext } from '../../../src/parser/resolver.js'
+import { createLayerMapper } from '../../../src/enforcer/mapper.js'
+import rule from '../../../src/eslint/rules/unlayered-imports.js'
+
+describe('ESLint unlayered-imports rule', () => {
+  let mockContext: Rule.RuleContext
+  let reportedErrors: Array<{
+    messageId: string
+    data?: Record<string, string>
+    loc?: { start: { line: number; column: number }; end: { line: number; column: number } }
+  }>
+
+  const mockConfig: ArchgateConfig = {
+    layers: {
+      ui: ['src/components/**/*'],
+      services: ['src/services/**/*'],
+    },
+    flow: ['ui -> services'],
+    rules: {
+      unlayeredImports: 'warn',
+    },
+  }
+
+  beforeEach(() => {
+    vi.clearAllMocks()
+    reportedErrors = []
+
+    mockContext = {
+      filename: 'C:/project/src/components/Button.tsx',
+      getFilename: () => 'C:/project/src/components/Button.tsx',
+      report: (descriptor: unknown) => {
+        const d = descriptor as {
+          messageId: string
+          data?: Record<string, string>
+          loc?: { start: { line: number; column: number }; end: { line: number; column: number } }
+        }
+        reportedErrors.push({
+          messageId: d.messageId,
+          data: d.data,
+          loc: d.loc,
+        })
+      },
+    } as unknown as Rule.RuleContext
+  })
+
+  describe('meta', () => {
+    it('should have correct meta information', () => {
+      expect(rule.meta).toBeDefined()
+      expect(rule.meta?.type).toBe('problem')
+      expect(rule.meta?.docs?.description).toContain('unlayered')
+      expect(rule.meta?.messages?.unlayeredImport).toBeDefined()
+    })
+
+    it('should have a schema for options', () => {
+      expect(rule.meta?.schema).toBeDefined()
+      expect(Array.isArray(rule.meta?.schema)).toBe(true)
+    })
+  })
+
+  describe('create', () => {
+    it('should return empty object when no config is found', () => {
+      vi.mocked(getConfig).mockReturnValue(null)
+
+      const listeners = rule.create(mockContext)
+
+      expect(listeners).toEqual({})
+    })
+
+    it('should return empty object when unlayeredImports is set to ignore', () => {
+      const configWithIgnore: ArchgateConfig = {
+        ...mockConfig,
+        rules: { unlayeredImports: 'ignore' },
+      }
+
+      vi.mocked(getConfig).mockReturnValue({
+        config: configWithIgnore,
+        configPath: 'C:/project/archgate.config.ts',
+        projectRoot: 'C:/project',
+        loadedAt: Date.now(),
+      })
+
+      vi.mocked(createLayerMapper).mockReturnValue({
+        map: vi.fn().mockReturnValue({ layer: 'ui', pattern: 'src/components/**/*' }),
+        layers: mockConfig.layers,
+      })
+
+      const listeners = rule.create(mockContext)
+
+      expect(listeners).toEqual({})
+    })
+
+    it('should return empty object when source file is not in any layer', () => {
+      vi.mocked(getConfig).mockReturnValue({
+        config: mockConfig,
+        configPath: 'C:/project/archgate.config.ts',
+        projectRoot: 'C:/project',
+        loadedAt: Date.now(),
+      })
+
+      vi.mocked(createLayerMapper).mockReturnValue({
+        map: vi.fn().mockReturnValue(null), // File not in any layer
+        layers: mockConfig.layers,
+      })
+
+      const listeners = rule.create(mockContext)
+
+      expect(listeners).toEqual({})
+    })
+
+    it('should return listeners when source file is in a layer and rule is enabled', () => {
+      vi.mocked(getConfig).mockReturnValue({
+        config: mockConfig,
+        configPath: 'C:/project/archgate.config.ts',
+        projectRoot: 'C:/project',
+        loadedAt: Date.now(),
+      })
+
+      vi.mocked(createLayerMapper).mockReturnValue({
+        map: vi.fn().mockReturnValue({ layer: 'ui', pattern: 'src/components/**/*' }),
+        layers: mockConfig.layers,
+      })
+
+      const listeners = rule.create(mockContext)
+
+      expect(listeners.ImportDeclaration).toBeDefined()
+      expect(listeners.CallExpression).toBeDefined()
+      expect(listeners.ImportExpression).toBeDefined()
+    })
+  })
+
+  describe('import checking', () => {
+    beforeEach(() => {
+      vi.mocked(getConfig).mockReturnValue({
+        config: mockConfig,
+        configPath: 'C:/project/archgate.config.ts',
+        projectRoot: 'C:/project',
+        loadedAt: Date.now(),
+      })
+    })
+
+    it('should report when importing from unlayered file', () => {
+      const mockMapper = {
+        map: vi.fn((path: string) => {
+          if (path.includes('components')) return { layer: 'ui', pattern: 'src/components/**/*' }
+          if (path.includes('helpers')) return null // helpers is not in any layer
+          return null
+        }),
+        layers: mockConfig.layers,
+      }
+
+      vi.mocked(createLayerMapper).mockReturnValue(mockMapper)
+      vi.mocked(resolveImport).mockReturnValue({
+        resolvedPath: 'C:/project/src/helpers/format.ts',
+        isExternal: false,
+        isUnresolved: false,
+      })
+
+      const listeners = rule.create(mockContext)
+      const importNode = {
+        source: {
+          value: '../helpers/format',
+          loc: { start: { line: 1, column: 0 }, end: { line: 1, column: 25 } },
+        },
+      }
+
+      listeners.ImportDeclaration?.(importNode as unknown as Parameters<NonNullable<ReturnType<typeof rule.create>['ImportDeclaration']>>[0])
+
+      expect(reportedErrors).toHaveLength(1)
+      expect(reportedErrors[0].messageId).toBe('unlayeredImport')
+      expect(reportedErrors[0].data?.importPath).toBe('../helpers/format')
+      expect(reportedErrors[0].data?.targetPath).toContain('helpers/format')
+    })
+
+    it('should not report when importing from layered file', () => {
+      const mockMapper = {
+        map: vi.fn((path: string) => {
+          if (path.includes('components')) return { layer: 'ui', pattern: 'src/components/**/*' }
+          if (path.includes('services')) return { layer: 'services', pattern: 'src/services/**/*' }
+          return null
+        }),
+        layers: mockConfig.layers,
+      }
+
+      vi.mocked(createLayerMapper).mockReturnValue(mockMapper)
+      vi.mocked(resolveImport).mockReturnValue({
+        resolvedPath: 'C:/project/src/services/user.ts',
+        isExternal: false,
+        isUnresolved: false,
+      })
+
+      const listeners = rule.create(mockContext)
+      const importNode = {
+        source: {
+          value: '../services/user',
+          loc: { start: { line: 1, column: 0 }, end: { line: 1, column: 20 } },
+        },
+      }
+
+      listeners.ImportDeclaration?.(importNode as unknown as Parameters<NonNullable<ReturnType<typeof rule.create>['ImportDeclaration']>>[0])
+
+      expect(reportedErrors).toHaveLength(0)
+    })
+
+    it('should not report for external imports', () => {
+      const mockMapper = {
+        map: vi.fn().mockReturnValue({ layer: 'ui', pattern: 'src/components/**/*' }),
+        layers: mockConfig.layers,
+      }
+
+      vi.mocked(createLayerMapper).mockReturnValue(mockMapper)
+      vi.mocked(resolveImport).mockReturnValue({
+        resolvedPath: null,
+        isExternal: true,
+        isUnresolved: false,
+      })
+
+      const listeners = rule.create(mockContext)
+      const importNode = {
+        source: {
+          value: 'react',
+          loc: { start: { line: 1, column: 0 }, end: { line: 1, column: 15 } },
+        },
+      }
+
+      listeners.ImportDeclaration?.(importNode as unknown as Parameters<NonNullable<ReturnType<typeof rule.create>['ImportDeclaration']>>[0])
+
+      expect(reportedErrors).toHaveLength(0)
+    })
+
+    it('should not report for unresolved imports', () => {
+      const mockMapper = {
+        map: vi.fn().mockReturnValue({ layer: 'ui', pattern: 'src/components/**/*' }),
+        layers: mockConfig.layers,
+      }
+
+      vi.mocked(createLayerMapper).mockReturnValue(mockMapper)
+      vi.mocked(resolveImport).mockReturnValue({
+        resolvedPath: null,
+        isExternal: false,
+        isUnresolved: true,
+      })
+
+      const listeners = rule.create(mockContext)
+      const importNode = {
+        source: {
+          value: './missing-file',
+          loc: { start: { line: 1, column: 0 }, end: { line: 1, column: 20 } },
+        },
+      }
+
+      listeners.ImportDeclaration?.(importNode as unknown as Parameters<NonNullable<ReturnType<typeof rule.create>['ImportDeclaration']>>[0])
+
+      expect(reportedErrors).toHaveLength(0)
+    })
+
+    it('should handle require() calls', () => {
+      const mockMapper = {
+        map: vi.fn((path: string) => {
+          if (path.includes('components')) return { layer: 'ui', pattern: 'src/components/**/*' }
+          if (path.includes('helpers')) return null // unlayered
+          return null
+        }),
+        layers: mockConfig.layers,
+      }
+
+      vi.mocked(createLayerMapper).mockReturnValue(mockMapper)
+      vi.mocked(resolveImport).mockReturnValue({
+        resolvedPath: 'C:/project/src/helpers/format.ts',
+        isExternal: false,
+        isUnresolved: false,
+      })
+
+      const listeners = rule.create(mockContext)
+      const callNode = {
+        callee: { type: 'Identifier', name: 'require' },
+        arguments: [
+          {
+            type: 'Literal',
+            value: '../helpers/format',
+            loc: { start: { line: 5, column: 8 }, end: { line: 5, column: 30 } },
+          },
+        ],
+      }
+
+      listeners.CallExpression?.(callNode as unknown as Parameters<NonNullable<ReturnType<typeof rule.create>['CallExpression']>>[0])
+
+      expect(reportedErrors).toHaveLength(1)
+      expect(reportedErrors[0].messageId).toBe('unlayeredImport')
+    })
+
+    it('should handle dynamic imports', () => {
+      const mockMapper = {
+        map: vi.fn((path: string) => {
+          if (path.includes('components')) return { layer: 'ui', pattern: 'src/components/**/*' }
+          if (path.includes('helpers')) return null // unlayered
+          return null
+        }),
+        layers: mockConfig.layers,
+      }
+
+      vi.mocked(createLayerMapper).mockReturnValue(mockMapper)
+      vi.mocked(resolveImport).mockReturnValue({
+        resolvedPath: 'C:/project/src/helpers/format.ts',
+        isExternal: false,
+        isUnresolved: false,
+      })
+
+      const listeners = rule.create(mockContext)
+      const importExprNode = {
+        source: {
+          type: 'Literal',
+          value: '../helpers/format',
+          loc: { start: { line: 10, column: 7 }, end: { line: 10, column: 30 } },
+        },
+      }
+
+      listeners.ImportExpression?.(importExprNode as unknown as Parameters<NonNullable<ReturnType<typeof rule.create>['ImportExpression']>>[0])
+
+      expect(reportedErrors).toHaveLength(1)
+      expect(reportedErrors[0].messageId).toBe('unlayeredImport')
+    })
+
+    it('should work when unlayeredImports is set to error', () => {
+      const configWithError: ArchgateConfig = {
+        ...mockConfig,
+        rules: { unlayeredImports: 'error' },
+      }
+
+      vi.mocked(getConfig).mockReturnValue({
+        config: configWithError,
+        configPath: 'C:/project/archgate.config.ts',
+        projectRoot: 'C:/project',
+        loadedAt: Date.now(),
+      })
+
+      const mockMapper = {
+        map: vi.fn((path: string) => {
+          if (path.includes('components')) return { layer: 'ui', pattern: 'src/components/**/*' }
+          if (path.includes('helpers')) return null // unlayered
+          return null
+        }),
+        layers: mockConfig.layers,
+      }
+
+      vi.mocked(createLayerMapper).mockReturnValue(mockMapper)
+      vi.mocked(resolveImport).mockReturnValue({
+        resolvedPath: 'C:/project/src/helpers/format.ts',
+        isExternal: false,
+        isUnresolved: false,
+      })
+
+      const listeners = rule.create(mockContext)
+      const importNode = {
+        source: {
+          value: '../helpers/format',
+          loc: { start: { line: 1, column: 0 }, end: { line: 1, column: 25 } },
+        },
+      }
+
+      listeners.ImportDeclaration?.(importNode as unknown as Parameters<NonNullable<ReturnType<typeof rule.create>['ImportDeclaration']>>[0])
+
+      expect(reportedErrors).toHaveLength(1)
+    })
+
+    it('should handle non-string import values gracefully', () => {
+      const mockMapper = {
+        map: vi.fn().mockReturnValue({ layer: 'ui', pattern: 'src/components/**/*' }),
+        layers: mockConfig.layers,
+      }
+
+      vi.mocked(createLayerMapper).mockReturnValue(mockMapper)
+
+      const listeners = rule.create(mockContext)
+
+      // Import with non-string value (template literal)
+      const importNode = {
+        source: {
+          value: null,
+          loc: { start: { line: 1, column: 0 }, end: { line: 1, column: 25 } },
+        },
+      }
+
+      // Should not throw
+      expect(() => {
+        listeners.ImportDeclaration?.(importNode as unknown as Parameters<NonNullable<ReturnType<typeof rule.create>['ImportDeclaration']>>[0])
+      }).not.toThrow()
+
+      expect(reportedErrors).toHaveLength(0)
+    })
+  })
+
+  describe('rule not enabled by default', () => {
+    it('should return empty object when no rules config is set', () => {
+      const configWithoutRules: ArchgateConfig = {
+        layers: mockConfig.layers,
+        flow: mockConfig.flow,
+        // No rules property
+      }
+
+      vi.mocked(getConfig).mockReturnValue({
+        config: configWithoutRules,
+        configPath: 'C:/project/archgate.config.ts',
+        projectRoot: 'C:/project',
+        loadedAt: Date.now(),
+      })
+
+      vi.mocked(createLayerMapper).mockReturnValue({
+        map: vi.fn().mockReturnValue({ layer: 'ui', pattern: 'src/components/**/*' }),
+        layers: mockConfig.layers,
+      })
+
+      const listeners = rule.create(mockContext)
+
+      expect(listeners).toEqual({})
+    })
+  })
+})

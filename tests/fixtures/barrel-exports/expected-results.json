@@ -1,0 +1,41 @@
+{
+  "description": "Barrel Exports - Import-site enforcement policy",
+  "expectedViolations": [
+    {
+      "type": "flow",
+      "fromLayer": "api",
+      "toLayer": "repository",
+      "message": "Layer violation: api -> repository",
+      "files": [
+        {
+          "source": "src/api/badHandler.ts",
+          "target": "src/repository/index.ts",
+          "line": 2
+        }
+      ],
+      "note": "Importing from repository barrel still counts as repository layer",
+      "suggestion": "Import from services layer instead."
+    }
+  ],
+  "expectedValidFlows": [
+    {
+      "from": "api",
+      "to": "services",
+      "files": ["src/api/handlers.ts -> src/services/index.ts"],
+      "note": "Barrel imports count as importing from the barrel's layer"
+    },
+    {
+      "from": "services",
+      "to": "repository",
+      "files": [
+        "src/services/userService.ts -> src/repository/index.ts",
+        "src/services/orderService.ts -> src/repository/index.ts"
+      ]
+    }
+  ],
+  "testNotes": [
+    "Import-site enforcement: importing from services/index.ts counts as services layer",
+    "Even though services/index.ts re-exports repository symbols, the edge is api -> services",
+    "Direct import from repository/index.ts is api -> repository (violation)"
+  ]
+}

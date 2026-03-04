@@ -1,0 +1,75 @@
+{
+  "description": "Circular Dependencies - Various cycle patterns",
+  "expectedViolations": [
+    {
+      "type": "flow",
+      "message": "Layer violation",
+      "files": [
+        {
+          "source": "src/shared/helper.ts",
+          "target": "src/modules/a.ts"
+        }
+      ],
+      "note": "Cross-layer import shared -> modules violates flow (should be modules -> shared)"
+    },
+    {
+      "type": "circular",
+      "message": "Circular dependency detected",
+      "cycle": [
+        "src/modules/a.ts",
+        "src/modules/b.ts",
+        "src/modules/a.ts"
+      ],
+      "files": [
+        {
+          "source": "src/modules/a.ts",
+          "target": "src/modules/b.ts"
+        },
+        {
+          "source": "src/modules/b.ts", 
+          "target": "src/modules/a.ts"
+        }
+      ],
+      "suggestion": "Refactor to break the circular dependency. Consider moving shared code to a separate file."
+    },
+    {
+      "type": "circular",
+      "message": "Circular dependency detected",
+      "cycle": [
+        "src/modules/x.ts",
+        "src/modules/y.ts",
+        "src/modules/z.ts",
+        "src/modules/x.ts"
+      ],
+      "files": [
+        {
+          "source": "src/modules/x.ts",
+          "target": "src/modules/y.ts"
+        },
+        {
+          "source": "src/modules/y.ts",
+          "target": "src/modules/z.ts"
+        },
+        {
+          "source": "src/modules/z.ts",
+          "target": "src/modules/x.ts"
+        }
+      ],
+      "suggestion": "Indirect cycle spanning 3 files. Extract common dependencies into a separate module."
+    }
+  ],
+  "expectedValidFlows": [
+    {
+      "from": "shared",
+      "to": "modules",
+      "files": ["src/shared/helper.ts -> src/modules/a.ts"],
+      "note": "This is valid by flow rules but creates a potential cycle risk"
+    }
+  ],
+  "notes": [
+    "Simple cycle: a <-> b (2 files)",
+    "Indirect cycle: x -> y -> z -> x (3 files)", 
+    "Cross-layer import from shared to modules is allowed by flow rules",
+    "orphan.ts is not imported by anyone (orphan detection test if enabled)"
+  ]
+}

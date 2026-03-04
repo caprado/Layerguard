@@ -1,0 +1,45 @@
+{
+  "description": "Monorepo pnpm workspace with multiple packages",
+  "expectedViolations": [],
+  "expectedValidFlows": [
+    {
+      "package": "@monorepo/web-api",
+      "from": "handlers",
+      "to": "services",
+      "files": ["packages/web-api/src/handlers/userHandler.ts -> packages/web-api/src/services/userService.ts"]
+    },
+    {
+      "package": "@monorepo/shared-utils",
+      "from": "helpers",
+      "to": "validators",
+      "files": []
+    },
+    {
+      "package": "@monorepo/ui-components",
+      "from": "components",
+      "to": "hooks",
+      "files": ["packages/ui-components/src/components/Button.ts -> packages/ui-components/src/hooks/useState.ts"]
+    }
+  ],
+  "workspaceNotes": [
+    "Each package has its own archgate.config.ts",
+    "Workspace packages are detected from pnpm-workspace.yaml",
+    "Cross-package imports (e.g., @monorepo/web-api) are handled",
+    "archgate check --all checks all packages",
+    "archgate check --package @monorepo/web-api checks specific package"
+  ],
+  "testScenarios": [
+    {
+      "command": "archgate check --package packages/web-api",
+      "description": "Check specific package by path"
+    },
+    {
+      "command": "archgate check --package @monorepo/web-api",
+      "description": "Check specific package by name"
+    },
+    {
+      "command": "archgate check --all",
+      "description": "Check all packages with archgate configs"
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "description": "Unlayered Bypass - Preventing imports to files outside declared layers",
+  "expectedViolations": [
+    {
+      "type": "flow",
+      "message": "Layer violation",
+      "files": [
+        {
+          "source": "src/utils/index.ts",
+          "target": "src/lib/index.ts"
+        }
+      ],
+      "note": "utils importing from lib violates flow (only lib -> utils allowed)"
+    },
+    {
+      "type": "unlayered",
+      "message": "Import from unlayered file",
+      "fromLayer": "utils",
+      "toLayer": null,
+      "files": [
+        {
+          "source": "src/utils/index.ts",
+          "target": "src/misc/helpers.ts",
+          "line": 2
+        }
+      ],
+      "suggestion": "Either add 'src/misc/' as a layer or move helpers.ts to a declared layer."
+    }
+  ],
+  "expectedValidFlows": [
+    {
+      "from": "utils",
+      "to": "lib",
+      "files": ["src/utils/index.ts -> src/lib/index.ts"],
+      "note": "Valid flow between declared layers"
+    }
+  ],
+  "notes": [
+    "With unlayeredImports: 'error', imports from layered -> unlayered are violations",
+    "With unlayeredImports: 'warn', violations are logged but build passes",
+    "With unlayeredImports: 'ignore' (default), no violations are reported",
+    "Unlayered files importing layered files is always allowed (unlayered not subject to rules)",
+    "Unlayered -> unlayered is always allowed"
+  ]
+}

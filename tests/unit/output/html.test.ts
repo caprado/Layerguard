@@ -19,6 +19,7 @@ function createMockReport(violations: Violation[] = []): ViolationReport {
     circular: 0,
     unmapped: 0,
     unlayered: 0,
+    orphan: 0,
     depth: 0,
     publicApi: 0,
     dependentBudget: 0,
@@ -35,6 +36,7 @@ function createMockReport(violations: Violation[] = []): ViolationReport {
     if (v.type === 'circular') counts.circular++
     if (v.type === 'unmapped') counts.unmapped++
     if (v.type === 'unlayered') counts.unlayered++
+    if (v.type === 'orphan') counts.orphan++
     if (v.type === 'depth') counts.depth++
     if (v.type === 'publicApi') counts.publicApi++
     if (v.type === 'dependentBudget') counts.dependentBudget++
@@ -149,14 +151,14 @@ describe('generateHtmlReport', () => {
       {
         timestamp: '2024-01-01T00:00:00Z',
         date: '2024-01-01',
-        counts: { flow: 5, isolation: 0, circular: 0, unmapped: 0, unlayered: 0, depth: 0, publicApi: 0, dependentBudget: 0, importCount: 0, total: 5 },
+        counts: { flow: 5, isolation: 0, circular: 0, unmapped: 0, unlayered: 0, orphan: 0, depth: 0, publicApi: 0, dependentBudget: 0, importCount: 0, total: 5 },
         fileCount: 50,
         importCount: 200,
       },
       {
         timestamp: '2024-01-02T00:00:00Z',
         date: '2024-01-02',
-        counts: { flow: 3, isolation: 0, circular: 0, unmapped: 0, unlayered: 0, depth: 0, publicApi: 0, dependentBudget: 0, importCount: 0, total: 3 },
+        counts: { flow: 3, isolation: 0, circular: 0, unmapped: 0, unlayered: 0, orphan: 0, depth: 0, publicApi: 0, dependentBudget: 0, importCount: 0, total: 3 },
         fileCount: 55,
         importCount: 220,
       },
@@ -299,14 +301,14 @@ describe('generateTrendChartData', () => {
       {
         timestamp: '2024-01-01T00:00:00Z',
         date: '2024-01-01',
-        counts: { flow: 5, isolation: 0, circular: 0, unmapped: 0, unlayered: 0, depth: 0, publicApi: 0, dependentBudget: 0, importCount: 0, total: 5 },
+        counts: { flow: 5, isolation: 0, circular: 0, unmapped: 0, unlayered: 0, orphan: 0, depth: 0, publicApi: 0, dependentBudget: 0, importCount: 0, total: 5 },
         fileCount: 50,
         importCount: 200,
       },
       {
         timestamp: '2024-01-02T00:00:00Z',
         date: '2024-01-02',
-        counts: { flow: 3, isolation: 0, circular: 0, unmapped: 0, unlayered: 0, depth: 0, publicApi: 0, dependentBudget: 0, importCount: 0, total: 3 },
+        counts: { flow: 3, isolation: 0, circular: 0, unmapped: 0, unlayered: 0, orphan: 0, depth: 0, publicApi: 0, dependentBudget: 0, importCount: 0, total: 3 },
         fileCount: 55,
         importCount: 220,
       },

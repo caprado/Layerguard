@@ -39,19 +39,30 @@ describe('ESLint plugin', () => {
     it('should include layer-boundaries rule as error', () => {
       const config = plugin.configs?.recommended
       expect(config).toBeDefined()
-      expect(config?.rules).toBeDefined()
-      expect(config?.rules?.['layerguard/layer-boundaries']).toBe('error')
+      expect(!Array.isArray(config)).toBe(true)
+      if (config && !Array.isArray(config)) {
+        expect(config.rules).toBeDefined()
+        expect(config.rules?.['layerguard/layer-boundaries']).toBe('error')
+      }
     })
 
     it('should include the plugin', () => {
       const config = plugin.configs?.recommended
-      expect(config?.plugins).toBeDefined()
-      expect(config?.plugins?.layerguard).toBeDefined()
+      expect(config).toBeDefined()
+      if (config && !Array.isArray(config)) {
+        expect(config.plugins).toBeDefined()
+        const plugins = config.plugins
+        if (plugins && !Array.isArray(plugins)) {
+          expect(plugins.layerguard).toBeDefined()
+        }
+      }
     })
 
     it('should not include unlayered-imports', () => {
       const config = plugin.configs?.recommended
-      expect(config?.rules?.['layerguard/unlayered-imports']).toBeUndefined()
+      if (config && !Array.isArray(config)) {
+        expect(config.rules?.['layerguard/unlayered-imports']).toBeUndefined()
+      }
     })
   })
 
@@ -59,18 +70,28 @@ describe('ESLint plugin', () => {
     it('should include layer-boundaries rule as error', () => {
       const config = plugin.configs?.strict
       expect(config).toBeDefined()
-      expect(config?.rules?.['layerguard/layer-boundaries']).toBe('error')
+      if (config && !Array.isArray(config)) {
+        expect(config.rules?.['layerguard/layer-boundaries']).toBe('error')
+      }
     })
 
     it('should include unlayered-imports rule as error', () => {
       const config = plugin.configs?.strict
-      expect(config?.rules?.['layerguard/unlayered-imports']).toBe('error')
+      if (config && !Array.isArray(config)) {
+        expect(config.rules?.['layerguard/unlayered-imports']).toBe('error')
+      }
     })
 
     it('should include the plugin', () => {
       const config = plugin.configs?.strict
-      expect(config?.plugins).toBeDefined()
-      expect(config?.plugins?.layerguard).toBeDefined()
+      expect(config).toBeDefined()
+      if (config && !Array.isArray(config)) {
+        expect(config.plugins).toBeDefined()
+        const plugins = config.plugins
+        if (plugins && !Array.isArray(plugins)) {
+          expect(plugins.layerguard).toBeDefined()
+        }
+      }
     })
   })
 

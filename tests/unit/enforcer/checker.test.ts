@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { FlowChecker, createFlowChecker, checkDependencyGraph } from '../../../src/enforcer/checker.js'
+import { createFlowChecker, checkDependencyGraph } from '../../../src/enforcer/checker.js'
 import type { LayerguardConfig } from '../../../src/config/types.js'
 import type { DependencyGraph, DependencyEdge } from '../../../src/parser/graph.js'
 
@@ -615,16 +615,14 @@ describe('advanced rules options', () => {
   const createGraph = (files: string[], edges: Array<{ source: string; target: string }>): DependencyGraph => ({
     projectRoot: '/test',
     files: new Set(files),
-    adjacencyList: new Map(files.map(file => [file, edges.filter(e => e.source === file).map(e => ({
-      target: e.target,
-      isTypeOnly: false,
-      specifier: `./${e.target.split('/').pop()}`,
-    }))])),
+    adjacencyList: new Map(files.map(file => [file, new Set(edges.filter(e => e.source === file).map(e => e.target))])),
     edges: edges.map(e => ({
       source: e.source,
       target: e.target,
       isTypeOnly: false,
       specifier: `./${e.target.split('/').pop()}`,
+      kind: 'static' as const,
+      line: 1,
     })),
     parseErrors: new Map(),
     unresolvedImports: [],

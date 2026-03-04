@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { LayerMapper, createLayerMapper } from '../../../src/enforcer/mapper.js'
+import { createLayerMapper } from '../../../src/enforcer/mapper.js'
 import type { LayerguardConfig } from '../../../src/config/types.js'
 
 describe('LayerMapper', () => {

@@ -18,6 +18,7 @@ function createMockReport(violations: Violation[] = []): ViolationReport {
     circular: 0,
     unmapped: 0,
     unlayered: 0,
+    orphan: 0,
     depth: 0,
     publicApi: 0,
     dependentBudget: 0,
@@ -34,6 +35,7 @@ function createMockReport(violations: Violation[] = []): ViolationReport {
     if (v.type === 'circular') counts.circular++
     if (v.type === 'unmapped') counts.unmapped++
     if (v.type === 'unlayered') counts.unlayered++
+    if (v.type === 'orphan') counts.orphan++
     if (v.type === 'depth') counts.depth++
     if (v.type === 'publicApi') counts.publicApi++
     if (v.type === 'dependentBudget') counts.dependentBudget++

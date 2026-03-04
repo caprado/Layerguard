@@ -25,7 +25,7 @@ vi.mock('../../../src/config/parser.js', () => ({
 }))
 
 import { getConfig } from '../../../src/eslint/config-cache.js'
-import { resolveImport, createResolverContext } from '../../../src/parser/resolver.js'
+import { resolveImport } from '../../../src/parser/resolver.js'
 import { createLayerMapper } from '../../../src/enforcer/mapper.js'
 import { parseFlowRules } from '../../../src/config/parser.js'
 import rule from '../../../src/eslint/rules/layer-boundaries.js'
@@ -40,9 +40,9 @@ describe('ESLint layer-boundaries rule', () => {
 
   const mockConfig: LayerguardConfig = {
     layers: {
-      ui: ['src/components/**/*'],
-      services: ['src/services/**/*'],
-      utils: ['src/utils/**/*'],
+      ui: { path: 'src/components' },
+      services: { path: 'src/services' },
+      utils: { path: 'src/utils' },
     },
     flow: ['ui -> services', 'services -> utils'],
   }
@@ -60,11 +60,10 @@ describe('ESLint layer-boundaries rule', () => {
           data?: Record<string, string>
           loc?: { start: { line: number; column: number }; end: { line: number; column: number } }
         }
-        reportedErrors.push({
-          messageId: d.messageId,
-          data: d.data,
-          loc: d.loc,
-        })
+        const error: typeof reportedErrors[number] = { messageId: d.messageId }
+        if (d.data) error.data = d.data
+        if (d.loc) error.loc = d.loc
+        reportedErrors.push(error)
       },
     } as unknown as Rule.RuleContext
   })
@@ -103,7 +102,7 @@ describe('ESLint layer-boundaries rule', () => {
       vi.mocked(createLayerMapper).mockReturnValue({
         map: vi.fn().mockReturnValue(null), // File not in any layer
         layers: mockConfig.layers,
-      })
+      } as unknown as ReturnType<typeof createLayerMapper>)
 
       vi.mocked(parseFlowRules).mockReturnValue([])
 
@@ -123,7 +122,7 @@ describe('ESLint layer-boundaries rule', () => {
       vi.mocked(createLayerMapper).mockReturnValue({
         map: vi.fn().mockReturnValue({ layer: 'ui', pattern: 'src/components/**/*' }),
         layers: mockConfig.layers,
-      })
+      } as unknown as ReturnType<typeof createLayerMapper>)
 
       vi.mocked(parseFlowRules).mockReturnValue([
         { from: 'ui', to: 'services', direction: 'unidirectional' },
@@ -162,8 +161,9 @@ describe('ESLint layer-boundaries rule', () => {
         layers: mockConfig.layers,
       }
 
-      vi.mocked(createLayerMapper).mockReturnValue(mockMapper)
+      vi.mocked(createLayerMapper).mockReturnValue(mockMapper as unknown as ReturnType<typeof createLayerMapper>)
       vi.mocked(resolveImport).mockReturnValue({
+        specifier: '../services/user',
         resolvedPath: 'C:/project/src/services/user.ts',
         isExternal: false,
         isUnresolved: false,
@@ -199,8 +199,9 @@ describe('ESLint layer-boundaries rule', () => {
         layers: mockConfig.layers,
       }
 
-      vi.mocked(createLayerMapper).mockReturnValue(mockMapper)
+      vi.mocked(createLayerMapper).mockReturnValue(mockMapper as unknown as ReturnType<typeof createLayerMapper>)
       vi.mocked(resolveImport).mockReturnValue({
+        specifier: '../components/Button',
         resolvedPath: 'C:/project/src/components/Button.tsx',
         isExternal: false,
         isUnresolved: false,
@@ -217,9 +218,9 @@ describe('ESLint layer-boundaries rule', () => {
       listeners.ImportDeclaration?.(importNode as unknown as Parameters<NonNullable<ReturnType<typeof rule.create>['ImportDeclaration']>>[0])
 
       expect(reportedErrors).toHaveLength(1)
-      expect(reportedErrors[0].messageId).toBe('violation')
-      expect(reportedErrors[0].data?.fromLayer).toBe('services')
-      expect(reportedErrors[0].data?.toLayer).toBe('ui')
+      expect(reportedErrors[0]!.messageId).toBe('violation')
+      expect(reportedErrors[0]!.data?.fromLayer).toBe('services')
+      expect(reportedErrors[0]!.data?.toLayer).toBe('ui')
     })
 
     it('should not report for external imports', () => {
@@ -228,8 +229,9 @@ describe('ESLint layer-boundaries rule', () => {
         layers: mockConfig.layers,
       }
 
-      vi.mocked(createLayerMapper).mockReturnValue(mockMapper)
+      vi.mocked(createLayerMapper).mockReturnValue(mockMapper as unknown as ReturnType<typeof createLayerMapper>)
       vi.mocked(resolveImport).mockReturnValue({
+        specifier: 'react',
         resolvedPath: null,
         isExternal: true,
         isUnresolved: false,
@@ -254,8 +256,9 @@ describe('ESLint layer-boundaries rule', () => {
         layers: mockConfig.layers,
       }
 
-      vi.mocked(createLayerMapper).mockReturnValue(mockMapper)
+      vi.mocked(createLayerMapper).mockReturnValue(mockMapper as unknown as ReturnType<typeof createLayerMapper>)
       vi.mocked(resolveImport).mockReturnValue({
+        specifier: './Input',
         resolvedPath: 'C:/project/src/components/Input.tsx',
         isExternal: false,
         isUnresolved: false,
@@ -291,8 +294,9 @@ describe('ESLint layer-boundaries rule', () => {
         layers: mockConfig.layers,
       }
 
-      vi.mocked(createLayerMapper).mockReturnValue(mockMapper)
+      vi.mocked(createLayerMapper).mockReturnValue(mockMapper as unknown as ReturnType<typeof createLayerMapper>)
       vi.mocked(resolveImport).mockReturnValue({
+        specifier: '../components/Button',
         resolvedPath: 'C:/project/src/components/Button.tsx',
         isExternal: false,
         isUnresolved: false,
@@ -313,7 +317,7 @@ describe('ESLint layer-boundaries rule', () => {
       listeners.CallExpression?.(callNode as unknown as Parameters<NonNullable<ReturnType<typeof rule.create>['CallExpression']>>[0])
 
       expect(reportedErrors).toHaveLength(1)
-      expect(reportedErrors[0].messageId).toBe('violation')
+      expect(reportedErrors[0]!.messageId).toBe('violation')
     })
 
     it('should handle dynamic imports', () => {
@@ -333,8 +337,9 @@ describe('ESLint layer-boundaries rule', () => {
         layers: mockConfig.layers,
       }
 
-      vi.mocked(createLayerMapper).mockReturnValue(mockMapper)
+      vi.mocked(createLayerMapper).mockReturnValue(mockMapper as unknown as ReturnType<typeof createLayerMapper>)
       vi.mocked(resolveImport).mockReturnValue({
+        specifier: '../components/Button',
         resolvedPath: 'C:/project/src/components/Button.tsx',
         isExternal: false,
         isUnresolved: false,
@@ -352,7 +357,7 @@ describe('ESLint layer-boundaries rule', () => {
       listeners.ImportExpression?.(importExprNode as unknown as Parameters<NonNullable<ReturnType<typeof rule.create>['ImportExpression']>>[0])
 
       expect(reportedErrors).toHaveLength(1)
-      expect(reportedErrors[0].messageId).toBe('violation')
+      expect(reportedErrors[0]!.messageId).toBe('violation')
     })
 
     it('should handle bidirectional flow rules', () => {
@@ -376,8 +381,9 @@ describe('ESLint layer-boundaries rule', () => {
         layers: mockConfig.layers,
       }
 
-      vi.mocked(createLayerMapper).mockReturnValue(mockMapper)
+      vi.mocked(createLayerMapper).mockReturnValue(mockMapper as unknown as ReturnType<typeof createLayerMapper>)
       vi.mocked(resolveImport).mockReturnValue({
+        specifier: '../components/Button',
         resolvedPath: 'C:/project/src/components/Button.tsx',
         isExternal: false,
         isUnresolved: false,

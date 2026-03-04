@@ -21,7 +21,7 @@ vi.mock('../../../src/enforcer/mapper.js', () => ({
 }))
 
 import { getConfig } from '../../../src/eslint/config-cache.js'
-import { resolveImport, createResolverContext } from '../../../src/parser/resolver.js'
+import { resolveImport } from '../../../src/parser/resolver.js'
 import { createLayerMapper } from '../../../src/enforcer/mapper.js'
 import rule from '../../../src/eslint/rules/unlayered-imports.js'
 
@@ -35,8 +35,8 @@ describe('ESLint unlayered-imports rule', () => {
 
   const mockConfig: LayerguardConfig = {
     layers: {
-      ui: ['src/components/**/*'],
-      services: ['src/services/**/*'],
+      ui: { path: 'src/components' },
+      services: { path: 'src/services' },
     },
     flow: ['ui -> services'],
     rules: {
@@ -57,11 +57,10 @@ describe('ESLint unlayered-imports rule', () => {
           data?: Record<string, string>
           loc?: { start: { line: number; column: number }; end: { line: number; column: number } }
         }
-        reportedErrors.push({
-          messageId: d.messageId,
-          data: d.data,
-          loc: d.loc,
-        })
+        const error: typeof reportedErrors[number] = { messageId: d.messageId }
+        if (d.data) error.data = d.data
+        if (d.loc) error.loc = d.loc
+        reportedErrors.push(error)
       },
     } as unknown as Rule.RuleContext
   })
@@ -105,7 +104,7 @@ describe('ESLint unlayered-imports rule', () => {
       vi.mocked(createLayerMapper).mockReturnValue({
         map: vi.fn().mockReturnValue({ layer: 'ui', pattern: 'src/components/**/*' }),
         layers: mockConfig.layers,
-      })
+      } as unknown as ReturnType<typeof createLayerMapper>)
 
       const listeners = rule.create(mockContext)
 
@@ -123,7 +122,7 @@ describe('ESLint unlayered-imports rule', () => {
       vi.mocked(createLayerMapper).mockReturnValue({
         map: vi.fn().mockReturnValue(null), // File not in any layer
         layers: mockConfig.layers,
-      })
+      } as unknown as ReturnType<typeof createLayerMapper>)
 
       const listeners = rule.create(mockContext)
 
@@ -141,7 +140,7 @@ describe('ESLint unlayered-imports rule', () => {
       vi.mocked(createLayerMapper).mockReturnValue({
         map: vi.fn().mockReturnValue({ layer: 'ui', pattern: 'src/components/**/*' }),
         layers: mockConfig.layers,
-      })
+      } as unknown as ReturnType<typeof createLayerMapper>)
 
       const listeners = rule.create(mockContext)
 
@@ -171,8 +170,9 @@ describe('ESLint unlayered-imports rule', () => {
         layers: mockConfig.layers,
       }
 
-      vi.mocked(createLayerMapper).mockReturnValue(mockMapper)
+      vi.mocked(createLayerMapper).mockReturnValue(mockMapper as unknown as ReturnType<typeof createLayerMapper>)
       vi.mocked(resolveImport).mockReturnValue({
+        specifier: '../helpers/format',
         resolvedPath: 'C:/project/src/helpers/format.ts',
         isExternal: false,
         isUnresolved: false,
@@ -189,9 +189,9 @@ describe('ESLint unlayered-imports rule', () => {
       listeners.ImportDeclaration?.(importNode as unknown as Parameters<NonNullable<ReturnType<typeof rule.create>['ImportDeclaration']>>[0])
 
       expect(reportedErrors).toHaveLength(1)
-      expect(reportedErrors[0].messageId).toBe('unlayeredImport')
-      expect(reportedErrors[0].data?.importPath).toBe('../helpers/format')
-      expect(reportedErrors[0].data?.targetPath).toContain('helpers/format')
+      expect(reportedErrors[0]!.messageId).toBe('unlayeredImport')
+      expect(reportedErrors[0]!.data?.importPath).toBe('../helpers/format')
+      expect(reportedErrors[0]!.data?.targetPath).toContain('helpers/format')
     })
 
     it('should not report when importing from layered file', () => {
@@ -204,8 +204,9 @@ describe('ESLint unlayered-imports rule', () => {
         layers: mockConfig.layers,
       }
 
-      vi.mocked(createLayerMapper).mockReturnValue(mockMapper)
+      vi.mocked(createLayerMapper).mockReturnValue(mockMapper as unknown as ReturnType<typeof createLayerMapper>)
       vi.mocked(resolveImport).mockReturnValue({
+        specifier: '../services/user',
         resolvedPath: 'C:/project/src/services/user.ts',
         isExternal: false,
         isUnresolved: false,
@@ -230,8 +231,9 @@ describe('ESLint unlayered-imports rule', () => {
         layers: mockConfig.layers,
       }
 
-      vi.mocked(createLayerMapper).mockReturnValue(mockMapper)
+      vi.mocked(createLayerMapper).mockReturnValue(mockMapper as unknown as ReturnType<typeof createLayerMapper>)
       vi.mocked(resolveImport).mockReturnValue({
+        specifier: 'react',
         resolvedPath: null,
         isExternal: true,
         isUnresolved: false,
@@ -256,8 +258,9 @@ describe('ESLint unlayered-imports rule', () => {
         layers: mockConfig.layers,
       }
 
-      vi.mocked(createLayerMapper).mockReturnValue(mockMapper)
+      vi.mocked(createLayerMapper).mockReturnValue(mockMapper as unknown as ReturnType<typeof createLayerMapper>)
       vi.mocked(resolveImport).mockReturnValue({
+        specifier: './missing-file',
         resolvedPath: null,
         isExternal: false,
         isUnresolved: true,
@@ -286,8 +289,9 @@ describe('ESLint unlayered-imports rule', () => {
         layers: mockConfig.layers,
       }
 
-      vi.mocked(createLayerMapper).mockReturnValue(mockMapper)
+      vi.mocked(createLayerMapper).mockReturnValue(mockMapper as unknown as ReturnType<typeof createLayerMapper>)
       vi.mocked(resolveImport).mockReturnValue({
+        specifier: '../helpers/format',
         resolvedPath: 'C:/project/src/helpers/format.ts',
         isExternal: false,
         isUnresolved: false,
@@ -308,7 +312,7 @@ describe('ESLint unlayered-imports rule', () => {
       listeners.CallExpression?.(callNode as unknown as Parameters<NonNullable<ReturnType<typeof rule.create>['CallExpression']>>[0])
 
       expect(reportedErrors).toHaveLength(1)
-      expect(reportedErrors[0].messageId).toBe('unlayeredImport')
+      expect(reportedErrors[0]!.messageId).toBe('unlayeredImport')
     })
 
     it('should handle dynamic imports', () => {
@@ -321,8 +325,9 @@ describe('ESLint unlayered-imports rule', () => {
         layers: mockConfig.layers,
       }
 
-      vi.mocked(createLayerMapper).mockReturnValue(mockMapper)
+      vi.mocked(createLayerMapper).mockReturnValue(mockMapper as unknown as ReturnType<typeof createLayerMapper>)
       vi.mocked(resolveImport).mockReturnValue({
+        specifier: '../helpers/format',
         resolvedPath: 'C:/project/src/helpers/format.ts',
         isExternal: false,
         isUnresolved: false,
@@ -340,7 +345,7 @@ describe('ESLint unlayered-imports rule', () => {
       listeners.ImportExpression?.(importExprNode as unknown as Parameters<NonNullable<ReturnType<typeof rule.create>['ImportExpression']>>[0])
 
       expect(reportedErrors).toHaveLength(1)
-      expect(reportedErrors[0].messageId).toBe('unlayeredImport')
+      expect(reportedErrors[0]!.messageId).toBe('unlayeredImport')
     })
 
     it('should work when unlayeredImports is set to error', () => {
@@ -365,8 +370,9 @@ describe('ESLint unlayered-imports rule', () => {
         layers: mockConfig.layers,
       }
 
-      vi.mocked(createLayerMapper).mockReturnValue(mockMapper)
+      vi.mocked(createLayerMapper).mockReturnValue(mockMapper as unknown as ReturnType<typeof createLayerMapper>)
       vi.mocked(resolveImport).mockReturnValue({
+        specifier: '../helpers/format',
         resolvedPath: 'C:/project/src/helpers/format.ts',
         isExternal: false,
         isUnresolved: false,
@@ -391,7 +397,7 @@ describe('ESLint unlayered-imports rule', () => {
         layers: mockConfig.layers,
       }
 
-      vi.mocked(createLayerMapper).mockReturnValue(mockMapper)
+      vi.mocked(createLayerMapper).mockReturnValue(mockMapper as unknown as ReturnType<typeof createLayerMapper>)
 
       const listeners = rule.create(mockContext)
 
@@ -430,7 +436,7 @@ describe('ESLint unlayered-imports rule', () => {
       vi.mocked(createLayerMapper).mockReturnValue({
         map: vi.fn().mockReturnValue({ layer: 'ui', pattern: 'src/components/**/*' }),
         layers: mockConfig.layers,
-      })
+      } as unknown as ReturnType<typeof createLayerMapper>)
 
       const listeners = rule.create(mockContext)
 

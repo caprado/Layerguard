@@ -33,7 +33,7 @@ import unlayeredImports from './rules/unlayered-imports.js'
 const plugin: ESLint.Plugin = {
   meta: {
     name: 'layerguard',
-    version: '0.1.0',
+    version: '0.1.1',
   },
 
   rules: {

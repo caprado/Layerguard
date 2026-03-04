@@ -10,7 +10,7 @@ import { runReport } from './report.js'
 import { postPrComment } from '../output/github.js'
 import { createViolationReport } from '../enforcer/violations.js'
 
-export const VERSION = '0.1.0'
+export const VERSION = '0.1.1'
 
 export interface ParsedArgs {
   command?: string

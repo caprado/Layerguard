@@ -13,6 +13,7 @@ dist/
 
 # Layerguard cache
 .layerguard-cache/
+.archgate-cache/
 
 # OS files
 .DS_Store

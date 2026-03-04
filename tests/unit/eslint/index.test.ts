@@ -19,7 +19,7 @@ describe('ESLint plugin', () => {
     it('should have meta information', () => {
       expect(plugin.meta).toBeDefined()
       expect(plugin.meta?.name).toBe('layerguard')
-      expect(plugin.meta?.version).toBe('0.1.0')
+      expect(plugin.meta?.version).toBe('0.1.1')
     })
 
     it('should have rules', () => {

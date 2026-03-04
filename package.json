@@ -1,6 +1,6 @@
 {
   "name": "layerguard",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Framework-agnostic CLI tool that enforces architectural layer boundaries in TypeScript/JavaScript projects",
   "type": "module",
   "main": "./dist/index.js",
@@ -36,7 +36,9 @@
   },
   "files": [
     "dist",
-    "bin"
+    "bin",
+    "LICENSE",
+    "README.md"
   ],
   "engines": {
     "node": ">=18.0.0"
